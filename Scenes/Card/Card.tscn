@@ -69,7 +69,6 @@ depth = 0.01
 size = Vector3(0.441261, 0.0429315, 0.553311)
 
 [node name="Area3D" type="Area3D"]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
 script = ExtResource("1_8ra73")
 
 [node name="Card" type="MeshInstance3D" parent="."]
