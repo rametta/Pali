@@ -1,0 +1,197 @@
+[gd_scene load_steps=15 format=3 uid="uid://i1agm2a8aa6q"]
+
+[ext_resource type="Script" path="res://Scenes/Main/Main.gd" id="1_3ilso"]
+[ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/House.tscn" id="1_hn20s"]
+[ext_resource type="PackedScene" uid="uid://bbcm43x08hodm" path="res://Scenes/Card/Card.tscn" id="2_1pxv3"]
+[ext_resource type="PackedScene" uid="uid://dpf3dm4a51lmr" path="res://Scenes/Zone/Zone.tscn" id="4_wqepy"]
+
+[sub_resource type="Curve" id="Curve_qv8d6"]
+min_value = -0.16
+max_value = 0.16
+_data = [Vector2(0, -0.16), 0.0, 0.302495, 0, 0, Vector2(1, 0.16), 0.393186, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_ercuo"]
+min_value = -0.8
+max_value = -0.7
+_data = [Vector2(0, -0.8), 0.0, 0.0, 0, 0, Vector2(0.497, -0.7), 0.0, 0.0, 0, 0, Vector2(1, -0.8), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_bllxl"]
+min_value = 0.2
+max_value = 0.4
+_data = [Vector2(2.08165e-12, 0.4), 0.0, -1.01051, 0, 0, Vector2(0.5, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0.4), 0.992751, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_7xtwg"]
+min_value = 60.0
+max_value = 120.0
+_data = [Vector2(0, 60), 0.0, 60.0, 0, 1, Vector2(1, 120), 60.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qhpr4"]
+sky_top_color = Color(0.329412, 0.364706, 0.909804, 1)
+sky_horizon_color = Color(0.945098, 0.819608, 0.917647, 1)
+ground_bottom_color = Color(0.0823529, 0.105882, 0.192157, 1)
+ground_horizon_color = Color(0.0823529, 0.431373, 0.701961, 1)
+
+[sub_resource type="Sky" id="Sky_rgowl"]
+sky_material = SubResource("ProceduralSkyMaterial_qhpr4")
+
+[sub_resource type="Environment" id="Environment_x1o47"]
+background_mode = 2
+sky = SubResource("Sky_rgowl")
+sky_custom_fov = 91.8
+tonemap_mode = 2
+fog_light_color = Color(0.862745, 0.313726, 0.611765, 1)
+
+[sub_resource type="Animation" id="Animation_sf570"]
+resource_name = "GameStart"
+length = 7.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 7),
+"transitions": PackedFloat32Array(1.5, 2, 2),
+"update": 0,
+"values": [Vector3(8.153, 5, 7.958), Vector3(2.08165e-12, 4, 2.08165e-12), Vector3(2.08165e-12, 2.5, 2.08165e-12)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2, 3.6, 5),
+"transitions": PackedFloat32Array(1.5, 1.5, 1),
+"update": 0,
+"values": [Vector3(-0.261799, 0.785398, 3.48787e-16), Vector3(-0.216421, 0.959931, 3.48787e-16), Vector3(-1.5708, 1.5708, 3.48787e-16)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(7),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"start_cards_tween"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_fpl2e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.216421, 0.785398, 3.48787e-16)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(8.153, 4.805, 7.958)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gkla7"]
+_data = {
+"GameStart": SubResource("Animation_sf570"),
+"RESET": SubResource("Animation_fpl2e")
+}
+
+[node name="Main" type="Node3D" node_paths=PackedStringArray("cards")]
+transform = Transform3D(0.999996, 0, 0.0029147, 0, 1, 0, -0.0029147, 0, 0.999996, -0.157668, 0, 0)
+script = ExtResource("1_3ilso")
+cards = NodePath("Camera3D/P1Cards")
+cards_position_z_curve = SubResource("Curve_qv8d6")
+cards_position_y_curve = SubResource("Curve_ercuo")
+cards_position_x_curve = SubResource("Curve_bllxl")
+cards_rotation_y_curve = SubResource("Curve_7xtwg")
+metadata/_edit_lock_ = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_x1o47")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 7.51694, 11.0356, 0)
+shadow_enabled = true
+
+[node name="House" parent="." instance=ExtResource("1_hn20s")]
+metadata/_edit_lock_ = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.151841, 0.690612, 3.40651e-16, 0.976672, 0.214736, -0.707107, -0.151841, 0.690612, 8.153, 4.805, 7.958)
+
+[node name="P1Cards" type="Node3D" parent="Camera3D"]
+transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 2.08165e-12, 1.7, 2.08165e-12)
+top_level = true
+metadata/_edit_lock_ = true
+
+[node name="card" parent="Camera3D/P1Cards" instance=ExtResource("2_1pxv3")]
+transform = Transform3D(0.56799, -1.30666e-16, 0.193359, 2.09272e-16, 0.6, -2.09272e-16, -0.193359, 2.65549e-16, 0.56799, -0.22, 0.1, 0.03)
+cost = 5
+attack = 6
+shield = 3
+
+[node name="card2" parent="Camera3D/P1Cards" instance=ExtResource("2_1pxv3")]
+transform = Transform3D(0.6, 1.01897e-23, 2.62882e-15, -1.01897e-23, 0.6, 3.6891e-24, -1.20774e-15, -6.10238e-24, 0.6, 0.57, 2.08165e-12, 0.11)
+cost = 2
+attack = 1
+shield = 5
+
+[node name="card3" parent="Camera3D/P1Cards" instance=ExtResource("2_1pxv3")]
+transform = Transform3D(0.361089, 4.11891e-17, 0.479181, 2.09272e-16, 0.6, -2.09272e-16, -0.479181, 2.93075e-16, 0.361089, -0.36, 0, 0.16)
+cost = 8
+attack = 9
+shield = 2
+
+[node name="card4" parent="Camera3D/P1Cards" instance=ExtResource("2_1pxv3")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0.28, 2.08165e-12, 0.06)
+cost = 4
+attack = 4
+shield = 4
+
+[node name="card5" parent="Camera3D/P1Cards" instance=ExtResource("2_1pxv3")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 2.08165e-12, 0.2, 2.08165e-12)
+cost = 7
+attack = 9
+shield = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "GameStart"
+speed_scale = 5.0
+libraries = {
+"": SubResource("AnimationLibrary_gkla7")
+}
+
+[node name="Zones" type="Node3D" parent="."]
+
+[node name="ZoneA" parent="Zones" instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.00400001, 1.001, 1.34)
+
+[node name="ZoneB" parent="Zones" instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 2.08165e-12, 1.001, 2.08165e-12)
+
+[node name="ZoneC" parent="Zones" instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.004, 1.001, -1.34)

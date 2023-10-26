@@ -1,0 +1,83 @@
+[gd_scene load_steps=20 format=3 uid="uid://dw2561adfly52"]
+
+[ext_resource type="PackedScene" uid="uid://djkaggjf70f2b" path="res://Assets/gltf/armchair.gltf" id="1_gk6kp"]
+[ext_resource type="PackedScene" uid="uid://be6882dbt4jbr" path="res://Assets/gltf/table_medium.gltf" id="2_6ki2u"]
+[ext_resource type="PackedScene" uid="uid://cidt8an4eckdw" path="res://Assets/gltf/rug_rectangle_stripes_B.gltf" id="3_x6d62"]
+[ext_resource type="PackedScene" uid="uid://dheyb85jmmwu6" path="res://Assets/gltf/chair_A_wood.gltf" id="4_aewfw"]
+[ext_resource type="PackedScene" uid="uid://hcylovhmp73a" path="res://Assets/gltf/lamp_standing.gltf" id="5_4wanr"]
+[ext_resource type="PackedScene" uid="uid://byavsfj4ov20k" path="res://Assets/gltf/cabinet_medium.gltf" id="6_sti3y"]
+[ext_resource type="PackedScene" uid="uid://6t3uqmkoqwgj" path="res://Assets/gltf/cabinet_medium_decorated.gltf" id="7_8byi4"]
+[ext_resource type="PackedScene" uid="uid://ds3718co5mu35" path="res://Assets/gltf/armchair_pillows.gltf" id="8_syd5l"]
+[ext_resource type="PackedScene" uid="uid://i4ikt16lllsi" path="res://Scenes/Room.tscn" id="9_82yht"]
+[ext_resource type="PackedScene" uid="uid://c4qi73jxe6q4t" path="res://Assets/gltf/cabinet_small.gltf" id="10_821qg"]
+[ext_resource type="PackedScene" uid="uid://clrxm21s4by0x" path="res://Assets/gltf/cabinet_small_decorated.gltf" id="11_put27"]
+[ext_resource type="PackedScene" uid="uid://bgumpigub3gou" path="res://Assets/gltf/cactus_medium_B.gltf" id="12_ocxwu"]
+[ext_resource type="PackedScene" uid="uid://cyr14a8qg8oqv" path="res://Assets/gltf/couch.gltf" id="13_p3tx2"]
+[ext_resource type="PackedScene" uid="uid://dthxcue7pwcxd" path="res://Assets/gltf/couch_pillows.gltf" id="14_6n0of"]
+[ext_resource type="PackedScene" uid="uid://dkwwqqk076ntt" path="res://Assets/gltf/lamp_table.gltf" id="15_arum1"]
+[ext_resource type="PackedScene" uid="uid://lhyxkwjxx35h" path="res://Assets/gltf/pictureframe_large_A.gltf" id="16_lc0hw"]
+[ext_resource type="PackedScene" uid="uid://cebx4q2hacopc" path="res://Assets/gltf/pictureframe_large_B.gltf" id="17_p6ujb"]
+[ext_resource type="PackedScene" uid="uid://c1auttxekboil" path="res://Assets/gltf/shelf_A_big.gltf" id="18_hgyrx"]
+[ext_resource type="PackedScene" uid="uid://do8mwwkls6vy8" path="res://Assets/gltf/shelf_B_large_decorated.gltf" id="19_tso0j"]
+
+[node name="House" type="Node3D"]
+
+[node name="armchair" parent="." instance=ExtResource("1_gk6kp")]
+transform = Transform3D(0.707107, -4.93259e-16, -0.707107, 3.48787e-16, 1, -3.48787e-16, 0.707107, 1.60554e-24, 0.707107, 3.44842, 0, -3.42913)
+
+[node name="table_medium" parent="." instance=ExtResource("2_6ki2u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.75, 0, 0, 0)
+
+[node name="rug_rectangle_stripes_B" parent="." instance=ExtResource("3_x6d62")]
+transform = Transform3D(1.27, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="chair_A_wood" parent="." instance=ExtResource("4_aewfw")]
+transform = Transform3D(-4.37114e-08, -3.48787e-16, -1, 3.48787e-16, 1, -3.48787e-16, 1, -3.48787e-16, -4.37114e-08, 1.41847, 0.102802, 2.08165e-12)
+
+[node name="chair_A_wood2" parent="." instance=ExtResource("4_aewfw")]
+transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, -1.46294, 0.102802, 2.08165e-12)
+
+[node name="lamp_standing" parent="." instance=ExtResource("5_4wanr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.20927, 0, -4.15043)
+
+[node name="cabinet_medium" parent="." instance=ExtResource("6_sti3y")]
+transform = Transform3D(0.0339226, 0, -0.999424, 0, 1, 0, 0.999424, 0, 0.0339226, 4.3869, -0.0151767, -0.226389)
+
+[node name="cabinet_medium_decorated" parent="." instance=ExtResource("7_8byi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.052387, -0.041894, -4.43593)
+
+[node name="armchair_pillows" parent="." instance=ExtResource("8_syd5l")]
+transform = Transform3D(-0.707107, 4.93259e-16, 0.707107, 3.48787e-16, 1, -3.48787e-16, -0.707107, -1.60554e-24, -0.707107, -3.72297, 2.38419e-07, 3.46699)
+
+[node name="Room" parent="." instance=ExtResource("9_82yht")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00244224, -0.0278003, -0.00501215)
+
+[node name="cabinet_small" parent="." instance=ExtResource("10_821qg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62743, 0, -4.30825)
+
+[node name="cabinet_small_decorated" parent="." instance=ExtResource("11_put27")]
+transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, -4.20712, 0, 1.17856)
+
+[node name="cactus_medium_B" parent="." instance=ExtResource("12_ocxwu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.275717, 0, 3.92293)
+
+[node name="couch" parent="." instance=ExtResource("13_p3tx2")]
+transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, -4.06566, 0, -1.65001)
+
+[node name="couch_pillows" parent="." instance=ExtResource("14_6n0of")]
+transform = Transform3D(-0.707107, 4.56536e-23, -0.707107, 3.48787e-16, 1, -3.48787e-16, 0.707107, -4.93259e-16, -0.707107, 3.32327, 4.76837e-07, 3.28348)
+
+[node name="lamp_table" parent="." instance=ExtResource("15_arum1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.39076, 0.996664, -0.110953)
+
+[node name="pictureframe_large_A" parent="." instance=ExtResource("16_lc0hw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.34296, 4.80134, -4.95885)
+
+[node name="pictureframe_large_B" parent="." instance=ExtResource("17_p6ujb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5144, 3.59908, -4.98303)
+
+[node name="shelf_A_big" parent="." instance=ExtResource("18_hgyrx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.32428, 2.87023, -5.07393)
+
+[node name="shelf_B_large_decorated" parent="." instance=ExtResource("19_tso0j")]
+transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, -4.86608, 2.31061, 3.36359)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://i4ikt16lllsi"]
+
+[ext_resource type="PackedScene" uid="uid://ctwvfwth66b5m" path="res://Assets/Room.glb" id="1_0dyql"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmexu"]
+albedo_color = Color(0.968627, 0.905882, 0.94902, 1)
+
+[node name="Room" instance=ExtResource("1_0dyql")]
+
+[node name="Room2" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_hmexu")
