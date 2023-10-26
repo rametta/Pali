@@ -150,7 +150,6 @@ _data = {
 }
 
 [node name="Main" type="Node3D" node_paths=PackedStringArray("cards")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("1_3ilso")
 cards = NodePath("CameraContainer/P1Cards")
 cards_position_x_curve = SubResource("Curve_bllxl")

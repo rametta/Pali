@@ -17,7 +17,7 @@ radial_segments = 32
 rings = 2
 cap_bottom = false
 
-[node name="Zone" type="Area3D"]
+[node name="Zone" type="Area3D" groups=["dropzone"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_w637f")

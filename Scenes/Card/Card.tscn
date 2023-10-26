@@ -68,16 +68,16 @@ depth = 0.01
 [sub_resource type="BoxShape3D" id="BoxShape3D_thpbx"]
 size = Vector3(0.441261, 0.0429315, 0.553311)
 
-[node name="Area3D" type="Area3D"]
+[node name="Card" type="Area3D"]
 script = ExtResource("1_8ra73")
 
-[node name="Card" type="MeshInstance3D" parent="."]
+[node name="CardMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_12f3k")
 mesh = SubResource("ArrayMesh_alnmd")
 skeleton = NodePath("")
 
-[node name="Outline" type="MeshInstance3D" parent="Card"]
+[node name="OutlineMesh" type="MeshInstance3D" parent="CardMesh"]
 unique_name_in_owner = true
 mesh = SubResource("ArrayMesh_u7wnh")
 
