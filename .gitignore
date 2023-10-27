@@ -1,2 +1,4 @@
 # Godot 4+ specific ignores
 .godot/
+addons
+.gut_editor_config.json
