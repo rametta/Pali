@@ -2,13 +2,19 @@ extends Node3D
 
 @export var cards: Node3D
 @export var cards_position_x_curve: Curve ## left/right position on table
-
 @export var zones: Node3D
+@export var start_game_timer: Timer
+@export var hud: Control
 
 var selected_card_id = null
 
+const game_time_sec_default = 3 * 60
+var game_time_sec = game_time_sec_default
+
 func _ready():
+	hud.hide()
 	cards.hide()
+	hud.update_game_time(game_time_sec)
 	
 	for zone in zones.get_children():
 		zone.connect('select', on_zone_select.bind(zone))
@@ -26,16 +32,17 @@ func start_cards_tween():
 		card.connect("select", on_card_select.bind(card))
 		
 		var tween = get_tree().create_tween()
-		tween.tween_property(card, "position:x", pos_x, 1)
-		tween.tween_property(card, "rotation_degrees:z", 0, 1)
+		tween.tween_property(card, "position:x", pos_x, .75)
+		tween.tween_property(card, "rotation_degrees:z", 0, .75)
+		tween.tween_callback(
+			func():
+				start_game_timer.start()
+				hud.show()
+		)
 
 func on_card_select(card: Node3D) -> void:
 	selected_card_id = card.get_instance_id()
 	get_tree().call_group("player_a_cards", "set_and_render_outline", selected_card_id)
-#	var all_cards = get_tree().get_nodes_in_group("player_a_cards")
-#	for c in all_cards:
-#		c.is_selected = selected_card_id == c.get_instance_id()
-#		c.render_outline()
 
 func on_zone_select(zone: Node3D) -> void:
 	if selected_card_id:
@@ -54,7 +61,7 @@ func on_zone_select(zone: Node3D) -> void:
 				zone.add_card(Global.PlayerKind.PLAYER_A, card, pos, rot)
 				selected_card_id = null
 			)
-			tween.tween_interval(.15)
+			tween.tween_interval(.1)
 			tween.tween_callback(render_hand)
 
 func render_hand() -> void:
@@ -70,4 +77,13 @@ func render_hand() -> void:
 		var pos_x = cards_position_x_curve.sample(offset)
 		var card: Node3D = cards.get_child(card_id)
 		var tween = get_tree().create_tween()
-		tween.tween_property(card, "position:x", pos_x, 1)
+		tween.tween_property(card, "position:x", pos_x, .35)
+
+
+func _on_start_game_timer_timeout():
+	game_time_sec -= 1
+	hud.update_game_time(game_time_sec)
+	
+	if game_time_sec <= 0:
+		start_game_timer.stop()
+		print("game over - show winner here")

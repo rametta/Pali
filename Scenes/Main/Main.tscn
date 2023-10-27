@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://i1agm2a8aa6q"]
+[gd_scene load_steps=13 format=3 uid="uid://i1agm2a8aa6q"]
 
 [ext_resource type="Script" path="res://Scenes/Main/Main.gd" id="1_3ilso"]
 [ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/House.tscn" id="1_hn20s"]
 [ext_resource type="PackedScene" uid="uid://bbcm43x08hodm" path="res://Scenes/Card/Card.tscn" id="2_1pxv3"]
+[ext_resource type="PackedScene" uid="uid://c1vg7u6rg0yd6" path="res://Scenes/HUD/HUD.tscn" id="2_gsrr0"]
 [ext_resource type="PackedScene" uid="uid://dpf3dm4a51lmr" path="res://Scenes/Zone/Zone.tscn" id="4_wqepy"]
 
 [sub_resource type="Curve" id="Curve_bllxl"]
@@ -28,7 +29,7 @@ fog_light_color = Color(0.862745, 0.313726, 0.611765, 1)
 
 [sub_resource type="Animation" id="Animation_sf570"]
 resource_name = "GameStart"
-length = 7.0
+length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -36,7 +37,7 @@ tracks/0/path = NodePath("CameraContainer/Camera3D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 6.9),
+"times": PackedFloat32Array(0, 2.9),
 "transitions": PackedFloat32Array(1.5, 1),
 "update": 0,
 "values": [Vector3(8.153, 1.75, 7.958), Vector3(2.15, -0.72, 2.08165e-12)]
@@ -48,7 +49,7 @@ tracks/1/path = NodePath("CameraContainer/Camera3D:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 6.9),
+"times": PackedFloat32Array(0, 2.9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(-0.261799, 0.785398, 3.48787e-16), Vector3(-0.645772, 1.5708, 3.48787e-16)]
@@ -60,7 +61,7 @@ tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(7),
+"times": PackedFloat32Array(3),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -101,12 +102,16 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("cards", "zones")]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("cards", "zones", "start_game_timer", "hud")]
 script = ExtResource("1_3ilso")
 cards = NodePath("CameraContainer/P1Cards")
 cards_position_x_curve = SubResource("Curve_bllxl")
 zones = NodePath("Zones")
+start_game_timer = NodePath("StartGameTimer")
+hud = NodePath("HUD")
 metadata/_edit_lock_ = true
+
+[node name="HUD" parent="." instance=ExtResource("2_gsrr0")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_x1o47")
@@ -155,7 +160,6 @@ shield = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "GameStart"
-speed_scale = 5.0
 libraries = {
 "": SubResource("AnimationLibrary_gkla7")
 }
@@ -170,3 +174,7 @@ transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 2.08165
 
 [node name="ZoneC" parent="Zones" instance=ExtResource("4_wqepy")]
 transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.004, 1.04507, -1.34)
+
+[node name="StartGameTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="StartGameTimer" to="." method="_on_start_game_timer_timeout"]

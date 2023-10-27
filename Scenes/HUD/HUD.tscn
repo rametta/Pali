@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1vg7u6rg0yd6"]
+
+[ext_resource type="Script" path="res://Scenes/HUD/HUD.gd" id="1_iuu84"]
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("game_time_label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_iuu84")
+game_time_label = NodePath("Container/GameTimeLabel")
+
+[node name="Container" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameTimeLabel" type="Label" parent="Container"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
+theme_override_font_sizes/font_size = 100
+text = "3:33"
+horizontal_alignment = 1
