@@ -68,7 +68,7 @@ depth = 0.01
 [sub_resource type="BoxShape3D" id="BoxShape3D_thpbx"]
 size = Vector3(0.441261, 0.0429315, 0.553311)
 
-[node name="Card" type="Area3D"]
+[node name="Card" type="Area3D" groups=["player_a_cards"]]
 script = ExtResource("1_8ra73")
 
 [node name="CardMesh" type="MeshInstance3D" parent="."]

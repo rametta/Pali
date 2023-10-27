@@ -101,10 +101,11 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("cards")]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("cards", "zones")]
 script = ExtResource("1_3ilso")
 cards = NodePath("CameraContainer/P1Cards")
 cards_position_x_curve = SubResource("Curve_bllxl")
+zones = NodePath("Zones")
 metadata/_edit_lock_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
