@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmc0h27uspecs"
-path.s3tc="res://.godot/imported/furniturebits_texture.png-1612b0fa3788ef1c69018da5e5f169c3.s3tc.ctex"
+uid="uid://bclk7auglitca"
+path.s3tc="res://.godot/imported/furniturebits_texture.png-d7f2e8e6830b83a2c121a209b0fafd8d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/texture/furniturebits_texture.png"
-dest_files=["res://.godot/imported/furniturebits_texture.png-1612b0fa3788ef1c69018da5e5f169c3.s3tc.ctex"]
+source_file="res://Assets/gltf-2/furniturebits_texture.png"
+dest_files=["res://.godot/imported/furniturebits_texture.png-d7f2e8e6830b83a2c121a209b0fafd8d.s3tc.ctex"]
 
 [params]
 

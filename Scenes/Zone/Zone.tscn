@@ -1,16 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://dpf3dm4a51lmr"]
+[gd_scene load_steps=8 format=3 uid="uid://dpf3dm4a51lmr"]
 
 [ext_resource type="Script" path="res://Scenes/Zone/Zone.gd" id="1_d8msr"]
+[ext_resource type="Shader" path="res://Scenes/Zone/Zone.gdshader" id="2_fpamg"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_w637f"]
 height = 0.05
 radius = 0.25
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oye2i"]
-transparency = 1
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hhakc"]
+render_priority = 0
+shader = ExtResource("2_fpamg")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_8s5bk"]
-material = SubResource("StandardMaterial3D_oye2i")
+material = SubResource("ShaderMaterial_hhakc")
 top_radius = 0.25
 bottom_radius = 0.25
 height = 0.05
@@ -47,6 +49,7 @@ mesh = SubResource("CylinderMesh_8s5bk")
 
 [node name="OutlineMesh" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0.48, 0, 0, 0, 1, 0, 0, 0)
+visible = false
 mesh = SubResource("ArrayMesh_x5lbv")
 
 [node name="PlayerACards" type="Node3D" parent="."]
