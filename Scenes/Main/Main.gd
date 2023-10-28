@@ -1,10 +1,13 @@
 extends Node3D
 
+@export var camera: Camera3D
 @export var cards: Node3D
 @export var cards_position_x_curve: Curve ## left/right position on table
 @export var zones: Node3D
 @export var start_game_timer: Timer
 @export var hud: Control
+
+const CAMERA_PARRALAX_SENSITIVITY: int = 200
 
 var selected_card_id = null
 
@@ -18,6 +21,33 @@ func _ready():
 	
 	for zone in zones.get_children():
 		zone.connect('select', on_zone_select.bind(zone))
+
+func _input(event):
+	if game_time_sec == game_time_sec_default:
+		return
+	# Slightly rotate camera to get nice "parralax" effect
+	if event is InputEventMouseMotion:
+		var screen_size = get_viewport().get_visible_rect().size
+		
+		var rot_y = 90
+		var rot_x = -37
+		
+		var screen_width = screen_size.x
+		var half_screen_width = screen_width / 2
+		if event.position.x >= half_screen_width:
+			rot_y -= ((event.position.x - half_screen_width) / CAMERA_PARRALAX_SENSITIVITY)
+		else:
+			rot_y += ((half_screen_width - event.position.x) / CAMERA_PARRALAX_SENSITIVITY)
+			
+		var screen_height = screen_size.y
+		var half_screen_height = screen_height / 2
+		if event.position.y >= half_screen_height:
+			rot_x -= ((event.position.y - half_screen_height) / CAMERA_PARRALAX_SENSITIVITY)
+		else:
+			rot_x += ((half_screen_height - event.position.y) / CAMERA_PARRALAX_SENSITIVITY)
+
+		var t = get_tree().create_tween()
+		t.tween_property(camera, "rotation_degrees", Vector3(rot_x, rot_y, camera.rotation_degrees.z), .5)
 
 func start_cards_tween():
 	cards.show()

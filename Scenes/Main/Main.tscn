@@ -102,8 +102,9 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("cards", "zones", "start_game_timer", "hud")]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("camera", "cards", "zones", "start_game_timer", "hud")]
 script = ExtResource("1_3ilso")
+camera = NodePath("CameraContainer/Camera3D")
 cards = NodePath("CameraContainer/P1Cards")
 cards_position_x_curve = SubResource("Curve_bllxl")
 zones = NodePath("Zones")
