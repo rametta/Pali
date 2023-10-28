@@ -2,3 +2,4 @@
 .godot/
 addons
 .gut_editor_config.json
+.DS_Store
