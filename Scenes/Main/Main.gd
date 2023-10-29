@@ -83,15 +83,16 @@ func on_zone_select(zone: Node3D) -> void:
 		var card: Node3D = instance_from_id(selected_card_id)
 		if card:
 			var new_pos = zone.global_position
-			new_pos.y += .1
+			new_pos.y += .05
 			var tween = get_tree().create_tween()
-			tween.parallel().tween_property(card, "global_position", new_pos, .5).set_ease(Tween.EASE_IN_OUT)
-			tween.parallel().tween_property(card, "rotation_degrees:x", -63, .5)
+			tween.parallel().tween_property(card, "global_position", new_pos, .5).set_trans(Tween.TRANS_QUAD)
+			tween.parallel().tween_property(card, "global_rotation_degrees:x", 0, .5)
 			tween.tween_callback(func():
 				var pos = card.global_position
+				var rot = card.global_rotation
 				var parent = card.get_parent()
 				parent.remove_child(card)
-				zone.add_card(Global.PlayerKind.PLAYER_A, card, pos)
+				zone.add_card(Global.PlayerKind.PLAYER_A, card, pos, rot)
 				selected_card_id = null
 				get_tree().call_group("connector", "render_visibility")
 			)

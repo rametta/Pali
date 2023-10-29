@@ -21,19 +21,19 @@ func _on_input_event(_camera, event: InputEvent, _position, _normal, _shape_idx)
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			select.emit()
 
-func add_card(player_kind: Global.PlayerKind, card: Node3D, pos: Vector3) -> bool:
+func add_card(player_kind: Global.PlayerKind, card: Node3D, pos: Vector3, rot: Vector3) -> bool:
 	match player_kind:
 		Global.PlayerKind.PLAYER_A:
 			player_a_cards.add_child(card)
 			card.global_position = pos
-			card.rotation_degrees = Vector3(0, 90, 0)
+			card.global_rotation = rot
 			card.is_selected = false
 			card.render_outline()
 			return true
 		Global.PlayerKind.PLAYER_B:
 			player_b_cards.add_child(card)
 			card.global_position = pos
-			card.rotation_degrees = Vector3(0, 90, 0)
+			card.global_rotation = rot
 			card.is_selected = false
 			card.render_outline()
 			return true

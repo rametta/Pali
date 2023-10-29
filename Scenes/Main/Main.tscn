@@ -415,37 +415,37 @@ zone_1 = NodePath("../../Zones/Zone3")
 zone_2 = NodePath("../../Zones/Zone4")
 
 [node name="Connector5-6" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
-transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.328084, 1.015, 0.725491)
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.400009, 1.015, 0.725491)
 zone_1 = NodePath("../../Zones/Zone5")
 zone_2 = NodePath("../../Zones/Zone6")
 
 [node name="Connector1-5" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, 1.14838)
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0441568, 1.015, 1.14047)
 zone_1 = NodePath("../../Zones/Zone1")
 zone_2 = NodePath("../../Zones/Zone5")
 
 [node name="Connector2-6" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, 0.333959)
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0441568, 1.015, 0.326047)
 zone_1 = NodePath("../../Zones/Zone2")
 zone_2 = NodePath("../../Zones/Zone6")
 
 [node name="Connector3-7" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, -0.463407)
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0441568, 1.015, -0.471319)
 zone_1 = NodePath("../../Zones/Zone3")
 zone_2 = NodePath("../../Zones/Zone7")
 
 [node name="Connector4-8" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, -1.23945)
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0441568, 1.015, -1.24737)
 zone_1 = NodePath("../../Zones/Zone4")
 zone_2 = NodePath("../../Zones/Zone8")
 
 [node name="Connector6-7" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
-transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.328084, 1.015, -0.0836173)
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.400009, 1.015, -0.0836173)
 zone_1 = NodePath("../../Zones/Zone6")
 zone_2 = NodePath("../../Zones/Zone7")
 
 [node name="Connector7-8" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
-transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.328084, 1.015, -0.85761)
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.400009, 1.015, -0.85761)
 zone_1 = NodePath("../../Zones/Zone7")
 zone_2 = NodePath("../../Zones/Zone8")
 
