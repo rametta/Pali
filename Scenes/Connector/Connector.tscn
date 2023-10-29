@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/Connector/Connector.gd" id="1_xc6af"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pljr8"]
-albedo_color = Color(0.301961, 0.87451, 0.615686, 1)
+albedo_color = Color(0.337255, 0.592157, 0.913725, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_76xon"]
 material = SubResource("StandardMaterial3D_pljr8")
