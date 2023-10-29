@@ -86,14 +86,14 @@ func on_zone_select(zone: Node3D) -> void:
 			new_pos.y += .1
 			var tween = get_tree().create_tween()
 			tween.parallel().tween_property(card, "global_position", new_pos, .5).set_ease(Tween.EASE_IN_OUT)
-			tween.parallel().tween_property(card, "rotation_degrees:x", -54, .5)
+			tween.parallel().tween_property(card, "rotation_degrees:x", -63, .5)
 			tween.tween_callback(func():
 				var pos = card.global_position
-				var rot = card.global_rotation
 				var parent = card.get_parent()
 				parent.remove_child(card)
-				zone.add_card(Global.PlayerKind.PLAYER_A, card, pos, rot)
+				zone.add_card(Global.PlayerKind.PLAYER_A, card, pos)
 				selected_card_id = null
+				get_tree().call_group("connector", "render_visibility")
 			)
 			tween.tween_interval(.1)
 			tween.tween_callback(render_hand)
@@ -121,6 +121,3 @@ func _on_start_game_timer_timeout():
 	if game_time_sec <= 0:
 		start_game_timer.stop()
 		print("game over - show winner here")
-
-func render_connectors() -> void:
-	pass
