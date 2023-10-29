@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://i1agm2a8aa6q"]
+[gd_scene load_steps=14 format=3 uid="uid://i1agm2a8aa6q"]
 
 [ext_resource type="Script" path="res://Scenes/Main/Main.gd" id="1_3ilso"]
 [ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/House.tscn" id="1_hn20s"]
 [ext_resource type="PackedScene" uid="uid://bbcm43x08hodm" path="res://Scenes/Card/Card.tscn" id="2_1pxv3"]
 [ext_resource type="PackedScene" uid="uid://c1vg7u6rg0yd6" path="res://Scenes/HUD/HUD.tscn" id="2_gsrr0"]
 [ext_resource type="PackedScene" uid="uid://dpf3dm4a51lmr" path="res://Scenes/Zone/Zone.tscn" id="4_wqepy"]
+[ext_resource type="PackedScene" uid="uid://dcthanl0iwbs2" path="res://Scenes/Connector/Connector.tscn" id="6_mckxy"]
 
 [sub_resource type="Curve" id="Curve_bllxl"]
 min_value = -1.0
@@ -29,7 +30,7 @@ fog_light_color = Color(0.862745, 0.313726, 0.611765, 1)
 
 [sub_resource type="Animation" id="Animation_sf570"]
 resource_name = "GameStart"
-length = 3.0
+length = 5.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -49,8 +50,8 @@ tracks/1/path = NodePath("CameraContainer/Camera3D:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 2.9),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(1.5, 2.9),
+"transitions": PackedFloat32Array(2.2974, 2.2974),
 "update": 0,
 "values": [Vector3(-0.261799, 0.785398, 3.48787e-16), Vector3(-0.645772, 1.5708, 3.48787e-16)]
 }
@@ -67,6 +68,102 @@ tracks/2/keys = {
 "args": [],
 "method": &"start_cards_tween"
 }]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ZonesGroup/Zones/Zone1:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(2.6, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.492, 0.911, 1.135), Vector3(0.492, 1, 1.135)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ZonesGroup/Zones/Zone5:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(2, 4.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.324, 0.921, 1.135), Vector3(-0.324, 1, 1.135)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ZonesGroup/Zones/Zone2:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(3.1, 3.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.488, 0.947, 0.316), Vector3(0.488, 1, 0.316)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("ZonesGroup/Zones/Zone3:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(2.7, 4.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.492, 0.93, -0.469), Vector3(0.492, 1, -0.469)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("ZonesGroup/Zones/Zone4:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(3.3, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.485, 0.88, -1.237), Vector3(0.485, 1, -1.237)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("ZonesGroup/Zones/Zone6:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(2.3, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.328, 0.86, 0.316), Vector3(-0.328, 1, 0.316)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("ZonesGroup/Zones/Zone7:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(3.3, 4.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.324, 0.91, -0.469), Vector3(-0.324, 1, -0.469)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("ZonesGroup/Zones/Zone8:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(2.9, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.331, 0.91, -1.237), Vector3(-0.331, 1, -1.237)]
 }
 
 [sub_resource type="Animation" id="Animation_fpl2e"]
@@ -95,6 +192,102 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(8.153, 4.805, 7.958)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ZonesGroup/Zones/Zone1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.492495, 1.00126, 1.13481)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ZonesGroup/Zones/Zone5:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.323548, 1.00126, 1.13481)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ZonesGroup/Zones/Zone2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.488495, 1.00685, 0.316305)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ZonesGroup/Zones/Zone3:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.492, 1, -0.469)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("ZonesGroup/Zones/Zone4:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.485, 1, -1.237)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("ZonesGroup/Zones/Zone6:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.328, 1, 0.316)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("ZonesGroup/Zones/Zone7:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.324, 1, -0.469)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("ZonesGroup/Zones/Zone8:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.331, 1, -1.237)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gkla7"]
 _data = {
@@ -102,12 +295,13 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("camera", "cards", "zones", "start_game_timer", "hud")]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("camera", "cards", "zones", "connectors", "start_game_timer", "hud")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
 cards = NodePath("CameraContainer/P1Cards")
 cards_position_x_curve = SubResource("Curve_bllxl")
-zones = NodePath("Zones")
+zones = NodePath("ZonesGroup/Zones")
+connectors = NodePath("ZonesGroup/Connectors")
 start_game_timer = NodePath("StartGameTimer")
 hud = NodePath("HUD")
 metadata/_edit_lock_ = true
@@ -164,16 +358,95 @@ libraries = {
 "": SubResource("AnimationLibrary_gkla7")
 }
 
-[node name="Zones" type="Node3D" parent="."]
+[node name="ZonesGroup" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0243728, 0)
 
-[node name="ZoneA" parent="Zones" instance=ExtResource("4_wqepy")]
-transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.00400001, 1.04872, 1.34)
+[node name="Zones" type="Node3D" parent="ZonesGroup"]
 
-[node name="ZoneB" parent="Zones" instance=ExtResource("4_wqepy")]
-transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 2.08165e-12, 1.05431, 2.08165e-12)
+[node name="Zone1" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.492495, 1.00126, 1.13481)
+connectors = [NodePath("../../Connectors/Connector1-2"), NodePath("../../Connectors/Connector1-5")]
 
-[node name="ZoneC" parent="Zones" instance=ExtResource("4_wqepy")]
-transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.004, 1.04507, -1.34)
+[node name="Zone2" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.488495, 1.00685, 0.316305)
+connectors = [NodePath("../../Connectors/Connector1-2"), NodePath("../../Connectors/Connector2-3"), NodePath("../../Connectors/Connector2-6")]
+
+[node name="Zone3" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.492, 1, -0.469)
+connectors = [NodePath("../../Connectors/Connector2-3"), NodePath("../../Connectors/Connector3-4"), NodePath("../../Connectors/Connector3-7")]
+
+[node name="Zone4" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 0.485, 1, -1.237)
+connectors = [NodePath("../../Connectors/Connector3-4"), NodePath("../../Connectors/Connector4-8")]
+
+[node name="Zone5" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, -0.323548, 1.00126, 1.13481)
+connectors = [NodePath("../../Connectors/Connector5-6"), NodePath("../../Connectors/Connector1-5")]
+
+[node name="Zone6" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, -0.328, 1, 0.316)
+connectors = [NodePath("../../Connectors/Connector5-6"), NodePath("../../Connectors/Connector2-6"), NodePath("../../Connectors/Connector6-7")]
+
+[node name="Zone7" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, -0.324, 1, -0.469)
+connectors = [NodePath("../../Connectors/Connector3-7"), NodePath("../../Connectors/Connector6-7"), NodePath("../../Connectors/Connector7-8")]
+
+[node name="Zone8" parent="ZonesGroup/Zones" node_paths=PackedStringArray("connectors") instance=ExtResource("4_wqepy")]
+transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, -0.331, 1, -1.237)
+connectors = [NodePath("../../Connectors/Connector4-8"), NodePath("../../Connectors/Connector7-8")]
+
+[node name="Connectors" type="Node3D" parent="ZonesGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0243728, 0)
+
+[node name="Connector1-2" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.5, 1.015, 0.725491)
+zone_1 = NodePath("../../Zones/Zone1")
+zone_2 = NodePath("../../Zones/Zone2")
+
+[node name="Connector2-3" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.5, 1.015, -0.0836173)
+zone_1 = NodePath("../../Zones/Zone2")
+zone_2 = NodePath("../../Zones/Zone3")
+
+[node name="Connector3-4" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.5, 1.015, -0.85761)
+zone_1 = NodePath("../../Zones/Zone3")
+zone_2 = NodePath("../../Zones/Zone4")
+
+[node name="Connector5-6" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.328084, 1.015, 0.725491)
+zone_1 = NodePath("../../Zones/Zone5")
+zone_2 = NodePath("../../Zones/Zone6")
+
+[node name="Connector1-5" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, 1.14838)
+zone_1 = NodePath("../../Zones/Zone1")
+zone_2 = NodePath("../../Zones/Zone5")
+
+[node name="Connector2-6" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, 0.333959)
+zone_1 = NodePath("../../Zones/Zone2")
+zone_2 = NodePath("../../Zones/Zone6")
+
+[node name="Connector3-7" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, -0.463407)
+zone_1 = NodePath("../../Zones/Zone3")
+zone_2 = NodePath("../../Zones/Zone7")
+
+[node name="Connector4-8" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, -1.5246e-23, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.0856979, 1.015, -1.23945)
+zone_1 = NodePath("../../Zones/Zone4")
+zone_2 = NodePath("../../Zones/Zone8")
+
+[node name="Connector6-7" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.328084, 1.015, -0.0836173)
+zone_1 = NodePath("../../Zones/Zone6")
+zone_2 = NodePath("../../Zones/Zone7")
+
+[node name="Connector7-8" parent="ZonesGroup/Connectors" node_paths=PackedStringArray("zone_1", "zone_2") instance=ExtResource("6_mckxy")]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.328084, 1.015, -0.85761)
+zone_1 = NodePath("../../Zones/Zone7")
+zone_2 = NodePath("../../Zones/Zone8")
 
 [node name="StartGameTimer" type="Timer" parent="."]
 

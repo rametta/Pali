@@ -5,6 +5,7 @@ signal select()
 @export var outline: MeshInstance3D
 @export var player_a_cards: Node3D
 @export var player_b_cards: Node3D
+@export var connectors: Array[Node3D]
 
 func _ready():
 	outline.hide()
@@ -33,6 +34,7 @@ func add_card(player_kind: Global.PlayerKind, card: Node3D, pos: Vector3, rot: V
 			player_b_cards.add_child(card)
 			card.global_position = pos
 			card.rotation = rot
+			card.is_selected = false
 			card.render_outline()
 			return true
 		_:

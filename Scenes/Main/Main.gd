@@ -4,10 +4,11 @@ extends Node3D
 @export var cards: Node3D
 @export var cards_position_x_curve: Curve ## left/right position on table
 @export var zones: Node3D
+@export var connectors: Node3D
 @export var start_game_timer: Timer
 @export var hud: Control
 
-const CAMERA_PARRALAX_SENSITIVITY: int = 200
+const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
 
 var selected_card_id = null
 
@@ -21,6 +22,9 @@ func _ready():
 	
 	for zone in zones.get_children():
 		zone.connect('select', on_zone_select.bind(zone))
+		
+	for connector in connectors.get_children():
+		connector.hide()
 
 func _input(event):
 	if game_time_sec == game_time_sec_default:
@@ -117,3 +121,6 @@ func _on_start_game_timer_timeout():
 	if game_time_sec <= 0:
 		start_game_timer.stop()
 		print("game over - show winner here")
+
+func render_connectors() -> void:
+	pass
