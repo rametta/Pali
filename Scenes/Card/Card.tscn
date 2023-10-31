@@ -1,6 +1,49 @@
-[gd_scene load_steps=11 format=3 uid="uid://bbcm43x08hodm"]
+[gd_scene load_steps=14 format=3 uid="uid://chdu16td3jyth"]
 
-[ext_resource type="Script" path="res://Scenes/Card/Card.gd" id="1_8ra73"]
+[ext_resource type="Texture2D" uid="uid://8rpy7hb123v5" path="res://CardAssets/3d-artist.png" id="2_k3r7q"]
+
+[sub_resource type="GDScript" id="GDScript_dw5bt"]
+script/source = "extends Area3D
+
+signal select()
+
+@onready var outline: MeshInstance3D = %OutlineMesh
+@onready var text_mesh: MeshInstance3D = %TextMesh
+
+@export var cost: int
+@export var attack: int
+@export var shield: int
+
+var is_hovering = false
+var is_selected = false
+
+func _ready():
+	text_mesh.mesh.text = \"Cost: %s\\nAttack: %s\\nShield: %s\" % [cost, attack, shield]
+	render_outline()
+
+func _on_mouse_entered():
+	is_hovering = true
+	render_outline()
+
+func _on_mouse_exited():
+	is_hovering = false
+	render_outline()
+
+func _on_input_event(_camera, event: InputEvent, _position, _normal, _shape_idx):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			select.emit()
+			
+func render_outline() -> void:
+	if is_hovering or is_selected:
+		outline.show()
+	else:
+		outline.hide()
+
+func set_and_render_outline(selected_id: int) -> void:
+	is_selected = selected_id == get_instance_id()
+	render_outline()
+"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12f3k"]
 albedo_color = Color(0.984314, 0.831373, 0.909804, 1)
@@ -68,8 +111,14 @@ depth = 0.01
 [sub_resource type="BoxShape3D" id="BoxShape3D_thpbx"]
 size = Vector3(0.441261, 0.0429315, 0.553311)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kiaxh"]
+albedo_texture = ExtResource("2_k3r7q")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_e7imk"]
+size = Vector2(0.39, 0.51)
+
 [node name="Card" type="Area3D" groups=["player_a_cards"]]
-script = ExtResource("1_8ra73")
+script = SubResource("GDScript_dw5bt")
 
 [node name="CardMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
@@ -79,16 +128,24 @@ skeleton = NodePath("")
 
 [node name="OutlineMesh" type="MeshInstance3D" parent="CardMesh"]
 unique_name_in_owner = true
+visible = false
 mesh = SubResource("ArrayMesh_u7wnh")
 
 [node name="TextMesh" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(0.8, 0, 0, 0, -0.00326722, 0.799993, 0, -0.799993, -0.00326722, 0, 0.0100787, 0)
+visible = false
 mesh = SubResource("TextMesh_is3h3")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_thpbx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00942644, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_kiaxh")
+mesh = SubResource("PlaneMesh_e7imk")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

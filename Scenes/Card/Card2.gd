@@ -2,8 +2,11 @@ extends Area3D
 
 signal select()
 
-@onready var outline: MeshInstance3D = %OutlineMesh
-@onready var text_mesh: MeshInstance3D = %TextMesh
+@export var plane_mesh = MeshInstance3D
+@export var outline_mesh: MeshInstance3D
+@export var card_mesh: MeshInstance3D
+@export var card_color: Color
+@export var card_texture: Texture2D
 
 @export var cost: int
 @export var attack: int
@@ -13,7 +16,9 @@ var is_hovering = false
 var is_selected = false
 
 func _ready():
-	text_mesh.mesh.text = "Cost: %s\nAttack: %s\nShield: %s" % [cost, attack, shield]
+	card_mesh.material_override.albedo_color = card_color
+	plane_mesh.material_override.albedo_texture = card_texture
+#	text_mesh.mesh.text = "Cost: %s\nAttack: %s\nShield: %s" % [cost, attack, shield]
 	render_outline()
 
 func _on_mouse_entered():
@@ -31,9 +36,9 @@ func _on_input_event(_camera, event: InputEvent, _position, _normal, _shape_idx)
 			
 func render_outline() -> void:
 	if is_hovering or is_selected:
-		outline.show()
+		outline_mesh.show()
 	else:
-		outline.hide()
+		outline_mesh.hide()
 
 func set_and_render_outline(selected_id: int) -> void:
 	is_selected = selected_id == get_instance_id()
