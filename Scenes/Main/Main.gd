@@ -3,10 +3,11 @@ extends Node3D
 @export var camera: Camera3D
 @export var cards: Node3D
 @export var cards_position_x_curve: Curve ## left/right position on table
-@export var zones: Node3D
-@export var connectors: Node3D
+#@export var zones: Node3D
+#@export var connectors: Node3D
 @export var start_game_timer: Timer
 @export var hud: Control
+@export var table_cards: Node3D
 
 const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
 
@@ -16,15 +17,16 @@ const game_time_sec_default = 3 * 60
 var game_time_sec = game_time_sec_default
 
 func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	hud.hide()
 	cards.hide()
 	hud.update_game_time(game_time_sec)
 	
-	for zone in zones.get_children():
-		zone.connect('select', on_zone_select.bind(zone))
-		
-	for connector in connectors.get_children():
-		connector.hide()
+#	for zone in zones.get_children():
+#		zone.connect('select', on_zone_select.bind(zone))
+#
+#	for connector in connectors.get_children():
+#		connector.hide()
 
 func _input(event):
 	if game_time_sec == game_time_sec_default:
@@ -60,7 +62,7 @@ func start_cards_tween():
 		var pos_x = cards_position_x_curve.sample(offset)
 		
 		var card: Node3D = cards.get_child(card_id)
-		card.position = Vector3(0, 0, 0)
+		card.position = Vector3(0, card_id * .01, card_id * .01)
 		card.rotation_degrees = Vector3(0, 0, 180)
 		
 		card.connect("select", on_card_select.bind(card))
@@ -72,32 +74,34 @@ func start_cards_tween():
 			func():
 				start_game_timer.start()
 				hud.show()
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		)
+		tween.parallel().tween_property(card, "position:y", 0, .25)
+		tween.parallel().tween_property(card, "position:z", 0, .25)
 
 func on_card_select(card: Node3D) -> void:
 	selected_card_id = card.get_instance_id()
 	get_tree().call_group("player_a_cards", "set_and_render_outline", selected_card_id)
 
-func on_zone_select(zone: Node3D) -> void:
-	if selected_card_id:
-		var card: Node3D = instance_from_id(selected_card_id)
-		if card:
-			var new_pos = zone.global_position
-			new_pos.y += .05
-			var tween = get_tree().create_tween()
-			tween.parallel().tween_property(card, "global_position", new_pos, .5).set_trans(Tween.TRANS_QUAD)
-			tween.parallel().tween_property(card, "global_rotation_degrees:x", 0, .5)
-			tween.tween_callback(func():
-				var pos = card.global_position
-				var rot = card.global_rotation
-				var parent = card.get_parent()
-				parent.remove_child(card)
-				zone.add_card(Global.PlayerKind.PLAYER_A, card, pos, rot)
-				selected_card_id = null
-				get_tree().call_group("connector", "render_visibility")
-			)
-			tween.tween_interval(.1)
-			tween.tween_callback(render_hand)
+func on_table_select(table_pos: Vector3) -> void:
+	var card: Node3D = instance_from_id(selected_card_id)
+	if card:
+		var tween = get_tree().create_tween()
+		tween.parallel().tween_property(card, "global_rotation:x", 0, .5)
+		tween.parallel().tween_property(card, "global_position", table_pos, .5).set_trans(Tween.TRANS_QUAD)
+		tween.tween_callback(func():
+			var pos = card.global_position
+			var rot = card.global_rotation
+			var parent = card.get_parent()
+			parent.remove_child(card)
+			table_cards.add_child(card)
+			card.global_position = pos
+			card.global_rotation = rot
+			card.position.y = .06
+			selected_card_id = null
+		)
+		tween.tween_interval(.1)
+		tween.tween_callback(render_hand)
 
 func render_hand() -> void:
 	var count = cards.get_child_count()
@@ -110,7 +114,7 @@ func render_hand() -> void:
 			offset = float(card_id) / float(dividend)
 		
 		var pos_x = cards_position_x_curve.sample(offset)
-		var card: Node3D = cards.get_child(card_id)
+		var card = cards.get_child(card_id)
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "position:x", pos_x, .35)
 
@@ -122,3 +126,10 @@ func _on_start_game_timer_timeout():
 	if game_time_sec <= 0:
 		start_game_timer.stop()
 		print("game over - show winner here")
+
+
+func _on_table_zone_input_event(_camera: Node, event: InputEvent, pos: Vector3, _normal: Vector3, _shape_idx: int):
+	if event is InputEventMouseButton and selected_card_id:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			on_table_select(pos)
+

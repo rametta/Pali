@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ncwe0ffvcl2m"]
+[gd_scene load_steps=23 format=3 uid="uid://ncwe0ffvcl2m"]
 
 [ext_resource type="Script" path="res://Scenes/Card/Card2.gd" id="1_wcb3s"]
 [ext_resource type="Texture2D" uid="uid://8rpy7hb123v5" path="res://CardAssets/3d-artist.png" id="2_s2gsb"]
@@ -42,6 +42,9 @@ shadow_mesh = SubResource("ArrayMesh_811a1")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1dg2g"]
 resource_local_to_scene = true
 albedo_texture = ExtResource("2_s2gsb")
+metallic = 0.7
+metallic_specular = 0.63
+roughness = 0.21
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o4o65"]
 
@@ -72,6 +75,10 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_lxkhs")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_35tvb"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.623529)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d8djy"]
 albedo_color = Color(0.156863, 0.156863, 0.156863, 1)
@@ -111,12 +118,49 @@ shadow_mesh = SubResource("ArrayMesh_bvbtd")
 [sub_resource type="BoxShape3D" id="BoxShape3D_t1tvi"]
 size = Vector3(0.499521, 0.0233588, 0.670928)
 
-[node name="Card" type="Area3D" node_paths=PackedStringArray("plane_mesh", "outline_mesh", "card_mesh") groups=["player_a_cards"]]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ihb5a"]
+resource_local_to_scene = true
+albedo_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_q7pu6"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_ihb5a")
+text = "9"
+font_size = 18
+horizontal_alignment = 0
+depth = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1mahg"]
+resource_local_to_scene = true
+albedo_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
+emission = Color(0.87451, 0.384314, 0.521569, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_p4m4x"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_1mahg")
+text = "Guy Was Here"
+font_size = 6
+depth = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0v63p"]
+albedo_color = Color(0.137255, 0.137255, 0.137255, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_dpesr"]
+material = SubResource("StandardMaterial3D_0v63p")
+text = "Lorem Ipsum Dolalr Sit 
+Ammet Helo my 
+name is Jason"
+font_size = 3
+depth = 0.005
+
+[node name="Card" type="Area3D" node_paths=PackedStringArray("plane_mesh", "outline_mesh", "card_mesh", "attack_mesh", "title_mesh") groups=["player_a_cards"]]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 script = ExtResource("1_wcb3s")
 plane_mesh = NodePath("Plane")
 outline_mesh = NodePath("Outline")
 card_mesh = NodePath("Card")
+attack_mesh = NodePath("AttackMesh")
+title_mesh = NodePath("TitleMesh")
 card_color = Color(0.905882, 0.529412, 0.854902, 1)
 card_texture = ExtResource("2_s2gsb")
 
@@ -131,6 +175,12 @@ material_override = SubResource("StandardMaterial3D_1dg2g")
 mesh = SubResource("ArrayMesh_nla8d")
 skeleton = NodePath("")
 
+[node name="TextBackground" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.879, 0, 0, 0, 1, 0, 0, 0, 0.571, 2.08165e-12, 0.0110013, 0.15)
+material_override = SubResource("StandardMaterial3D_35tvb")
+mesh = SubResource("ArrayMesh_nla8d")
+skeleton = NodePath("")
+
 [node name="Outline" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.01795, 0, 0, 0, 0.719887, 0, 0, 0, 1.01795, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_d8djy")
@@ -139,6 +189,20 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_t1tvi")
+
+[node name="AttackMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.126188, 0.00841221, -0.231281)
+mesh = SubResource("TextMesh_q7pu6")
+
+[node name="TitleMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.00428721, 0.0108532, 0.0610083)
+mesh = SubResource("TextMesh_p4m4x")
+skeleton = NodePath("")
+
+[node name="DescriptionMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.00428721, 0.0108532, 0.170698)
+mesh = SubResource("TextMesh_dpesr")
+skeleton = NodePath("")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

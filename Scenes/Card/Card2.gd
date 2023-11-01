@@ -5,12 +5,13 @@ signal select()
 @export var plane_mesh = MeshInstance3D
 @export var outline_mesh: MeshInstance3D
 @export var card_mesh: MeshInstance3D
+@export var attack_mesh: MeshInstance3D
+@export var title_mesh: MeshInstance3D
 @export var card_color: Color
 @export var card_texture: Texture2D
 
-@export var cost: int
 @export var attack: int
-@export var shield: int
+@export var title: String
 
 var is_hovering = false
 var is_selected = false
@@ -18,7 +19,10 @@ var is_selected = false
 func _ready():
 	card_mesh.material_override.albedo_color = card_color
 	plane_mesh.material_override.albedo_texture = card_texture
-#	text_mesh.mesh.text = "Cost: %s\nAttack: %s\nShield: %s" % [cost, attack, shield]
+	attack_mesh.mesh.text = str(attack)
+	attack_mesh.mesh.material.albedo_color = card_color
+	title_mesh.mesh.text = title
+#	title_mesh.mesh.material.albedo_color = card_color
 	render_outline()
 
 func _on_mouse_entered():
