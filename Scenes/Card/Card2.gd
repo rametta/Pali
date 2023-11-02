@@ -14,7 +14,6 @@ signal select()
 @export var title: String
 
 var is_hovering = false
-var is_selected = false
 
 func _ready():
 	card_mesh.material_override.albedo_color = card_color
@@ -22,7 +21,6 @@ func _ready():
 	attack_mesh.mesh.text = str(attack)
 	attack_mesh.mesh.material.albedo_color = card_color
 	title_mesh.mesh.text = title
-#	title_mesh.mesh.material.albedo_color = card_color
 	render_outline()
 
 func _on_mouse_entered():
@@ -39,11 +37,7 @@ func _on_input_event(_camera, event: InputEvent, _position, _normal, _shape_idx)
 			select.emit()
 			
 func render_outline() -> void:
-	if is_hovering or is_selected:
+	if is_hovering or Global.selected_card_id == get_instance_id():
 		outline_mesh.show()
 	else:
 		outline_mesh.hide()
-
-func set_and_render_outline(selected_id: int) -> void:
-	is_selected = selected_id == get_instance_id()
-	render_outline()

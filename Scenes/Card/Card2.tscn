@@ -5,7 +5,7 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_urpgj"]
 resource_local_to_scene = true
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(0.109804, 0.588235, 0.745098, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dw5gm"]
 
@@ -116,7 +116,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_bvbtd")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t1tvi"]
-size = Vector3(0.499521, 0.0233588, 0.670928)
+size = Vector3(0.42, 0.023, 0.551)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ihb5a"]
 resource_local_to_scene = true
@@ -139,7 +139,7 @@ emission = Color(0.87451, 0.384314, 0.521569, 1)
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_1mahg")
 text = "Guy Was Here"
-font_size = 6
+font_size = 5
 depth = 0.01
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0v63p"]
@@ -153,8 +153,7 @@ name is Jason"
 font_size = 3
 depth = 0.005
 
-[node name="Card" type="Area3D" node_paths=PackedStringArray("plane_mesh", "outline_mesh", "card_mesh", "attack_mesh", "title_mesh") groups=["player_a_cards"]]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+[node name="Card" type="Area3D" node_paths=PackedStringArray("plane_mesh", "outline_mesh", "card_mesh", "attack_mesh", "title_mesh") groups=["card", "player_a_cards"]]
 script = ExtResource("1_wcb3s")
 plane_mesh = NodePath("Plane")
 outline_mesh = NodePath("Outline")
@@ -165,24 +164,25 @@ card_color = Color(0.905882, 0.529412, 0.854902, 1)
 card_texture = ExtResource("2_s2gsb")
 
 [node name="Card" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_urpgj")
 mesh = SubResource("ArrayMesh_dls46")
 skeleton = NodePath("")
 
 [node name="Plane" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.97921, 0, 0, 0, 1, 0, 0, 0, 1.29075, 0, 0.00973198, 0)
+transform = Transform3D(0.774, 0, 0, 0, 0.791, 0, 0, 0, 1.021, 0, 0.00973198, 0)
 material_override = SubResource("StandardMaterial3D_1dg2g")
 mesh = SubResource("ArrayMesh_nla8d")
 skeleton = NodePath("")
 
 [node name="TextBackground" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.879, 0, 0, 0, 1, 0, 0, 0, 0.571, 2.08165e-12, 0.0110013, 0.15)
+transform = Transform3D(0.729, 0, 0, 0, 0.83, 0, 0, 0, 0.474, 2.08165e-12, 0.011, 0.12)
 material_override = SubResource("StandardMaterial3D_35tvb")
 mesh = SubResource("ArrayMesh_nla8d")
 skeleton = NodePath("")
 
 [node name="Outline" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.01795, 0, 0, 0, 0.719887, 0, 0, 0, 1.01795, 0, 0, 0)
+transform = Transform3D(0.828, 0, 0, 0, 0.586, 0, 0, 0, 0.828, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_d8djy")
 mesh = SubResource("ArrayMesh_io5ow")
 skeleton = NodePath("")
@@ -191,7 +191,7 @@ skeleton = NodePath("")
 shape = SubResource("BoxShape3D_t1tvi")
 
 [node name="AttackMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.126188, 0.00841221, -0.231281)
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.0677298, 0.00841221, -0.174227)
 mesh = SubResource("TextMesh_q7pu6")
 
 [node name="TitleMesh" type="MeshInstance3D" parent="."]
@@ -200,7 +200,7 @@ mesh = SubResource("TextMesh_p4m4x")
 skeleton = NodePath("")
 
 [node name="DescriptionMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.00428721, 0.0108532, 0.170698)
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.00428721, 0.0108532, 0.156671)
 mesh = SubResource("TextMesh_dpesr")
 skeleton = NodePath("")
 
