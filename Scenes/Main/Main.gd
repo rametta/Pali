@@ -85,27 +85,28 @@ func on_table_select(table_pos: Vector3) -> void:
 	if not card:
 		return
 		
+	var is_already_on_table = card.is_in_group("card_on_table")
+		
 	var tween = get_tree().create_tween()
 	tween.parallel().tween_property(card, "global_rotation:x", 0, .5)
 	tween.parallel().tween_property(card, "global_position", new_table_pos, .5).set_trans(Tween.TRANS_QUAD)
 	tween.tween_callback(func():
-		var pos = card.global_position
-		var rot = card.global_rotation
-		var parent = card.get_parent()
-		parent.remove_child(card)
-		table_cards.add_child(card)
-		card.global_position = pos
-		card.global_rotation = rot
 		card.is_hovering = false
 		Global.selected_card_id = null
 		get_tree().call_group("card", "render_outline")
-		var should_add_card_to_hand = not card.is_in_group("card_on_table")
-		if should_add_card_to_hand:
-			add_card_to_hand()
-		else:
+		
+		if is_already_on_table:
 			render_hand()
-			
-		card.add_to_group("card_on_table")
+		else:
+			var pos = card.global_position
+			var rot = card.global_rotation
+			var parent = card.get_parent()
+			parent.remove_child(card)
+			table_cards.add_child(card)
+			card.global_position = pos
+			card.global_rotation = rot
+			card.add_to_group("card_on_table")
+			add_card_to_hand()
 	)
 
 func add_card_to_hand() -> void:
