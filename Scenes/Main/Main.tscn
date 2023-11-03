@@ -1,13 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://i1agm2a8aa6q"]
+[gd_scene load_steps=12 format=3 uid="uid://i1agm2a8aa6q"]
 
 [ext_resource type="Script" path="res://Scenes/Main/Main.gd" id="1_3ilso"]
 [ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/House.tscn" id="1_hn20s"]
 [ext_resource type="PackedScene" uid="uid://c1vg7u6rg0yd6" path="res://Scenes/HUD/HUD.tscn" id="2_gsrr0"]
-[ext_resource type="PackedScene" uid="uid://ncwe0ffvcl2m" path="res://Scenes/Card/Card2.tscn" id="4_hn3aq"]
-[ext_resource type="Texture2D" uid="uid://bmuhwkyg5ffsv" path="res://CardAssets/actress.png" id="5_6u1it"]
-[ext_resource type="Texture2D" uid="uid://br6d7g7dpmbsd" path="res://CardAssets/aerospace-engineer.png" id="6_wd8o1"]
-[ext_resource type="Texture2D" uid="uid://do1mexgv4kb0b" path="res://CardAssets/arborist.png" id="7_cry50"]
-[ext_resource type="Texture2D" uid="uid://bh6375daxgbrn" path="res://CardAssets/bee-keeper.png" id="8_nskdg"]
 
 [sub_resource type="Curve" id="Curve_bllxl"]
 min_value = -1.0
@@ -108,10 +103,11 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("camera", "hand", "start_game_timer", "hud", "table_cards", "deck")]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("camera", "my_hand", "opponent_hand", "start_game_timer", "hud", "table_cards", "deck")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
-hand = NodePath("CameraContainer/Hand")
+my_hand = NodePath("CameraContainer/MyHand")
+opponent_hand = NodePath("CameraContainer/OpponentHand")
 cards_position_x_curve = SubResource("Curve_bllxl")
 start_game_timer = NodePath("StartGameTimer")
 hud = NodePath("HUD")
@@ -139,34 +135,7 @@ shape = SubResource("BoxShape3D_oax4d")
 [node name="Cards" type="Node3D" parent="TableZone"]
 
 [node name="Deck" type="Node3D" parent="."]
-transform = Transform3D(4.37114e-08, 3.47258e-15, 1, 8.74228e-08, -1, -3.48787e-16, 1, 8.74228e-08, -4.37114e-08, 0, 1.00908, -1.51985)
-
-[node name="Card" parent="Deck" instance=ExtResource("4_hn3aq")]
-transform = Transform3D(1, 0, 0, 0, 1, -1.57853e-24, 0, -1.57853e-24, 1, 0, -0.0815151, 0)
-title = "Guy"
-
-[node name="Card2" parent="Deck" instance=ExtResource("4_hn3aq")]
-transform = Transform3D(1, 0, 0, 0, 1, -1.57853e-24, 0, -1.57853e-24, 1, 0, -0.0690988, 0)
-title = "Guy"
-
-[node name="Card3" parent="Deck" instance=ExtResource("4_hn3aq")]
-transform = Transform3D(1, 0, 0, 0, 1, -1.57853e-24, 0, -1.57853e-24, 1, 0, -0.0550631, 0)
-title = "Guy"
-
-[node name="Card4" parent="Deck" instance=ExtResource("4_hn3aq")]
-transform = Transform3D(1, 0, 0, 0, 1, -1.57853e-24, 0, -1.57853e-24, 1, 0, -0.0421071, 0)
-title = "Guy"
-
-[node name="Card5" parent="Deck" instance=ExtResource("4_hn3aq")]
-transform = Transform3D(1, 0, 0, 0, 1, -1.57853e-24, 0, -1.57853e-24, 1, 0, -0.0275316, 0)
-title = "Guy"
-
-[node name="Card6" parent="Deck" instance=ExtResource("4_hn3aq")]
-transform = Transform3D(1, 0, 0, 0, 1, -1.57853e-24, 0, -1.57853e-24, 1, 0, -0.0145756, 0)
-title = "Guy"
-
-[node name="Card7" parent="Deck" instance=ExtResource("4_hn3aq")]
-title = "Guy"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, -1.453)
 
 [node name="CameraContainer" type="Node3D" parent="."]
 transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 2.08165e-12, 2.864, 2.08165e-12)
@@ -174,39 +143,13 @@ transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 2.08165
 [node name="Camera3D" type="Camera3D" parent="CameraContainer"]
 transform = Transform3D(0.707107, -0.151841, 0.690611, 3.40651e-16, 0.976672, 0.214735, -0.707107, -0.151841, 0.690612, 8.153, 4.805, 7.958)
 
-[node name="Hand" type="Node3D" parent="CameraContainer"]
+[node name="MyHand" type="Node3D" parent="CameraContainer"]
 transform = Transform3D(-4.37114e-08, 0.898794, 0.438371, 1.52898e-16, 0.438371, -0.898794, -1, -3.92875e-08, -1.91618e-08, 1.23, -1.79, 2.08165e-12)
 metadata/_edit_lock_ = true
 
-[node name="Card" parent="CameraContainer/Hand" instance=ExtResource("4_hn3aq")]
-transform = Transform3D(1, -5.85407e-16, -2.85522e-16, 5.85407e-16, 1, 8.15446e-09, 2.85522e-16, -8.15446e-09, 1, 0, 0, 0)
-card_color = Color(0.556863, 0.8, 0.976471, 1)
-attack = 9
-title = "3D Artist"
-
-[node name="Card2" parent="CameraContainer/Hand" instance=ExtResource("4_hn3aq")]
-card_color = Color(0.631373, 0.678431, 0.705882, 1)
-card_texture = ExtResource("5_6u1it")
-attack = 5
-title = "Actress"
-
-[node name="Card3" parent="CameraContainer/Hand" instance=ExtResource("4_hn3aq")]
-card_color = Color(0.454902, 0.823529, 0.968627, 1)
-card_texture = ExtResource("6_wd8o1")
-attack = 6
-title = "Astronaut"
-
-[node name="Card4" parent="CameraContainer/Hand" instance=ExtResource("4_hn3aq")]
-card_color = Color(0.501961, 0.866667, 0.501961, 1)
-card_texture = ExtResource("7_cry50")
-attack = 3
-title = "Arborist"
-
-[node name="Card5" parent="CameraContainer/Hand" instance=ExtResource("4_hn3aq")]
-card_color = Color(0.8, 0.803922, 0.258824, 1)
-card_texture = ExtResource("8_nskdg")
-attack = 7
-title = "Bee Keeper"
+[node name="OpponentHand" type="Node3D" parent="CameraContainer"]
+transform = Transform3D(-4.37114e-08, -0.898794, -0.438371, 1.52898e-16, 0.438371, -0.898794, 1, -3.92875e-08, -1.91618e-08, -1.31, -1.79, 2.08165e-12)
+metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "GameStart"
