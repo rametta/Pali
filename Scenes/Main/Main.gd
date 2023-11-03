@@ -52,12 +52,12 @@ func _input(event):
 		t.tween_property(camera, "rotation_degrees", Vector3(rot_x, rot_y, camera.rotation_degrees.z), .5)
 
 func start_cards_tween() -> void:
-	deck.shuffle_and_deal()
+	deck.deck_init()
 	for card in deck.get_children():
 		card.connect("select", on_card_select.bind(card))
 	
 	await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_1_HAND)
-	await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_1_HAND)
+	await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_2_HAND)
 	
 	hud.show()
 	start_game_timer.start()
@@ -101,6 +101,7 @@ func on_table_select(table_pos: Vector3) -> void:
 	if not card:
 		return
 		
+	var old_zone = card.zone
 	is_table_select_animating = true
 	var is_already_on_table = card.zone == Global.CARD_ZONE.TABLE
 	if not is_already_on_table:
@@ -119,16 +120,20 @@ func on_table_select(table_pos: Vector3) -> void:
 	get_tree().call_group("card", "render_outline")
 
 	var tween = get_tree().create_tween()
-	tween.tween_property(card, "global_rotation:x", 0, 2)
-	tween.parallel().tween_property(card, "global_position", new_table_pos, 2).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(card, "global_rotation:x", 0, .5)
+	tween.parallel().tween_property(card, "global_position", new_table_pos, .5).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
 	is_table_select_animating = false
 
 	if not is_already_on_table:
-		add_card_to_hand() # TODO: which hand?
-		render_hand(my_hand) # TODO: which hand?
+		if old_zone == Global.CARD_ZONE.PLAYER_1_HAND:
+			add_card_to_hand(my_hand)
+			render_hand(my_hand)
+		elif old_zone == Global.CARD_ZONE.PLAYER_2_HAND:
+			add_card_to_hand(opponent_hand)
+			render_hand(opponent_hand)
 
-func add_card_to_hand() -> void:
+func add_card_to_hand(hand: Node3D) -> void:
 	if deck.get_child_count() == 0:
 		return
 		
@@ -136,7 +141,7 @@ func add_card_to_hand() -> void:
 	var old_pos = card.global_position
 	var old_rot = card.global_rotation
 	deck.remove_child(card)
-	my_hand.add_child(card)
+	hand.add_child(card)
 	card.global_position = old_pos
 	card.global_rotation = old_rot
 
@@ -159,8 +164,8 @@ func render_hand(hand: Node3D) -> void:
 		var rot = Vector3.ZERO
 		var awaitable = func():
 			var tween = get_tree().create_tween()
-			tween.tween_property(card, "position", pos, 3)
-			tween.parallel().tween_property(card, "rotation", rot, 3)
+			tween.tween_property(card, "position", pos, 1)
+			tween.parallel().tween_property(card, "rotation", rot, 1)
 			await tween.finished
 		parallel.add_awaitable(awaitable)
 

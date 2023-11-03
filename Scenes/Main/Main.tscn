@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://i1agm2a8aa6q"]
+[gd_scene load_steps=13 format=3 uid="uid://i1agm2a8aa6q"]
 
 [ext_resource type="Script" path="res://Scenes/Main/Main.gd" id="1_3ilso"]
 [ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/House.tscn" id="1_hn20s"]
 [ext_resource type="PackedScene" uid="uid://c1vg7u6rg0yd6" path="res://Scenes/HUD/HUD.tscn" id="2_gsrr0"]
+[ext_resource type="Script" path="res://Scenes/Main/Deck.gd" id="4_vhw5x"]
 
 [sub_resource type="Curve" id="Curve_bllxl"]
 min_value = -1.0
@@ -136,6 +137,7 @@ shape = SubResource("BoxShape3D_oax4d")
 
 [node name="Deck" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, -1.453)
+script = ExtResource("4_vhw5x")
 
 [node name="CameraContainer" type="Node3D" parent="."]
 transform = Transform3D(1, 0, -1.65083e-12, 0, 1, 0, -8.79187e-12, 0, 1, 2.08165e-12, 2.864, 2.08165e-12)

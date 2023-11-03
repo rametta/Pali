@@ -3,7 +3,7 @@ extends Node3D
 const card_scene = preload("res://Scenes/Card/Card2.tscn")
 const sample_card_texture = preload("res://CardAssets/mycologist.png")
 
-func shuffle_and_deal() -> void:
+func deck_init() -> void:
 	for i in range(25):
 		var card = card_scene.instantiate()
 		
@@ -11,7 +11,7 @@ func shuffle_and_deal() -> void:
 		card.title = "My Guy " + str(i)
 		card.attack = 7
 		card.card_texture = sample_card_texture
-		card.zone = card.CARD_ZONE.DECK
+		card.zone = Global.CARD_ZONE.DECK
 		
 		add_child(card)
 		card.rotation_degrees = Vector3(0, 90, -180)
