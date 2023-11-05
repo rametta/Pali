@@ -86,6 +86,8 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		await tween.finished
 
 func on_card_select(card: Node3D) -> void:
+	if card.zone == Global.CARD_ZONE.DECK:
+		return
 	Global.selected_card_id = card.get_instance_id()
 	get_tree().call_group("card", "render_outline")
 
@@ -112,7 +114,6 @@ func on_table_select(table_pos: Vector3) -> void:
 		table_cards.add_child(card)
 		card.global_position = pos
 		card.global_rotation = rot
-		card.add_to_group("card_on_table")
 		card.zone = Global.CARD_ZONE.TABLE
 
 	card.is_hovering = false
@@ -127,13 +128,13 @@ func on_table_select(table_pos: Vector3) -> void:
 
 	if not is_already_on_table:
 		if old_zone == Global.CARD_ZONE.PLAYER_1_HAND:
-			add_card_to_hand(my_hand)
+			add_card_to_hand(my_hand, old_zone)
 			render_hand(my_hand)
 		elif old_zone == Global.CARD_ZONE.PLAYER_2_HAND:
-			add_card_to_hand(opponent_hand)
+			add_card_to_hand(opponent_hand, old_zone)
 			render_hand(opponent_hand)
 
-func add_card_to_hand(hand: Node3D) -> void:
+func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	if deck.get_child_count() == 0:
 		return
 		
@@ -144,6 +145,7 @@ func add_card_to_hand(hand: Node3D) -> void:
 	hand.add_child(card)
 	card.global_position = old_pos
 	card.global_rotation = old_rot
+	card.zone = zone
 
 func render_hand(hand: Node3D) -> void:
 	var count = hand.get_child_count()
