@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=2 format=3 uid="uid://d1oglupcc8hrg"]
+
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_e2l4y"]
+
+[resource]
+script = ExtResource("1_e2l4y")
+title = ""
+value = 0
+category = 0
+tags = Array[int]([])
+relations = Array[Resource("res://Cards/CardRelation.gd")]([])
