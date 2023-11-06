@@ -13,6 +13,7 @@ value = 3
 script = ExtResource("2_3xwdt")
 id = 17
 title = "Musician"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_2sl1c")
 value = 9
 category = 3

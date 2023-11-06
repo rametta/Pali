@@ -13,6 +13,7 @@ value = 1
 script = ExtResource("2_ag1m3")
 id = 9
 title = "Civil Engineer"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_rfk6k")
 value = 14
 category = 1

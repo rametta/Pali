@@ -13,6 +13,7 @@ value = 2
 script = ExtResource("2_fcqm5")
 id = 16
 title = "Mechanical Engineer"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_snq2j")
 value = 9
 category = 1

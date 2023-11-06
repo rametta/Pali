@@ -13,6 +13,7 @@ value = 1
 script = ExtResource("2_ok3up")
 id = 6
 title = "Biologist"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_mrjai")
 value = 6
 category = 0

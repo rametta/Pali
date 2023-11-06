@@ -18,6 +18,7 @@ value = 2
 script = ExtResource("2_mn3qj")
 id = 19
 title = "Nurse"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_hbcvi")
 value = 9
 category = 4

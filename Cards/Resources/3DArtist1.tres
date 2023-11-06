@@ -13,6 +13,7 @@ value = 3
 script = ExtResource("1_awa36")
 id = 1
 title = "3D Artist"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("2_v17ro")
 value = 9
 category = 3

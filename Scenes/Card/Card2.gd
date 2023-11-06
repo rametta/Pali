@@ -5,23 +5,14 @@ signal select()
 @export var plane_mesh = MeshInstance3D
 @export var outline_mesh: MeshInstance3D
 @export var card_mesh: MeshInstance3D
-@export var attack_mesh: MeshInstance3D
-@export var title_mesh: MeshInstance3D
-
-@export var card_color: Color
-@export var card_texture: Texture2D
-@export var attack: int
-@export var title: String
+@export var card_resource: CardResource
 
 var is_hovering = false
 var zone: Global.CARD_ZONE = Global.CARD_ZONE.DECK
 
 func _ready():
-	card_mesh.material_override.albedo_color = card_color
-	plane_mesh.material_override.albedo_texture = card_texture
-	attack_mesh.mesh.text = str(attack)
-	attack_mesh.mesh.material.albedo_color = card_color
-	title_mesh.mesh.text = title
+	card_mesh.material_override.albedo_color = card_resource.color
+	plane_mesh.material_override.albedo_texture = card_resource.texture
 	render_outline()
 
 func _on_mouse_entered():

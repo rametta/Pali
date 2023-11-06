@@ -13,6 +13,7 @@ value = 2
 script = ExtResource("2_rhtqi")
 id = 20
 title = "Painter"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_1nt0s")
 value = 8
 category = 3

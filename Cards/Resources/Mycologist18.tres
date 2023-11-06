@@ -13,6 +13,7 @@ value = 2
 script = ExtResource("2_wjuq3")
 id = 18
 title = "Mycologist"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_vfjxl")
 value = 7
 category = 0

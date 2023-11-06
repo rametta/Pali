@@ -13,6 +13,7 @@ value = 4
 script = ExtResource("2_qhkk4")
 id = 4
 title = "Arborist"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_m5juv")
 value = 5
 category = 2

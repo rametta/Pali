@@ -13,6 +13,7 @@ value = 3
 script = ExtResource("2_kl6bl")
 id = 5
 title = "Bee Keeper"
+color = Color(0, 0, 0, 1)
 texture = ExtResource("3_jfsks")
 value = 6
 category = 2
