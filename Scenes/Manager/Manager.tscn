@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://5ruqmm3fjsuc"]
+
+[ext_resource type="Script" path="res://Scenes/Manager/Manager.gd" id="1_y3puj"]
+[ext_resource type="PackedScene" uid="uid://qqr31gwogfkg" path="res://Scenes/MainMenuUI/MainMenuUI.tscn" id="2_b3vlv"]
+[ext_resource type="PackedScene" uid="uid://bm5i1kcjd65ko" path="res://Scenes/LoginUI/LoginUI.tscn" id="3_vaqnt"]
+[ext_resource type="PackedScene" uid="uid://bgadfsfq6vmea" path="res://Scenes/CreateAccountUI/CreateAccountUI.tscn" id="4_kwdxh"]
+
+[node name="Manager" type="Node"]
+script = ExtResource("1_y3puj")
+
+[node name="MainMenuUI" parent="." instance=ExtResource("2_b3vlv")]
+
+[node name="LoginUI" parent="." instance=ExtResource("3_vaqnt")]
+visible = false
+
+[node name="CreateAccountUI" parent="." instance=ExtResource("4_kwdxh")]
+visible = false

@@ -9,7 +9,6 @@ card_id = 14
 value = 3
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gajc7"]
-load_path = "res://.godot/imported/3DArtist.png-f089b3f010dc09946695ac377ef3c9bd.s3tc.ctex"
 
 [resource]
 script = ExtResource("1_awa36")
