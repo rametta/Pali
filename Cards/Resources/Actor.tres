@@ -1,7 +1,14 @@
-[gd_resource type="Resource" script_class="CardResource" load_steps=3 format=3 uid="uid://cj3j6ns7q7to1"]
+[gd_resource type="Resource" script_class="CardResource" load_steps=6 format=3 uid="uid://cj3j6ns7q7to1"]
 
+[ext_resource type="Resource" uid="uid://dfpvigehwf5ey" path="res://Cards/Resources/Chemist.tres" id="1_n5sp7"]
 [ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_vlp7k"]
 [ext_resource type="Texture2D" uid="uid://b0tkk32406w5b" path="res://Cards/Assets/Actor.png" id="2_1sgpf"]
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="2_nlj6g"]
+
+[sub_resource type="Resource" id="Resource_7j5iv"]
+script = ExtResource("2_nlj6g")
+card = ExtResource("1_n5sp7")
+value = 3
 
 [resource]
 script = ExtResource("1_vlp7k")
@@ -10,4 +17,4 @@ texture = ExtResource("2_1sgpf")
 value = 10
 category = 3
 tags = Array[int]([3])
-relations = Array[Resource("res://Cards/CardRelation.gd")]([])
+relations = Array[ExtResource("2_nlj6g")]([SubResource("Resource_7j5iv")])
