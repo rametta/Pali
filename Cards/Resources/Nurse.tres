@@ -1,7 +1,20 @@
-[gd_resource type="Resource" script_class="CardResource" load_steps=3 format=3 uid="uid://b2b8o60pd5pf5"]
+[gd_resource type="Resource" script_class="CardResource" load_steps=8 format=3 uid="uid://b2b8o60pd5pf5"]
 
+[ext_resource type="Resource" uid="uid://ccn402vo0dae5" path="res://Cards/Resources/Geologist.tres" id="1_evekh"]
 [ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_gsqmj"]
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="2_7fs34"]
 [ext_resource type="Texture2D" uid="uid://c8bnavhhk6ixt" path="res://Cards/Assets/Nurse.png" id="2_75pbx"]
+[ext_resource type="Resource" uid="uid://dfpvigehwf5ey" path="res://Cards/Resources/Chemist.tres" id="3_gq2bo"]
+
+[sub_resource type="Resource" id="Resource_kvfyk"]
+script = ExtResource("2_7fs34")
+card = ExtResource("1_evekh")
+value = 1
+
+[sub_resource type="Resource" id="Resource_5renu"]
+script = ExtResource("2_7fs34")
+card = ExtResource("3_gq2bo")
+value = 2
 
 [resource]
 script = ExtResource("1_gsqmj")
@@ -10,4 +23,4 @@ texture = ExtResource("2_75pbx")
 value = 9
 category = 4
 tags = Array[int]([4])
-relations = Array[Resource("res://Cards/CardRelation.gd")]([])
+relations = Array[ExtResource("2_7fs34")]([SubResource("Resource_kvfyk"), SubResource("Resource_5renu")])
