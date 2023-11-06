@@ -1,6 +1,6 @@
 extends Node3D
 
-const card_scene = preload("res://Scenes/Card/Card2.tscn")
+const card_scene = preload("res://Scenes/Card/Card3.tscn")
 
 const a = preload("res://Cards/Resources/3DArtist1.tres")
 const b = preload("res://Cards/Resources/Actor2.tres")
