@@ -20,6 +20,7 @@ enum Tag {
 
 @export var id: int
 @export var title: String
+@export var color: Color
 @export var texture: Texture2D
 @export var value: int
 @export var category: Category
