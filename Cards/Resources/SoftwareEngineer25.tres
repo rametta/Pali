@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://d1oglupcc8hrg"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_pojx7"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_8qb01"]
+[ext_resource type="Texture2D" uid="uid://bkk4stcfvp41w" path="res://Cards/Assets/SoftwareEngineer.png" id="3_ur0vm"]
+
+[sub_resource type="Resource" id="Resource_hgnjg"]
+script = ExtResource("1_pojx7")
+card_id = 1
+value = 1
+
+[resource]
+script = ExtResource("2_8qb01")
+id = 25
+title = "Software Engineer"
+texture = ExtResource("3_ur0vm")
+value = 8
+category = 1
+tags = Array[int]([4])
+relations = Array[ExtResource("1_pojx7")]([SubResource("Resource_hgnjg")])

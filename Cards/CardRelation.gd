@@ -2,6 +2,6 @@ extends Resource
 
 class_name CardRelation
 
-@export var card: CardResource
+@export var card_id: int
 @export var value: int
 

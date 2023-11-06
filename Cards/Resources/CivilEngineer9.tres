@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://dcww3ahnfped8"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_35tyr"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_ag1m3"]
+[ext_resource type="Texture2D" uid="uid://b13ahegbrdjap" path="res://Cards/Assets/CivilEngineer.png" id="3_rfk6k"]
+
+[sub_resource type="Resource" id="Resource_cg3in"]
+script = ExtResource("1_35tyr")
+card_id = 10
+value = 1
+
+[resource]
+script = ExtResource("2_ag1m3")
+id = 9
+title = "Civil Engineer"
+texture = ExtResource("3_rfk6k")
+value = 14
+category = 1
+tags = Array[int]([])
+relations = Array[ExtResource("1_35tyr")]([SubResource("Resource_cg3in")])

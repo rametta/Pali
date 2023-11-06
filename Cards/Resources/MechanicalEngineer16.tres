@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://b2n5yf3f212tk"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_yuahp"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_fcqm5"]
+[ext_resource type="Texture2D" uid="uid://ekp4er18t7bo" path="res://Cards/Assets/MechanicalEngineer.png" id="3_snq2j"]
+
+[sub_resource type="Resource" id="Resource_o3qaq"]
+script = ExtResource("1_yuahp")
+card_id = 2
+value = 2
+
+[resource]
+script = ExtResource("2_fcqm5")
+id = 16
+title = "Mechanical Engineer"
+texture = ExtResource("3_snq2j")
+value = 9
+category = 1
+tags = Array[int]([4])
+relations = Array[ExtResource("1_yuahp")]([SubResource("Resource_o3qaq")])

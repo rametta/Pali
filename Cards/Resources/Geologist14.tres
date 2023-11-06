@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://ccn402vo0dae5"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_gyuq2"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_0ohtw"]
+[ext_resource type="Texture2D" uid="uid://b4wi3ubeu85at" path="res://Cards/Assets/Geologist.png" id="3_exqar"]
+
+[sub_resource type="Resource" id="Resource_26cou"]
+script = ExtResource("1_gyuq2")
+card_id = 3
+value = 4
+
+[resource]
+script = ExtResource("2_0ohtw")
+id = 14
+title = "Geologist"
+texture = ExtResource("3_exqar")
+value = 4
+category = 0
+tags = Array[int]([0, 3])
+relations = Array[ExtResource("1_gyuq2")]([SubResource("Resource_26cou")])

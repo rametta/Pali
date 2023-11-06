@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://djqs156aswlno"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_mmxw7"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_kl6bl"]
+[ext_resource type="Texture2D" uid="uid://d3n50iv8mxbqv" path="res://Cards/Assets/BeeKeeper.png" id="3_jfsks"]
+
+[sub_resource type="Resource" id="Resource_iresn"]
+script = ExtResource("1_mmxw7")
+card_id = 8
+value = 3
+
+[resource]
+script = ExtResource("2_kl6bl")
+id = 5
+title = "Bee Keeper"
+texture = ExtResource("3_jfsks")
+value = 6
+category = 2
+tags = Array[int]([0, 2])
+relations = Array[ExtResource("1_mmxw7")]([SubResource("Resource_iresn")])

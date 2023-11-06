@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://cn2b0erg1ucvd"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_0hb3e"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_qhkk4"]
+[ext_resource type="Texture2D" uid="uid://b8get20n4mvje" path="res://Cards/Assets/Arborist.png" id="3_m5juv"]
+
+[sub_resource type="Resource" id="Resource_c5hrr"]
+script = ExtResource("1_0hb3e")
+card_id = 14
+value = 4
+
+[resource]
+script = ExtResource("2_qhkk4")
+id = 4
+title = "Arborist"
+texture = ExtResource("3_m5juv")
+value = 5
+category = 2
+tags = Array[int]([0, 1])
+relations = Array[ExtResource("1_0hb3e")]([SubResource("Resource_c5hrr")])

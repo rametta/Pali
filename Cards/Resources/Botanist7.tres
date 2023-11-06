@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://q0bsyhs72tyv"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_jtjur"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_k424r"]
+[ext_resource type="Texture2D" uid="uid://b53rsntpvv8ur" path="res://Cards/Assets/Botanist.png" id="3_g0q6w"]
+
+[sub_resource type="Resource" id="Resource_mjksp"]
+script = ExtResource("1_jtjur")
+card_id = 5
+value = 3
+
+[resource]
+script = ExtResource("2_k424r")
+id = 7
+title = "Botanist"
+texture = ExtResource("3_g0q6w")
+value = 5
+category = 0
+tags = Array[int]([0, 4])
+relations = Array[ExtResource("1_jtjur")]([SubResource("Resource_mjksp")])

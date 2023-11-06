@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://020vvfbo8qjo"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_dyti3"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_ok3up"]
+[ext_resource type="Texture2D" uid="uid://b3pv7qhg7r4a1" path="res://Cards/Assets/Biologist.png" id="3_mrjai"]
+
+[sub_resource type="Resource" id="Resource_l7g8q"]
+script = ExtResource("1_dyti3")
+card_id = 22
+value = 1
+
+[resource]
+script = ExtResource("2_ok3up")
+id = 6
+title = "Biologist"
+texture = ExtResource("3_mrjai")
+value = 6
+category = 0
+tags = Array[int]([0, 1])
+relations = Array[ExtResource("1_dyti3")]([SubResource("Resource_l7g8q")])

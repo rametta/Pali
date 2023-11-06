@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://dfpvigehwf5ey"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_j6psy"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_6ypnh"]
+[ext_resource type="Texture2D" uid="uid://c42hsgyfev28j" path="res://Cards/Assets/Chemist.png" id="3_5jwbw"]
+
+[sub_resource type="Resource" id="Resource_3kmlv"]
+script = ExtResource("1_j6psy")
+card_id = 21
+value = 2
+
+[resource]
+script = ExtResource("2_6ypnh")
+id = 8
+title = "Chemist"
+texture = ExtResource("3_5jwbw")
+value = 5
+category = 0
+tags = Array[int]([1, 2])
+relations = Array[ExtResource("1_j6psy")]([SubResource("Resource_3kmlv")])

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://bwbxhwcqfe0en"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_t7t1s"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_suv1d"]
+[ext_resource type="Texture2D" uid="uid://bsknsfxt2i6gf" path="res://Cards/Assets/Pharmacist.png" id="3_ejkhf"]
+
+[sub_resource type="Resource" id="Resource_nc5li"]
+script = ExtResource("1_t7t1s")
+card_id = 12
+value = 3
+
+[resource]
+script = ExtResource("2_suv1d")
+id = 21
+title = "Pharmacist"
+texture = ExtResource("3_ejkhf")
+value = 8
+category = 4
+tags = Array[int]([2])
+relations = Array[ExtResource("1_t7t1s")]([SubResource("Resource_nc5li")])

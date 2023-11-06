@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=6 format=3 uid="uid://b2b8o60pd5pf5"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_3tenn"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_mn3qj"]
+[ext_resource type="Texture2D" uid="uid://c8bnavhhk6ixt" path="res://Cards/Assets/Nurse.png" id="3_hbcvi"]
+
+[sub_resource type="Resource" id="Resource_kvfyk"]
+script = ExtResource("1_3tenn")
+card_id = 14
+value = 1
+
+[sub_resource type="Resource" id="Resource_5renu"]
+script = ExtResource("1_3tenn")
+card_id = 8
+value = 2
+
+[resource]
+script = ExtResource("2_mn3qj")
+id = 19
+title = "Nurse"
+texture = ExtResource("3_hbcvi")
+value = 9
+category = 4
+tags = Array[int]([4])
+relations = Array[ExtResource("1_3tenn")]([SubResource("Resource_kvfyk"), SubResource("Resource_5renu")])

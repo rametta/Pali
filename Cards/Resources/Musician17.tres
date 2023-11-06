@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://cqfx8dajtjxyo"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_m3kab"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_3xwdt"]
+[ext_resource type="Texture2D" uid="uid://baikca2y2ptyy" path="res://Cards/Assets/Musician.png" id="3_2sl1c"]
+
+[sub_resource type="Resource" id="Resource_pga2a"]
+script = ExtResource("1_m3kab")
+card_id = 21
+value = 3
+
+[resource]
+script = ExtResource("2_3xwdt")
+id = 17
+title = "Musician"
+texture = ExtResource("3_2sl1c")
+value = 9
+category = 3
+tags = Array[int]([4])
+relations = Array[ExtResource("1_m3kab")]([SubResource("Resource_pga2a")])

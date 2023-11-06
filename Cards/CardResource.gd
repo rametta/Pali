@@ -18,6 +18,7 @@ enum Tag {
 	Mental
 }
 
+@export var id: int
 @export var title: String
 @export var texture: Texture2D
 @export var value: int

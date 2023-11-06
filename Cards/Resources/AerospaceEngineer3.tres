@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://bhog10m0ttgay"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_xcidl"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_e8nv3"]
+[ext_resource type="Texture2D" uid="uid://c0lkkt5f8dj7s" path="res://Cards/Assets/AerospaceEngineer.png" id="3_vcfk8"]
+
+[sub_resource type="Resource" id="Resource_6i703"]
+script = ExtResource("1_xcidl")
+card_id = 23
+value = 6
+
+[resource]
+script = ExtResource("2_e8nv3")
+id = 3
+title = "Aerospace Engineer"
+texture = ExtResource("3_vcfk8")
+value = 4
+category = 1
+tags = Array[int]([0, 2])
+relations = Array[ExtResource("1_xcidl")]([SubResource("Resource_6i703")])

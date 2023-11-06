@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://c88gavrd0k3p7"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_8y8th"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_wjuq3"]
+[ext_resource type="Texture2D" uid="uid://bdwijmaah0dqw" path="res://Cards/Assets/Mycologist.png" id="3_vfjxl"]
+
+[sub_resource type="Resource" id="Resource_7q4xe"]
+script = ExtResource("1_8y8th")
+card_id = 4
+value = 2
+
+[resource]
+script = ExtResource("2_wjuq3")
+id = 18
+title = "Mycologist"
+texture = ExtResource("3_vfjxl")
+value = 7
+category = 0
+tags = Array[int]([0, 2])
+relations = Array[ExtResource("1_8y8th")]([SubResource("Resource_7q4xe")])

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://ckk4faladpemh"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_46iif"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_cyavb"]
+[ext_resource type="Texture2D" uid="uid://46b8mso7p0nn" path="res://Cards/Assets/MartialArtist.png" id="3_i5qi7"]
+
+[sub_resource type="Resource" id="Resource_5btl7"]
+script = ExtResource("1_46iif")
+card_id = 23
+value = 3
+
+[resource]
+script = ExtResource("2_cyavb")
+id = 15
+title = "Martial Artist"
+texture = ExtResource("3_i5qi7")
+value = 5
+category = 3
+tags = Array[int]([3, 2])
+relations = Array[ExtResource("1_46iif")]([SubResource("Resource_5btl7")])

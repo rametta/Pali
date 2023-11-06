@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=6 format=3 uid="uid://dmg0kj5bb5w1y"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_gsflf"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_vetfq"]
+[ext_resource type="Texture2D" uid="uid://cfm586aih58vw" path="res://Cards/Assets/Dentist.png" id="3_twi5k"]
+
+[sub_resource type="Resource" id="Resource_cw23g"]
+script = ExtResource("1_gsflf")
+card_id = 15
+value = 7
+
+[sub_resource type="Resource" id="Resource_lihim"]
+script = ExtResource("1_gsflf")
+card_id = 2
+value = 1
+
+[resource]
+script = ExtResource("2_vetfq")
+id = 10
+title = "Dentist"
+texture = ExtResource("3_twi5k")
+value = 3
+category = 4
+tags = Array[int]([1, 2])
+relations = Array[ExtResource("1_gsflf")]([SubResource("Resource_cw23g"), SubResource("Resource_lihim")])

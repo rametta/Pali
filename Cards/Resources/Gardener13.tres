@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=6 format=3 uid="uid://bdmediq53wu1q"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_04aps"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_vn4pf"]
+[ext_resource type="Texture2D" uid="uid://bpjcwqcwtnfg7" path="res://Cards/Assets/Gardener.png" id="3_20rtf"]
+
+[sub_resource type="Resource" id="Resource_4m4lt"]
+script = ExtResource("1_04aps")
+card_id = 7
+value = 3
+
+[sub_resource type="Resource" id="Resource_rfrxa"]
+script = ExtResource("1_04aps")
+card_id = 18
+value = 2
+
+[resource]
+script = ExtResource("2_vn4pf")
+id = 13
+title = "Gardener"
+texture = ExtResource("3_20rtf")
+value = 3
+category = 2
+tags = Array[int]([0, 3])
+relations = Array[ExtResource("1_04aps")]([SubResource("Resource_4m4lt"), SubResource("Resource_rfrxa")])
