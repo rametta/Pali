@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="CardResource" load_steps=2 format=3 uid="uid://djqs156aswlno"]
+[gd_resource type="Resource" script_class="CardResource" load_steps=3 format=3 uid="uid://djqs156aswlno"]
 
 [ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_4xw0l"]
+[ext_resource type="Texture2D" uid="uid://d3n50iv8mxbqv" path="res://Cards/Assets/BeeKeeper.png" id="2_nlp30"]
 
 [resource]
 script = ExtResource("1_4xw0l")
-title = ""
-value = 0
-category = 0
-tags = Array[int]([])
+title = "Bee Keeper"
+texture = ExtResource("2_nlp30")
+value = 6
+category = 2
+tags = Array[int]([0, 2])
 relations = Array[Resource("res://Cards/CardRelation.gd")]([])

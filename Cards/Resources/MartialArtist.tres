@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="CardResource" load_steps=2 format=3 uid="uid://ckk4faladpemh"]
+[gd_resource type="Resource" script_class="CardResource" load_steps=3 format=3 uid="uid://ckk4faladpemh"]
 
 [ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_86s0f"]
+[ext_resource type="Texture2D" uid="uid://46b8mso7p0nn" path="res://Cards/Assets/MartialArtist.png" id="2_1gg1x"]
 
 [resource]
 script = ExtResource("1_86s0f")
-title = ""
-value = 0
-category = 0
-tags = Array[int]([])
+title = "Martial Artist"
+texture = ExtResource("2_1gg1x")
+value = 5
+category = 3
+tags = Array[int]([3, 2])
 relations = Array[Resource("res://Cards/CardRelation.gd")]([])

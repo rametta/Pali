@@ -1,11 +1,20 @@
-[gd_resource type="Resource" script_class="CardResource" load_steps=2 format=3 uid="uid://dfnqecn0benad"]
+[gd_resource type="Resource" script_class="CardResource" load_steps=6 format=3 uid="uid://dfnqecn0benad"]
 
+[ext_resource type="Resource" uid="uid://ccn402vo0dae5" path="res://Cards/Resources/Geologist.tres" id="1_8xg6x"]
 [ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_awa36"]
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="2_345wv"]
+[ext_resource type="Texture2D" uid="uid://culmbf267jtur" path="res://Cards/Assets/3DArtist.png" id="2_v17ro"]
+
+[sub_resource type="Resource" id="Resource_eu4ms"]
+script = ExtResource("2_345wv")
+card = ExtResource("1_8xg6x")
+value = 3
 
 [resource]
 script = ExtResource("1_awa36")
-title = ""
-value = 0
-category = 0
-tags = Array[int]([])
-relations = Array[Resource("res://Cards/CardRelation.gd")]([])
+title = "3D Artist"
+texture = ExtResource("2_v17ro")
+value = 9
+category = 3
+tags = Array[int]([4])
+relations = Array[ExtResource("2_345wv")]([SubResource("Resource_eu4ms")])

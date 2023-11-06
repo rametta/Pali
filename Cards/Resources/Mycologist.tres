@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="CardResource" load_steps=2 format=3 uid="uid://c88gavrd0k3p7"]
+[gd_resource type="Resource" script_class="CardResource" load_steps=3 format=3 uid="uid://c88gavrd0k3p7"]
 
 [ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_0wlcw"]
+[ext_resource type="Texture2D" uid="uid://d0nymvdywc6b5" path="res://Cards/Assets/Mycologist.png" id="2_nkeh4"]
 
 [resource]
 script = ExtResource("1_0wlcw")
-title = ""
-value = 0
+title = "Mycologist"
+texture = ExtResource("2_nkeh4")
+value = 7
 category = 0
-tags = Array[int]([])
+tags = Array[int]([0, 2])
 relations = Array[Resource("res://Cards/CardRelation.gd")]([])
