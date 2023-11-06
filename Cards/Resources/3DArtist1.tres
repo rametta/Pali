@@ -2,19 +2,21 @@
 
 [ext_resource type="Script" path="res://Cards/CardResource.gd" id="1_awa36"]
 [ext_resource type="Script" path="res://Cards/CardRelation.gd" id="2_345wv"]
-[ext_resource type="Texture2D" uid="uid://culmbf267jtur" path="res://Cards/Assets/3DArtist.png" id="2_v17ro"]
 
 [sub_resource type="Resource" id="Resource_eu4ms"]
 script = ExtResource("2_345wv")
 card_id = 14
 value = 3
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gajc7"]
+load_path = "res://.godot/imported/3DArtist.png-f089b3f010dc09946695ac377ef3c9bd.s3tc.ctex"
+
 [resource]
 script = ExtResource("1_awa36")
 id = 1
 title = "3D Artist"
 color = Color(0.717647, 0.909804, 0.992157, 1)
-texture = ExtResource("2_v17ro")
+texture = SubResource("CompressedTexture2D_gajc7")
 value = 9
 category = 3
 tags = Array[int]([4])
