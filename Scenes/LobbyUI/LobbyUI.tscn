@@ -1,15 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bm5i1kcjd65ko"]
+[gd_scene load_steps=2 format=3 uid="uid://dhtx3h6oya873"]
 
-[ext_resource type="Script" path="res://Scenes/LoginUI/LoginUI.gd" id="1_jpaos"]
+[ext_resource type="Script" path="res://Scenes/LobbyUI/LobbyUI.gd" id="1_6lqgi"]
 
-[node name="LoginUI" type="Control"]
+[node name="LobbyUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_jpaos")
+script = ExtResource("1_6lqgi")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -38,7 +38,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 200
-text = "Login"
+text = "Lobby"
 horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -47,17 +47,9 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_constants/separation = 20
 
-[node name="EmailInput" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "rametta@outlook.com"
-placeholder_text = "Email"
-
-[node name="PasswordInput" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-placeholder_text = "Password"
-secret = true
+text = "You are logged in as: XXX"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -68,23 +60,9 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Back to Main Menu"
 
-[node name="LoginBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Login"
-
-[node name="LoadingLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-horizontal_alignment = 1
-
 [node name="FooterLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_font_sizes/font_size = 32
 text = "Pali - A Game by Jason Rametta"
 horizontal_alignment = 1
-
-[connection signal="text_submitted" from="MarginContainer/VBoxContainer/VBoxContainer/PasswordInput" to="." method="_on_password_input_text_submitted"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/BackBtn" to="." method="_on_back_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/LoginBtn" to="." method="_on_login_btn_pressed"]
