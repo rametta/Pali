@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://byavsfj4ov20k" path="res://Assets/gltf/cabinet_medium.gltf" id="6_sti3y"]
 [ext_resource type="PackedScene" uid="uid://6t3uqmkoqwgj" path="res://Assets/gltf/cabinet_medium_decorated.gltf" id="7_8byi4"]
 [ext_resource type="PackedScene" uid="uid://ds3718co5mu35" path="res://Assets/gltf/armchair_pillows.gltf" id="8_syd5l"]
-[ext_resource type="PackedScene" uid="uid://i4ikt16lllsi" path="res://Scenes/Main/Room.tscn" id="9_82yht"]
+[ext_resource type="PackedScene" uid="uid://i4ikt16lllsi" path="res://Scenes/World/Room.tscn" id="9_82yht"]
 [ext_resource type="PackedScene" uid="uid://c4qi73jxe6q4t" path="res://Assets/gltf/cabinet_small.gltf" id="10_821qg"]
 [ext_resource type="PackedScene" uid="uid://clrxm21s4by0x" path="res://Assets/gltf/cabinet_small_decorated.gltf" id="11_put27"]
 [ext_resource type="PackedScene" uid="uid://bgumpigub3gou" path="res://Assets/gltf/cactus_medium_B.gltf" id="12_ocxwu"]

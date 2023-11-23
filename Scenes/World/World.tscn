@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=3 uid="uid://i1agm2a8aa6q"]
 
-[ext_resource type="Script" path="res://Scenes/Main/Main.gd" id="1_3ilso"]
-[ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/Main/House.tscn" id="1_hn20s"]
+[ext_resource type="Script" path="res://Scenes/World/World.gd" id="1_3ilso"]
+[ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/World/House.tscn" id="1_hn20s"]
 [ext_resource type="PackedScene" uid="uid://c1vg7u6rg0yd6" path="res://Scenes/HUD/HUD.tscn" id="2_gsrr0"]
-[ext_resource type="Script" path="res://Scenes/Main/Deck.gd" id="4_vhw5x"]
+[ext_resource type="Script" path="res://Scenes/World/Deck.gd" id="4_vhw5x"]
 
 [sub_resource type="Curve" id="Curve_bllxl"]
 min_value = -1.0
@@ -104,7 +104,7 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("camera", "my_hand", "opponent_hand", "start_game_timer", "hud", "table_cards", "deck")]
+[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "my_hand", "opponent_hand", "start_game_timer", "hud", "table_cards", "deck")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
 my_hand = NodePath("CameraContainer/MyHand")
