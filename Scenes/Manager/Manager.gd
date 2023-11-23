@@ -2,15 +2,14 @@ extends Node
 
 @onready var main_menu_ui = $MainMenuUI
 
-var is_server = false
 var enet = ENetMultiplayerPeer.new()
 var peers: Array[int] = []
+var peers_intro_done: Array[int] = []
 var my_id: int = 0
+var world: Node3D
 
-func _ready() -> void:
-	is_server = OS.has_feature("dedicated_server")
-	
-	if is_server:
+func _ready() -> void:	
+	if OS.has_feature("dedicated_server"):
 		on_create_server_pressed()
 	else:
 		main_menu_ui.connect("join_server_pressed", on_join_server_pressed)
@@ -32,7 +31,6 @@ func on_join_server_pressed(display_name: String):
 	my_id = enet.get_unique_id()
 
 func on_create_server_pressed():
-	is_server = true
 	print("Creating server")
 	var err = enet.create_server(Global.PORT, 2)
 	if err:
@@ -53,8 +51,25 @@ func create_world() -> void:
 	print("[%s] Create world called" % multiplayer.get_unique_id())
 	main_menu_ui.hide()
 	var world_scene = load("res://Scenes/World/World.tscn")
-	var world = world_scene.instantiate()
+	world = world_scene.instantiate()
 	add_child(world)
+	world.connect("intro_done", on_intro_done)
+	
+@rpc
+func start_tweens():
+	world.start_cards_tween()
+	
+@rpc("any_peer")
+func on_intro_done_server(id: int):
+	if not multiplayer.is_server(): return
+	
+	peers_intro_done.append(id)
+	
+	if len(peers_intro_done) == 2:
+		start_tweens.rpc()
+	
+func on_intro_done():
+	on_intro_done_server.rpc(my_id)
 
 func on_peer_connected_to_server(id: int) -> void:
 	print("[1] peer '%s' connected" % id)

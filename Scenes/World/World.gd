@@ -1,5 +1,7 @@
 extends Node3D
 
+signal intro_done()
+
 @export var camera: Camera3D
 @export var my_hand: Node3D
 @export var opponent_hand: Node3D
@@ -51,6 +53,10 @@ func _input(event):
 		var t = get_tree().create_tween()
 		t.tween_property(camera, "rotation_degrees", Vector3(rot_x, rot_y, camera.rotation_degrees.z), .5)
 
+func intro_anim_done() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	intro_done.emit()
+
 func start_cards_tween() -> void:
 	deck.deck_init()
 	for card in deck.get_children():
@@ -61,7 +67,6 @@ func start_cards_tween() -> void:
 	
 	hud.show()
 	start_game_timer.start()
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	hand.show()
