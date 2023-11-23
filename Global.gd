@@ -2,6 +2,9 @@ extends Node
 
 signal card_selected(id: int)
 
+const PORT: int = 50001
+const SERVER_ADDRESS: String = "localhost" # "157.245.129.204"
+
 enum CARD_ZONE {
 	DECK,
 	TABLE,

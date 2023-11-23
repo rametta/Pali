@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://cx1b3d31ci4b3"]
+
+[ext_resource type="Script" path="res://Scenes/Server/Server.gd" id="1_adh04"]
+
+[node name="Server" type="Node" node_paths=PackedStringArray("game_status_label", "peers_label")]
+script = ExtResource("1_adh04")
+game_status_label = NodePath("GridContainer/GameStatus")
+peers_label = NodePath("GridContainer/Peers")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="Label" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "SERVER"
+
+[node name="Label2" type="Label" parent="GridContainer"]
+layout_mode = 2
+
+[node name="GameStatusLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Game Status     "
+
+[node name="GameStatus" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Status..."
+
+[node name="PeersLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Peers"
+
+[node name="Peers" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "1, 2"

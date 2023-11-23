@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/MainMenuUI/MainMenuUI.gd" id="1_4kj3h"]
 
-[node name="MainMenuUI" type="Control"]
+[node name="MainMenuUI" type="Control" node_paths=PackedStringArray("name_input", "join_btn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,6 +10,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4kj3h")
+name_input = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/NameInput")
+join_btn = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/JoinServerBtn")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -41,27 +43,37 @@ theme_override_font_sizes/font_size = 200
 text = "Pali"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_right = 100
 
-[node name="CreateAccountBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "Create Account"
+text = "Name"
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="NameInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
-theme_override_font_sizes/font_size = 30
-text = "or"
+theme_override_font_sizes/font_size = 40
+placeholder_text = "John Wick..."
 
-[node name="LoginBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="JoinServerBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "Login"
+text = "Join Server"
+
+[node name="CreateServerBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Create Server (debug only)"
 
 [node name="FooterLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -70,5 +82,6 @@ theme_override_font_sizes/font_size = 32
 text = "Pali - A Game by Jason Rametta"
 horizontal_alignment = 1
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/CreateAccountBtn" to="." method="_on_create_account_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/LoginBtn" to="." method="_on_login_btn_pressed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/JoinServerBtn" to="." method="_on_join_server_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/CreateServerBtn" to="." method="_on_create_server_btn_pressed"]

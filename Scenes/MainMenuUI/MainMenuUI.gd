@@ -1,11 +1,22 @@
 extends Control
 
-signal create_account_pressed()
-signal login_pressed()
+signal join_server_pressed(display_name: String)
+signal create_server_pressed()
 
-func _on_create_account_btn_pressed():
-	create_account_pressed.emit()
+@export var name_input: LineEdit
+@export var join_btn: Button
 
+func _ready():
+	_on_name_input_text_changed("")
 
-func _on_login_btn_pressed():
-	login_pressed.emit()
+func _on_join_server_btn_pressed():
+	join_server_pressed.emit(name_input.text)
+
+func _on_name_input_text_changed(new_text):
+	if len(new_text) > 2:
+		join_btn.disabled = false
+	else:
+		join_btn.disabled = true
+
+func _on_create_server_btn_pressed():
+	create_server_pressed.emit()
