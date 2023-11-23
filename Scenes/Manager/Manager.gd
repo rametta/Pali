@@ -14,6 +14,7 @@ func _ready() -> void:
 	else:
 		main_menu_ui.connect("join_server_pressed", on_join_server_pressed)
 		main_menu_ui.connect("create_server_pressed", on_create_server_pressed)
+		main_menu_ui.update_status_label("")
 		
 func on_join_server_pressed(display_name: String):
 	print("Join server btn pressed with name %s" % display_name)
@@ -21,6 +22,8 @@ func on_join_server_pressed(display_name: String):
 	var err = enet.create_client(Global.SERVER_ADDRESS, Global.PORT)
 	if err:
 		print("Failed to create client")
+		
+	main_menu_ui.update_status_label("Connecting...")
 	
 	multiplayer.connected_to_server.connect(on_connected_to_server)
 	multiplayer.connection_failed.connect(on_connection_failed)
@@ -64,7 +67,6 @@ func on_intro_done_server(id: int):
 	if not multiplayer.is_server(): return
 	
 	peers_intro_done.append(id)
-	
 	if len(peers_intro_done) == 2:
 		start_tweens.rpc()
 	
@@ -92,9 +94,11 @@ func on_peer_disconnected(id: int) -> void:
 	
 func on_connected_to_server() -> void:
 	print("[%s] on_connected_to_server called" % my_id)
+	main_menu_ui.update_status_label("Connected to server. Waiting for other player...")
 	
 func on_connection_failed() -> void:
 	print("[%s] on_connection_failed called" % my_id)
+	main_menu_ui.update_status_label("Failed to connect to server")
 	
 func on_server_disconnected() -> void:
 	print("[%s] on_server_disconnected called" % my_id)

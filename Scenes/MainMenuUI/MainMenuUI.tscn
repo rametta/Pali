@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/MainMenuUI/MainMenuUI.gd" id="1_4kj3h"]
 
-[node name="MainMenuUI" type="Control" node_paths=PackedStringArray("name_input", "join_btn")]
+[node name="MainMenuUI" type="Control" node_paths=PackedStringArray("name_input", "join_btn", "status_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_4kj3h")
 name_input = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/NameInput")
 join_btn = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/JoinServerBtn")
+status_label = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/StatusLabel")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -39,7 +40,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 200
+theme_override_font_sizes/font_size = 140
 text = "Pali"
 horizontal_alignment = 1
 
@@ -71,6 +72,10 @@ placeholder_text = "John Wick..."
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Join Server"
+
+[node name="StatusLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Loading..."
 
 [node name="CreateServerBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
