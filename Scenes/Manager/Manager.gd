@@ -8,9 +8,7 @@ var peers_intro_done: Array[int] = []
 var my_id: int = 0
 var world: Node3D
 
-
-
-func _ready() -> void:	
+func _ready() -> void:
 	if OS.has_feature("dedicated_server"):
 		on_create_server_pressed()
 	else:
