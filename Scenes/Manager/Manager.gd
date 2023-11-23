@@ -22,6 +22,7 @@ func on_join_server_pressed(display_name: String):
 	add_child(client)
 
 func on_create_server_pressed():
+	is_server = true
 	print("Create server btn pressed")
 	var server_scene = load("res://Scenes/Server/Server.tscn")
 	var server = server_scene.instantiate()

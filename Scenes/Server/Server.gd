@@ -41,7 +41,7 @@ func on_peer_connected(id: int) -> void:
 	render()
 	
 	if len(peers) == 2:
-		create_world_on_all_clients_and_server()
+		start()
 
 func on_peer_disconnected(id: int) -> void:
 	print("[1] peer '%s' disconnected" % id)
@@ -53,6 +53,6 @@ func render() -> void:
 	game_status_label.text = str(game_state)
 	peers_label.text = str(peers)
 
-func create_world_on_all_clients_and_server() -> void:
+func start() -> void:
 	print("[1] create_world_on_all_clients_and_server")
 	start_game.emit()
