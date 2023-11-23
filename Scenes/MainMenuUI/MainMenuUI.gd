@@ -7,7 +7,7 @@ signal create_server_pressed()
 @export var join_btn: Button
 
 func _ready():
-	_on_name_input_text_changed("")
+	_on_name_input_text_changed(name_input.text)
 
 func _on_join_server_btn_pressed():
 	join_server_pressed.emit(name_input.text)

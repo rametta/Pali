@@ -25,12 +25,16 @@ func on_create_server_pressed():
 	print("Create server btn pressed")
 	var server_scene = load("res://Scenes/Server/Server.tscn")
 	var server = server_scene.instantiate()
+	server.connect("start_game", on_start_game)
 	add_child(server)
 	main_menu_ui.hide()
 
+func on_start_game():
+	create_world.rpc()
+
 @rpc
 func create_world() -> void:
-	print("[%s] Create world called", multiplayer.get_unique_id())
+	print("[%s] Create world called" % multiplayer.get_unique_id())
 	main_menu_ui.hide()
 	var world_scene = load("res://Scenes/Main/Main.tscn")
 	var world = world_scene.instantiate()

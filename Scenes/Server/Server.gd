@@ -2,6 +2,8 @@ extends Node
 
 # This file is only initialized and ran on the server
 
+signal start_game()
+
 @export var game_status_label: Label
 @export var peers_label: Label
 
@@ -53,4 +55,4 @@ func render() -> void:
 
 func create_world_on_all_clients_and_server() -> void:
 	print("[1] create_world_on_all_clients_and_server")
-	get_node("/root/Manager").create_world.rpc()
+	start_game.emit()

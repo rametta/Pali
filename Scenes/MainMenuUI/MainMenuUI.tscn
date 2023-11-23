@@ -64,6 +64,7 @@ text = "Name"
 [node name="NameInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
+text = "ABCD"
 placeholder_text = "John Wick..."
 
 [node name="JoinServerBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
