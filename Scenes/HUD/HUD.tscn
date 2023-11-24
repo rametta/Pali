@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/HUD/HUD.gd" id="1_iuu84"]
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("game_time_label", "texture_rect")]
+[node name="HUD" type="Control" node_paths=PackedStringArray("game_time_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,6 @@ size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_iuu84")
 game_time_label = NodePath("Container/GameTimeLabel")
-texture_rect = NodePath("Container/MarginContainer/VBoxContainer/TextureRect")
 
 [node name="Container" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -32,16 +31,3 @@ theme_override_colors/font_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
 theme_override_font_sizes/font_size = 100
 text = "3:33"
 horizontal_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="Container"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_right = 50
-
-[node name="VBoxContainer" type="CenterContainer" parent="Container/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 3
-
-[node name="TextureRect" type="TextureRect" parent="Container/MarginContainer/VBoxContainer"]
-layout_mode = 2

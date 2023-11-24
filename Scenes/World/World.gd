@@ -17,6 +17,9 @@ enum PLAYER {
 @export var table_cards: Node3D
 @export var deck: Node3D
 
+var player_1_hand: Node3D
+var player_2_hand: Node3D
+
 ## Set when world is created by the server
 var player: PLAYER = PLAYER.SERVER
 
@@ -34,6 +37,13 @@ func _ready():
 	my_hand.hide()
 	opponent_hand.hide()
 	hud.update_game_time(game_time_sec)
+	
+	if player == PLAYER.ONE:
+		player_1_hand = my_hand
+		player_2_hand = opponent_hand
+	elif player == PLAYER.TWO:
+		player_2_hand = my_hand
+		player_1_hand = opponent_hand
 
 func _input(event):
 	if game_time_sec == game_time_sec_default:
@@ -71,13 +81,9 @@ func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	for card in deck.get_children():
 		card.connect("select", on_card_select.bind(card))
 	
-	if player == PLAYER.ONE:
-		await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_1_HAND)
-		await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_2_HAND)
-	elif player == PLAYER.TWO:
-		await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_1_HAND)
-		await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_2_HAND)
-	
+	await start_hand_tweens(player_1_hand, Global.CARD_ZONE.PLAYER_1_HAND)
+	await start_hand_tweens(player_2_hand, Global.CARD_ZONE.PLAYER_2_HAND)
+
 	hud.show()
 	start_game_timer.start() # TODO: move to server
 
@@ -104,8 +110,12 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		await tween.finished
 
 func on_card_select(card: Node3D) -> void:
-	if card.zone == Global.CARD_ZONE.DECK:
+	if player == PLAYER.ONE and card.zone != Global.CARD_ZONE.PLAYER_1_HAND:
 		return
+		
+	if player == PLAYER.TWO and card.zone != Global.CARD_ZONE.PLAYER_2_HAND:
+		return
+		
 	Global.selected_card_name = card.name
 	get_tree().call_group("card", "render_outline")
 
@@ -147,11 +157,11 @@ func on_table_select(table_pos: Vector3, card_name: String) -> void:
 
 	if not is_already_on_table:
 		if old_zone == Global.CARD_ZONE.PLAYER_1_HAND:
-			add_card_to_hand(my_hand, old_zone)
-			render_hand(my_hand)
+			add_card_to_hand(player_1_hand, old_zone)
+			render_hand(player_1_hand)
 		elif old_zone == Global.CARD_ZONE.PLAYER_2_HAND:
-			add_card_to_hand(opponent_hand, old_zone)
-			render_hand(opponent_hand)
+			add_card_to_hand(player_2_hand, old_zone)
+			render_hand(player_2_hand)
 
 func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	if deck.get_child_count() == 0:
