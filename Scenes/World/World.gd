@@ -150,7 +150,7 @@ func on_table_select(table_pos: Vector3, card_name: String) -> void:
 	get_tree().call_group("card", "render_outline")
 
 	var tween = get_tree().create_tween()
-	tween.tween_property(card, "global_rotation:x", 0, .5)
+	tween.tween_property(card, "global_rotation_degrees", Vector3(0, 90, 0), .5)
 	tween.parallel().tween_property(card, "global_position", new_table_pos, .5).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
 	is_table_select_animating = false

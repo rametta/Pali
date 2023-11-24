@@ -12,6 +12,7 @@ func _ready():
 
 func _on_join_server_btn_pressed():
 	join_server_pressed.emit(name_input.text)
+	join_btn.disabled = true
 
 func _on_name_input_text_changed(new_text):
 	if len(new_text) > 2:
