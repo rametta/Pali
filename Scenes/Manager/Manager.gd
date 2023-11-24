@@ -110,6 +110,7 @@ func on_connected_to_server() -> void:
 func on_connection_failed() -> void:
 	print("[%s] on_connection_failed called" % my_id)
 	main_menu_ui.update_status_label("Failed to connect to server")
+	main_menu_ui.enable_join_btn()
 	
 func on_server_disconnected() -> void:
 	print("[%s] on_server_disconnected called" % my_id)

@@ -9,6 +9,7 @@ enum PLAYER {
 }
 
 @export var camera: Camera3D
+@export var top_camera: Camera3D
 @export var my_hand: Node3D
 @export var opponent_hand: Node3D
 @export var cards_position_x_curve: Curve ## left/right position on table
@@ -48,6 +49,15 @@ func _ready():
 func _input(event):
 	if game_time_sec == game_time_sec_default:
 		return
+		
+	if event.is_action_pressed("zoom"):
+		if top_camera.current:
+			top_camera.current = false
+			camera.current = true
+		else:
+			top_camera.current = true
+			camera.current = false
+		
 	# Slightly rotate camera to get nice "parralax" effect
 	if event is InputEventMouseMotion:
 		var screen_size = get_viewport().get_visible_rect().size
