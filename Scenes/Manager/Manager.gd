@@ -50,17 +50,19 @@ func on_start_game():
 	create_world.rpc()
 
 @rpc
-func create_world() -> void:
+func create_world(player1: int) -> void:
 	print("[%s] Create world called" % multiplayer.get_unique_id())
 	main_menu_ui.hide()
 	var world_scene = load("res://Scenes/World/World.tscn")
 	world = world_scene.instantiate()
+	world.name = str(my_id)
+	world.is_player_1 = my_id == player1
 	add_child(world)
 	world.connect("intro_done", on_intro_done)
 	
 @rpc
-func start_tweens():
-	world.start_cards_tween()
+func start_tweens(random_arr_indices: PackedByteArray):
+	world.start_cards_tween(random_arr_indices)
 	
 @rpc("any_peer")
 func on_intro_done_server(id: int):
@@ -68,7 +70,12 @@ func on_intro_done_server(id: int):
 	
 	peers_intro_done.append(id)
 	if len(peers_intro_done) == 2:
-		start_tweens.rpc()
+		
+		var arr = range(25) # 25 is length of cards in deck
+		arr.shuffle()
+		var packed = PackedByteArray(arr)
+		
+		start_tweens.rpc(packed)
 	
 func on_intro_done():
 	on_intro_done_server.rpc(my_id)
@@ -79,7 +86,8 @@ func on_peer_connected_to_server(id: int) -> void:
 	print("[1] peers ", peers)
 	
 	if len(peers) == 2:
-		create_world.rpc()
+		var player1 = peers[0]
+		create_world.rpc(player1)
 
 func on_peer_disconnected_to_server(id: int) -> void:
 	print("[1] peer '%s' disconnected" % id)

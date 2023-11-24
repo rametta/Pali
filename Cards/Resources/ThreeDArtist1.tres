@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=5 format=3 uid="uid://dfnqecn0benad"]
+
+[ext_resource type="Script" path="res://Cards/CardRelation.gd" id="1_aish8"]
+[ext_resource type="Script" path="res://Cards/CardResource.gd" id="2_1eef6"]
+[ext_resource type="Texture2D" uid="uid://c4ev22ux6ek0e" path="res://Cards/Assets/ThreeDArtist.png" id="3_dxtvg"]
+
+[sub_resource type="Resource" id="Resource_eu4ms"]
+script = ExtResource("1_aish8")
+card_id = 14
+value = 3
+
+[resource]
+script = ExtResource("2_1eef6")
+id = 1
+title = "3D Artist"
+color = Color(0.717647, 0.909804, 0.992157, 1)
+texture = ExtResource("3_dxtvg")
+value = 9
+category = 3
+tags = Array[int]([4])
+relations = Array[ExtResource("1_aish8")]([SubResource("Resource_eu4ms")])

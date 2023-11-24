@@ -2,8 +2,8 @@ extends Node3D
 
 const card_scene = preload("res://Scenes/Card/Card3.tscn")
 
-const cards = [
-	preload("res://Cards/Resources/3DArtist1.tres"),
+const card_resources = [
+	preload("res://Cards/Resources/ThreeDArtist1.tres"),
 	preload("res://Cards/Resources/Actor2.tres"),
 	preload("res://Cards/Resources/AerospaceEngineer3.tres"),
 	preload("res://Cards/Resources/Arborist4.tres"),
@@ -30,14 +30,14 @@ const cards = [
 	preload("res://Cards/Resources/SoftwareEngineer25.tres")
 ]
 
-func deck_init() -> void:
-	for index in range(len(cards)):
+func deck_init(random_arr_indices: PackedByteArray) -> void:
+	for index in range(len(random_arr_indices)):
 		var card = card_scene.instantiate()
-		var card_resource = cards[index]
-		
+		var card_resource = card_resources[random_arr_indices[index]]
+
 		card.card_resource = card_resource
 		card.zone = Global.CARD_ZONE.DECK
-		
+
 		add_child(card)
 		card.rotation_degrees = Vector3(0, 90, -180)
 		card.position.y = float(index) * .015

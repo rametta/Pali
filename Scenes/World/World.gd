@@ -11,6 +11,9 @@ signal intro_done()
 @export var table_cards: Node3D
 @export var deck: Node3D
 
+## Set when world is created by the server
+var is_player_1 = false
+
 const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
 
 const game_time_sec_default = 3 * 60
@@ -57,16 +60,20 @@ func intro_anim_done() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	intro_done.emit()
 
-func start_cards_tween() -> void:
-	deck.deck_init()
+func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
+	deck.deck_init(random_arr_indices)
 	for card in deck.get_children():
 		card.connect("select", on_card_select.bind(card))
 	
-	await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_1_HAND)
-	await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_2_HAND)
+	if is_player_1:
+		await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_1_HAND)
+		await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_2_HAND)
+	else:
+		await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_1_HAND)
+		await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_2_HAND)
 	
 	hud.show()
-	start_game_timer.start()
+	start_game_timer.start() # TODO: move to server
 
 func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	hand.show()
