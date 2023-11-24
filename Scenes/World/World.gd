@@ -2,6 +2,12 @@ extends Node3D
 
 signal intro_done()
 
+enum PLAYER {
+	ONE,
+	TWO,
+	SERVER
+}
+
 @export var camera: Camera3D
 @export var my_hand: Node3D
 @export var opponent_hand: Node3D
@@ -12,7 +18,7 @@ signal intro_done()
 @export var deck: Node3D
 
 ## Set when world is created by the server
-var is_player_1 = false
+var player: PLAYER = PLAYER.SERVER
 
 const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
 
@@ -65,10 +71,10 @@ func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	for card in deck.get_children():
 		card.connect("select", on_card_select.bind(card))
 	
-	if is_player_1:
+	if player == PLAYER.ONE:
 		await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_1_HAND)
 		await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_2_HAND)
-	else:
+	elif player == PLAYER.TWO:
 		await start_hand_tweens(opponent_hand, Global.CARD_ZONE.PLAYER_1_HAND)
 		await start_hand_tweens(my_hand, Global.CARD_ZONE.PLAYER_2_HAND)
 	
@@ -100,10 +106,11 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 func on_card_select(card: Node3D) -> void:
 	if card.zone == Global.CARD_ZONE.DECK:
 		return
-	Global.selected_card_id = card.get_instance_id()
+	Global.selected_card_name = card.name
 	get_tree().call_group("card", "render_outline")
 
-func on_table_select(table_pos: Vector3) -> void:
+@rpc("call_local", "any_peer")
+func on_table_select(table_pos: Vector3, card_name: String) -> void:
 	if is_rendering_hand_animating || is_table_select_animating:
 		print("is_rendering_hand_animating or is_table_select_animating is true. can not select table")
 		return
@@ -111,7 +118,7 @@ func on_table_select(table_pos: Vector3) -> void:
 	var new_table_pos = table_pos
 	new_table_pos.y += .06
 	
-	var card: Node3D = instance_from_id(Global.selected_card_id)
+	var card: Node3D = find_child(card_name, true, false)
 	if not card:
 		return
 		
@@ -129,7 +136,7 @@ func on_table_select(table_pos: Vector3) -> void:
 		card.zone = Global.CARD_ZONE.TABLE
 
 	card.is_hovering = false
-	Global.selected_card_id = null
+	Global.selected_card_name = ""
 	get_tree().call_group("card", "render_outline")
 
 	var tween = get_tree().create_tween()
@@ -196,7 +203,7 @@ func _on_start_game_timer_timeout():
 
 
 func _on_table_zone_input_event(_camera: Node, event: InputEvent, pos: Vector3, _normal: Vector3, _shape_idx: int):
-	if event is InputEventMouseButton and Global.selected_card_id:
+	if event is InputEventMouseButton and Global.selected_card_name:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			on_table_select(pos)
+			on_table_select.rpc(pos, Global.selected_card_name)
 

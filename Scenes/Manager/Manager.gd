@@ -49,14 +49,18 @@ func on_create_server_pressed():
 func on_start_game():
 	create_world.rpc()
 
-@rpc
-func create_world(player1: int) -> void:
+@rpc("call_local")
+func create_world(player1: int, player2: int) -> void:
 	print("[%s] Create world called" % multiplayer.get_unique_id())
 	main_menu_ui.hide()
 	var world_scene = load("res://Scenes/World/World.tscn")
 	world = world_scene.instantiate()
-	world.name = str(my_id)
-	world.is_player_1 = my_id == player1
+	if my_id == player1:
+		world.player = world.PLAYER.ONE
+	elif my_id == player2:
+		world.player = world.PLAYER.TWO
+	else:
+		world.player = world.PLAYER.SERVER
 	add_child(world)
 	world.connect("intro_done", on_intro_done)
 	
@@ -86,8 +90,7 @@ func on_peer_connected_to_server(id: int) -> void:
 	print("[1] peers ", peers)
 	
 	if len(peers) == 2:
-		var player1 = peers[0]
-		create_world.rpc(player1)
+		create_world.rpc(peers[0], peers[1])
 
 func on_peer_disconnected_to_server(id: int) -> void:
 	print("[1] peer '%s' disconnected" % id)

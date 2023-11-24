@@ -37,6 +37,7 @@ func deck_init(random_arr_indices: PackedByteArray) -> void:
 
 		card.card_resource = card_resource
 		card.zone = Global.CARD_ZONE.DECK
+		card.name = "card-" + str(card_resource.id)
 
 		add_child(card)
 		card.rotation_degrees = Vector3(0, 90, -180)
