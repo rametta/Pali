@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/HUD/HUD.gd" id="1_iuu84"]
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("game_time_label")]
+[node name="HUD" type="Control" node_paths=PackedStringArray("title_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_iuu84")
-game_time_label = NodePath("Container/GameTimeLabel")
+title_label = NodePath("Container/Title")
 
 [node name="Container" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -23,11 +23,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GameTimeLabel" type="Label" parent="Container"]
+[node name="Title" type="Label" parent="Container"]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
-theme_override_colors/font_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
-theme_override_font_sizes/font_size = 100
-text = "3:33"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 60
+text = "It is your turn"
 horizontal_alignment = 1

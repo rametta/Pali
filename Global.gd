@@ -11,3 +11,5 @@ enum CARD_ZONE {
 }
 
 var selected_card_name: String = ""
+
+

@@ -104,14 +104,13 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "start_game_timer", "hud", "table_cards", "deck")]
+[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "deck")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
 top_camera = NodePath("TopCamera")
 my_hand = NodePath("CameraContainer/MyHand")
 opponent_hand = NodePath("CameraContainer/OpponentHand")
 cards_position_x_curve = SubResource("Curve_bllxl")
-start_game_timer = NodePath("StartGameTimer")
 hud = NodePath("HUD")
 table_cards = NodePath("TableZone/Cards")
 deck = NodePath("Deck")
@@ -161,12 +160,9 @@ libraries = {
 "": SubResource("AnimationLibrary_gkla7")
 }
 
-[node name="StartGameTimer" type="Timer" parent="."]
-
 [node name="TopCamera" type="Camera3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, -1.5246e-23, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 2.08165e-12, 3, 2.08165e-12)
 projection = 1
 size = 2.1
 
 [connection signal="input_event" from="TableZone" to="." method="_on_table_zone_input_event"]
-[connection signal="timeout" from="StartGameTimer" to="." method="_on_start_game_timer_timeout"]

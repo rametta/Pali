@@ -1,19 +1,14 @@
 extends Node3D
 
 signal intro_done()
-
-enum PLAYER {
-	ONE,
-	TWO,
-	SERVER
-}
+signal start_cards_tween_done()
+signal card_played()
 
 @export var camera: Camera3D
 @export var top_camera: Camera3D
 @export var my_hand: Node3D
 @export var opponent_hand: Node3D
 @export var cards_position_x_curve: Curve ## left/right position on table
-@export var start_game_timer: Timer
 @export var hud: Control
 @export var table_cards: Node3D
 @export var deck: Node3D
@@ -22,12 +17,9 @@ var player_1_hand: Node3D
 var player_2_hand: Node3D
 
 ## Set when world is created by the server
-var player: PLAYER = PLAYER.SERVER
+var player: GlobalServer.PLAYER = GlobalServer.PLAYER.SERVER
 
 const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
-
-const game_time_sec_default = 3 * 60
-var game_time_sec = game_time_sec_default
 
 var is_rendering_hand_animating = false
 var is_table_select_animating = false
@@ -37,19 +29,28 @@ func _ready():
 	hud.hide()
 	my_hand.hide()
 	opponent_hand.hide()
-	hud.update_game_time(game_time_sec)
 	
-	if player == PLAYER.ONE:
+	GlobalServer.on_game_status_change.connect(handle_game_status_change)
+	GlobalServer.on_player_turn_change.connect(handle_player_turn_change)
+	
+	if player == GlobalServer.PLAYER.ONE:
 		player_1_hand = my_hand
 		player_2_hand = opponent_hand
-	elif player == PLAYER.TWO:
+	elif player == GlobalServer.PLAYER.TWO:
 		player_2_hand = my_hand
 		player_1_hand = opponent_hand
 
+func handle_game_status_change(gs: GlobalServer.GAME_STATUS) -> void:
+	print("game status has changed to ", gs)
+	
+func handle_player_turn_change(pl: GlobalServer.PLAYER) -> void:
+	print("player turn has changed to ", pl)
+	hud.update_title(player == pl)
+
 func _input(event):
-	if game_time_sec == game_time_sec_default:
+	if GlobalServer.game_status != GlobalServer.GAME_STATUS.IN_PROGRESS:
 		return
-		
+
 	if event.is_action_pressed("zoom"):
 		if top_camera.current:
 			top_camera.current = false
@@ -89,13 +90,13 @@ func intro_anim_done() -> void:
 func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	deck.deck_init(random_arr_indices)
 	for card in deck.get_children():
-		card.connect("select", on_card_select.bind(card))
+		card.select.connect(on_card_select.bind(card))
 	
 	await start_hand_tweens(player_1_hand, Global.CARD_ZONE.PLAYER_1_HAND)
 	await start_hand_tweens(player_2_hand, Global.CARD_ZONE.PLAYER_2_HAND)
 
 	hud.show()
-	start_game_timer.start() # TODO: move to server
+	start_cards_tween_done.emit()
 
 func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	hand.show()
@@ -120,10 +121,10 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		await tween.finished
 
 func on_card_select(card: Node3D) -> void:
-	if player == PLAYER.ONE and card.zone != Global.CARD_ZONE.PLAYER_1_HAND:
+	if player == GlobalServer.PLAYER.ONE and card.zone != Global.CARD_ZONE.PLAYER_1_HAND:
 		return
 		
-	if player == PLAYER.TWO and card.zone != Global.CARD_ZONE.PLAYER_2_HAND:
+	if player == GlobalServer.PLAYER.TWO and card.zone != Global.CARD_ZONE.PLAYER_2_HAND:
 		return
 		
 	Global.selected_card_name = card.name
@@ -210,20 +211,14 @@ func render_hand(hand: Node3D) -> void:
 			await tween.finished
 		parallel.add_awaitable(awaitable)
 
-	parallel.connect("done", func(): is_rendering_hand_animating = false)
+	parallel.done.connect(func(): is_rendering_hand_animating = false)
 	parallel.start()
 
-func _on_start_game_timer_timeout():
-	game_time_sec -= 1
-	hud.update_game_time(game_time_sec)
-	
-	if game_time_sec <= 0:
-		start_game_timer.stop()
-		print("game over - show winner here")
-
-
 func _on_table_zone_input_event(_camera: Node, event: InputEvent, pos: Vector3, _normal: Vector3, _shape_idx: int):
-	if event is InputEventMouseButton and Global.selected_card_name:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton\
+		and event.button_index == MOUSE_BUTTON_LEFT\
+		and event.pressed\
+		and GlobalServer.player_turn == player\
+		and Global.selected_card_name:
+			card_played.emit()
 			on_table_select.rpc(pos, Global.selected_card_name)
-
