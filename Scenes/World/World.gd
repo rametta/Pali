@@ -41,11 +41,11 @@ var synced_player_turn: PLAYER = PLAYER.ONE
 var server_peers_intro_done: Array[int] = []
 var server_peers_start_cards_tween_done: Array[int] = []
 
-@rpc
+@rpc("call_local")
 func update_game_status(gs: GAME_STATUS) -> void:
 	synced_game_status = gs
 	
-@rpc
+@rpc("call_local")
 func update_player_turn(p: PLAYER) -> void:
 	synced_player_turn = p
 	hud.update_title(player == p)
@@ -96,6 +96,11 @@ func _ready():
 	elif player == PLAYER.TWO:
 		player_2_hand = my_hand
 		player_1_hand = opponent_hand
+	elif player == PLAYER.SERVER:
+		player_1_hand = my_hand
+		player_2_hand = opponent_hand
+		top_camera.current = true
+		camera.current = false
 
 func _input(event):
 	if synced_game_status != GAME_STATUS.IN_PROGRESS:
@@ -137,7 +142,7 @@ func intro_anim_done() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	intro_done.rpc()
 
-@rpc
+@rpc("call_local")
 func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	deck.deck_init(random_arr_indices)
 	for card in deck.get_children():
@@ -145,9 +150,10 @@ func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	
 	await start_hand_tweens(player_1_hand, Global.CARD_ZONE.PLAYER_1_HAND)
 	await start_hand_tweens(player_2_hand, Global.CARD_ZONE.PLAYER_2_HAND)
-
-	hud.show()
-	start_cards_tween_done.rpc()
+	
+	if not multiplayer.is_server():
+		hud.show()
+		start_cards_tween_done.rpc()
 
 func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	hand.show()

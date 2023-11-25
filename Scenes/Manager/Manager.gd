@@ -4,6 +4,7 @@ extends Node
 
 var enet = ENetMultiplayerPeer.new()
 var peers: Array[int] = []
+var peer_name_map: Dictionary = {} ## Dictionary<peer_id:int, name:String> # TODO implement this
 var my_id: int = 0
 var world: Node3D
 
