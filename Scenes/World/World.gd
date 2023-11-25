@@ -49,10 +49,6 @@ func update_game_status(gs: GAME_STATUS) -> void:
 func update_player_turn(p: PLAYER) -> void:
 	synced_player_turn = p
 	hud.update_title(player == p)
-
-@rpc
-func start_tweens(random_arr_indices: PackedByteArray) -> void:
-	start_cards_tween(random_arr_indices)
 	
 @rpc("any_peer")
 func intro_done() -> void:
@@ -66,7 +62,7 @@ func intro_done() -> void:
 		arr.shuffle()
 		var packed = PackedByteArray(arr)
 		
-		start_tweens.rpc(packed)
+		start_cards_tween.rpc(packed)
 		
 @rpc("any_peer")
 func start_cards_tween_done():
@@ -141,6 +137,7 @@ func intro_anim_done() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	intro_done.rpc()
 
+@rpc
 func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	deck.deck_init(random_arr_indices)
 	for card in deck.get_children():

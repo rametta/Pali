@@ -4,8 +4,6 @@ extends Node
 
 var enet = ENetMultiplayerPeer.new()
 var peers: Array[int] = []
-var peers_intro_done: Array[int] = []
-var peers_start_cards_tween_done: Array[int] = []
 var my_id: int = 0
 var world: Node3D
 
@@ -46,9 +44,6 @@ func on_create_server_pressed():
 	multiplayer.multiplayer_peer = enet
 	my_id = enet.get_unique_id()
 	main_menu_ui.hide()
-
-func on_start_game():
-	create_world.rpc()
 
 @rpc("call_local")
 func create_world(player1: int, player2: int) -> void:
