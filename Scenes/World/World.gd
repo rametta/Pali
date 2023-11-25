@@ -1,8 +1,18 @@
 extends Node3D
 
-signal intro_done()
-signal start_cards_tween_done()
-signal card_played()
+enum GAME_STATUS {
+	PRE_GAME,
+	IN_PROGRESS,
+	POST_GAME
+}
+
+enum PLAYER {
+	ONE,
+	TWO,
+	SERVER
+}
+
+const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
 
 @export var camera: Camera3D
 @export var top_camera: Camera3D
@@ -13,42 +23,86 @@ signal card_played()
 @export var table_cards: Node3D
 @export var deck: Node3D
 
-var player_1_hand: Node3D
-var player_2_hand: Node3D
+var player_1_hand: Node3D ## either my_hand or opponent_hand
+var player_2_hand: Node3D ## either my_hand or opponent_hand
 
-## Set when world is created by the server
-var player: GlobalServer.PLAYER = GlobalServer.PLAYER.SERVER
-
-const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
+var player: PLAYER = PLAYER.SERVER ## Set when world is created by the server
 
 var is_rendering_hand_animating = false
 var is_table_select_animating = false
 
+## Var prepended with "synced" are available on
+## all clients
+var synced_game_status: GAME_STATUS = GAME_STATUS.PRE_GAME
+var synced_player_turn: PLAYER = PLAYER.ONE
+
+## Vars prepended with "server" are only available
+## on the server
+var server_peers_intro_done: Array[int] = []
+var server_peers_start_cards_tween_done: Array[int] = []
+
+@rpc
+func update_game_status(gs: GAME_STATUS) -> void:
+	synced_game_status = gs
+	
+@rpc
+func update_player_turn(p: PLAYER) -> void:
+	synced_player_turn = p
+	hud.update_title(player == p)
+
+@rpc
+func start_tweens(random_arr_indices: PackedByteArray) -> void:
+	start_cards_tween(random_arr_indices)
+	
+@rpc("any_peer")
+func intro_done() -> void:
+	if not multiplayer.is_server(): return
+	
+	var id = multiplayer.get_remote_sender_id()
+	server_peers_intro_done.append(id)
+	if len(server_peers_intro_done) == 2:
+		
+		var arr = range(25) # 25 is length of cards in deck
+		arr.shuffle()
+		var packed = PackedByteArray(arr)
+		
+		start_tweens.rpc(packed)
+		
+@rpc("any_peer")
+func start_cards_tween_done():
+	if not multiplayer.is_server(): return
+	
+	var id = multiplayer.get_remote_sender_id()
+	server_peers_start_cards_tween_done.append(id)
+	if len(server_peers_start_cards_tween_done) == 2:
+		print("[1] Setting game status is now IN_PROGRESS")
+		update_game_status.rpc(GAME_STATUS.IN_PROGRESS)
+		update_player_turn.rpc(PLAYER.ONE)
+		
+@rpc("any_peer")
+func card_played() -> void:
+	if not multiplayer.is_server(): return
+	
+	if synced_player_turn == PLAYER.ONE:
+		update_player_turn.rpc(PLAYER.TWO)
+	elif synced_player_turn == PLAYER.TWO:
+		update_player_turn.rpc(PLAYER.ONE)
+		
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	hud.hide()
 	my_hand.hide()
 	opponent_hand.hide()
 	
-	GlobalServer.on_game_status_change.connect(handle_game_status_change)
-	GlobalServer.on_player_turn_change.connect(handle_player_turn_change)
-	
-	if player == GlobalServer.PLAYER.ONE:
+	if player == PLAYER.ONE:
 		player_1_hand = my_hand
 		player_2_hand = opponent_hand
-	elif player == GlobalServer.PLAYER.TWO:
+	elif player == PLAYER.TWO:
 		player_2_hand = my_hand
 		player_1_hand = opponent_hand
 
-func handle_game_status_change(gs: GlobalServer.GAME_STATUS) -> void:
-	print("game status has changed to ", gs)
-	
-func handle_player_turn_change(pl: GlobalServer.PLAYER) -> void:
-	print("player turn has changed to ", pl)
-	hud.update_title(player == pl)
-
 func _input(event):
-	if GlobalServer.game_status != GlobalServer.GAME_STATUS.IN_PROGRESS:
+	if synced_game_status != GAME_STATUS.IN_PROGRESS:
 		return
 
 	if event.is_action_pressed("zoom"):
@@ -85,7 +139,7 @@ func _input(event):
 
 func intro_anim_done() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	intro_done.emit()
+	intro_done.rpc()
 
 func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	deck.deck_init(random_arr_indices)
@@ -96,7 +150,7 @@ func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	await start_hand_tweens(player_2_hand, Global.CARD_ZONE.PLAYER_2_HAND)
 
 	hud.show()
-	start_cards_tween_done.emit()
+	start_cards_tween_done.rpc()
 
 func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	hand.show()
@@ -121,10 +175,10 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		await tween.finished
 
 func on_card_select(card: Node3D) -> void:
-	if player == GlobalServer.PLAYER.ONE and card.zone != Global.CARD_ZONE.PLAYER_1_HAND:
+	if player == PLAYER.ONE and card.zone != Global.CARD_ZONE.PLAYER_1_HAND:
 		return
 		
-	if player == GlobalServer.PLAYER.TWO and card.zone != Global.CARD_ZONE.PLAYER_2_HAND:
+	if player == PLAYER.TWO and card.zone != Global.CARD_ZONE.PLAYER_2_HAND:
 		return
 		
 	Global.selected_card_name = card.name
@@ -132,6 +186,7 @@ func on_card_select(card: Node3D) -> void:
 
 @rpc("call_local", "any_peer")
 func on_table_select(table_pos: Vector3, card_name: String) -> void:
+	## TODO: add server validation here
 	if is_rendering_hand_animating || is_table_select_animating:
 		print("is_rendering_hand_animating or is_table_select_animating is true. can not select table")
 		return
@@ -213,12 +268,12 @@ func render_hand(hand: Node3D) -> void:
 
 	parallel.done.connect(func(): is_rendering_hand_animating = false)
 	parallel.start()
-
+		
 func _on_table_zone_input_event(_camera: Node, event: InputEvent, pos: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton\
 		and event.button_index == MOUSE_BUTTON_LEFT\
 		and event.pressed\
-		and GlobalServer.player_turn == player\
+		and synced_player_turn == player\
 		and Global.selected_card_name:
-			card_played.emit()
+			card_played.rpc()
 			on_table_select.rpc(pos, Global.selected_card_name)

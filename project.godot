@@ -20,7 +20,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://Global.gd"
-GlobalServer="*res://GlobalServer.gd"
 
 [editor_plugins]
 

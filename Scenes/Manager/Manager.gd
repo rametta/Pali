@@ -57,60 +57,12 @@ func create_world(player1: int, player2: int) -> void:
 	var world_scene = load("res://Scenes/World/World.tscn")
 	world = world_scene.instantiate()
 	if my_id == player1:
-		world.player = GlobalServer.PLAYER.ONE
+		world.player = world.PLAYER.ONE
 	elif my_id == player2:
-		world.player = GlobalServer.PLAYER.TWO
+		world.player = world.PLAYER.TWO
 	else:
-		world.player = GlobalServer.PLAYER.SERVER
+		world.player = world.PLAYER.SERVER
 	add_child(world)
-	world.intro_done.connect(on_intro_done)
-	world.start_cards_tween_done.connect(on_start_cards_tween_done)
-	world.card_played.connect(on_card_played)
-	
-@rpc("any_peer")
-func on_card_played_server(id: int) -> void:
-	if not multiplayer.is_server(): return
-	
-	if id == peers[0]:
-		GlobalServer.update_player_turn.rpc(GlobalServer.PLAYER.TWO)
-	elif id == peers[1]:
-		GlobalServer.update_player_turn.rpc(GlobalServer.PLAYER.ONE)
-	
-func on_card_played() -> void:
-	on_card_played_server.rpc(my_id)
-	
-@rpc
-func start_tweens(random_arr_indices: PackedByteArray):
-	world.start_cards_tween(random_arr_indices)
-	
-@rpc("any_peer")
-func on_intro_done_server(id: int):
-	if not multiplayer.is_server(): return
-	
-	peers_intro_done.append(id)
-	if len(peers_intro_done) == 2:
-		
-		var arr = range(25) # 25 is length of cards in deck
-		arr.shuffle()
-		var packed = PackedByteArray(arr)
-		
-		start_tweens.rpc(packed)
-	
-func on_intro_done():
-	on_intro_done_server.rpc(my_id)
-	
-@rpc("any_peer")
-func on_start_cards_tween_done_server(id: int):
-	if not multiplayer.is_server(): return
-	
-	peers_start_cards_tween_done.append(id)
-	if len(peers_start_cards_tween_done) == 2:
-		print("[1] Setting game status is now IN_PROGRESS")
-		GlobalServer.update_game_status.rpc(GlobalServer.GAME_STATUS.IN_PROGRESS)
-		GlobalServer.update_player_turn.rpc(GlobalServer.PLAYER.ONE)
-		
-func on_start_cards_tween_done():
-	on_start_cards_tween_done_server.rpc(my_id)
 
 func on_peer_connected_to_server(id: int) -> void:
 	print("[1] peer '%s' connected" % id)
