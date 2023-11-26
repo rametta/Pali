@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://i1agm2a8aa6q"]
+[gd_scene load_steps=12 format=3 uid="uid://i1agm2a8aa6q"]
 
 [ext_resource type="Script" path="res://Scenes/World/World.gd" id="1_3ilso"]
 [ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/World/House.tscn" id="1_hn20s"]
@@ -25,9 +25,6 @@ sky = SubResource("Sky_rgowl")
 sky_custom_fov = 91.8
 tonemap_mode = 2
 fog_light_color = Color(0.862745, 0.313726, 0.611765, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_oax4d"]
-size = Vector3(1.777, 0.117239, 2.83921)
 
 [sub_resource type="Animation" id="Animation_sf570"]
 resource_name = "GameStart"
@@ -104,7 +101,7 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "deck")]
+[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "dropzones", "deck")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
 top_camera = NodePath("TopCamera")
@@ -113,6 +110,7 @@ opponent_hand = NodePath("CameraContainer/OpponentHand")
 cards_position_x_curve = SubResource("Curve_bllxl")
 hud = NodePath("HUD")
 table_cards = NodePath("TableZone/Cards")
+dropzones = NodePath("TableZone/Dropzones")
 deck = NodePath("Deck")
 
 [node name="HUD" parent="." instance=ExtResource("2_gsrr0")]
@@ -126,17 +124,16 @@ shadow_enabled = true
 
 [node name="House" parent="." instance=ExtResource("1_hn20s")]
 
-[node name="TableZone" type="Area3D" parent="."]
+[node name="TableZone" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0126, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TableZone"]
-transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, -0.0540603, 0.169023)
-shape = SubResource("BoxShape3D_oax4d")
+[node name="Dropzones" type="Node3D" parent="TableZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.191365)
 
 [node name="Cards" type="Node3D" parent="TableZone"]
 
 [node name="Deck" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, -1.453)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, -1.51932)
 script = ExtResource("4_vhw5x")
 
 [node name="CameraContainer" type="Node3D" parent="."]
@@ -164,5 +161,3 @@ libraries = {
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, -1.5246e-23, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 2.08165e-12, 3, 2.08165e-12)
 projection = 1
 size = 2.1
-
-[connection signal="input_event" from="TableZone" to="." method="_on_table_zone_input_event"]

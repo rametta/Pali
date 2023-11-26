@@ -16,6 +16,8 @@ const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
 const SAME_CATEGORY_POINTS: int = 2
 const SAME_TAG_POINTS: int = 1
 
+const dropzone_scene = preload("res://Scenes/Dropzone/Dropzone.tscn")
+
 @export var camera: Camera3D
 @export var top_camera: Camera3D
 @export var my_hand: Node3D
@@ -23,6 +25,7 @@ const SAME_TAG_POINTS: int = 1
 @export var cards_position_x_curve: Curve ## left/right position on table
 @export var hud: Control
 @export var table_cards: Node3D
+@export var dropzones: Node3D
 @export var deck: Node3D
 
 var player_1_hand: Node3D ## either my_hand or opponent_hand
@@ -107,6 +110,27 @@ func _ready():
 		player_2_hand = opponent_hand
 		top_camera.current = true
 		camera.current = false
+		
+	create_dropzones()
+	
+func create_dropzones() -> void:
+	for i in range(3):
+		for j in range(8):
+			var dropzone = dropzone_scene.instantiate()
+			dropzone.position = Vector3(-0.608 + (.584 * float(i)), 0, 1.313 - (.377 * float(j)))
+			dropzone.input_event.connect(on_dropzone_input_event.bind(dropzone))
+			dropzones.add_child(dropzone)
+
+func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _normal: Vector3, _shape: int, dropzone: Area3D) -> void:
+	if event is InputEventMouseButton\
+		and event.button_index == MOUSE_BUTTON_LEFT\
+		and event.pressed\
+		and synced_player_turn == player\
+		and Global.selected_card_name\
+		and not is_rendering_hand_animating\
+		and not is_table_select_animating:
+			card_played.rpc()
+			on_table_select.rpc(dropzone.global_position, Global.selected_card_name)
 
 func _input(event):
 	if synced_game_status != GAME_STATUS.IN_PROGRESS:
@@ -198,9 +222,6 @@ func on_card_select(card: Node3D) -> void:
 @rpc("call_local", "any_peer")
 func on_table_select(table_pos: Vector3, card_name: String) -> void:
 	## TODO: add server validation here
-	var new_table_pos = table_pos
-	new_table_pos.y += .06
-	
 	var card: Node3D = find_child(card_name, true, false)
 	if not card:
 		return
@@ -223,7 +244,7 @@ func on_table_select(table_pos: Vector3, card_name: String) -> void:
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "global_rotation_degrees", Vector3(0, 90, 0), .5)
-	tween.parallel().tween_property(card, "global_position", new_table_pos, .5).set_trans(Tween.TRANS_QUAD)
+	tween.parallel().tween_property(card, "global_position", table_pos, .5).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
 	is_table_select_animating = false
 
@@ -310,14 +331,3 @@ func render_hand(hand: Node3D) -> void:
 
 	parallel.done.connect(func(): is_rendering_hand_animating = false)
 	parallel.start()
-		
-func _on_table_zone_input_event(_camera: Node, event: InputEvent, pos: Vector3, _normal: Vector3, _shape_idx: int):
-	if event is InputEventMouseButton\
-		and event.button_index == MOUSE_BUTTON_LEFT\
-		and event.pressed\
-		and synced_player_turn == player\
-		and Global.selected_card_name\
-		and not is_rendering_hand_animating\
-		and not is_table_select_animating:
-			card_played.rpc()
-			on_table_select.rpc(pos, Global.selected_card_name)
