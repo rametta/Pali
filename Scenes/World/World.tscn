@@ -128,12 +128,12 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0126, 0)
 
 [node name="Dropzones" type="Node3D" parent="TableZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.191365)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0458603, 0, 0.191365)
 
 [node name="Cards" type="Node3D" parent="TableZone"]
 
 [node name="Deck" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, -1.51932)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, -1.52433)
 script = ExtResource("4_vhw5x")
 
 [node name="CameraContainer" type="Node3D" parent="."]

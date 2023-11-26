@@ -115,10 +115,11 @@ func _ready():
 	
 func create_dropzones() -> void:
 	for i in range(3):
-		for j in range(8):
+		for j in range(7):
 			var dropzone = dropzone_scene.instantiate()
-			dropzone.position = Vector3(-0.608 + (.584 * float(i)), 0, 1.313 - (.377 * float(j)))
+			dropzone.position = Vector3(-0.608 + (.584 * float(i)), 0, 1.313 - (.43 * float(j)))
 			dropzone.input_event.connect(on_dropzone_input_event.bind(dropzone))
+			dropzone.name = &"dz-%d-%d" % [i, j]
 			dropzones.add_child(dropzone)
 
 func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _normal: Vector3, _shape: int, dropzone: Area3D) -> void:
@@ -130,7 +131,7 @@ func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _n
 		and not is_rendering_hand_animating\
 		and not is_table_select_animating:
 			card_played.rpc()
-			on_table_select.rpc(dropzone.global_position, Global.selected_card_name)
+			on_table_select.rpc(dropzone.name, Global.selected_card_name)
 
 func _input(event):
 	if synced_game_status != GAME_STATUS.IN_PROGRESS:
@@ -210,21 +211,30 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		await tween.finished
 
 func on_card_select(card: Node3D) -> void:
-	if player == PLAYER.ONE and card.zone != Global.CARD_ZONE.PLAYER_1_HAND:
+	if card.zone == Global.CARD_ZONE.DECK:
 		return
 		
-	if player == PLAYER.TWO and card.zone != Global.CARD_ZONE.PLAYER_2_HAND:
+	if player == PLAYER.ONE and card.zone == Global.CARD_ZONE.PLAYER_2_HAND:
+		return
+		
+	if player == PLAYER.TWO and card.zone == Global.CARD_ZONE.PLAYER_1_HAND:
 		return
 		
 	Global.selected_card_name = card.name
 	get_tree().call_group("card", "render_outline")
 
 @rpc("call_local", "any_peer")
-func on_table_select(table_pos: Vector3, card_name: String) -> void:
+func on_table_select(dz_name: StringName, card_name: StringName) -> void:
 	## TODO: add server validation here
-	var card: Node3D = find_child(card_name, true, false)
+	var card = find_child(card_name, true, false)
 	if not card:
 		return
+		
+	var dz = dropzones.find_child(dz_name, true, false)
+	if not dz:
+		return
+		
+	dz.input_ray_pickable = false
 		
 	var old_zone = card.zone
 	is_table_select_animating = true
@@ -244,7 +254,7 @@ func on_table_select(table_pos: Vector3, card_name: String) -> void:
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "global_rotation_degrees", Vector3(0, 90, 0), .5)
-	tween.parallel().tween_property(card, "global_position", table_pos, .5).set_trans(Tween.TRANS_QUAD)
+	tween.parallel().tween_property(card, "global_position", dz.global_position, .5).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
 	is_table_select_animating = false
 
