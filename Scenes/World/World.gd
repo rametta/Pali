@@ -13,6 +13,8 @@ enum PLAYER {
 }
 
 const CAMERA_PARRALAX_SENSITIVITY: int = 200 ## Higher is slower
+const SAME_CATEGORY_POINTS: int = 2
+const SAME_TAG_POINTS: int = 1
 
 @export var camera: Camera3D
 @export var top_camera: Camera3D
@@ -243,19 +245,32 @@ func update_scores(p1_score: int, p2_score: int) -> void:
 @rpc("any_peer")
 func recalculate_scores() -> void:
 	if not multiplayer.is_server(): return
-	
-	var p1_score = 0
-	var p2_score = 0
-	
-	for card in my_hand.get_children():
-		p1_score += card.card_resource.value
-		# TODO: check categories, tags and relations
-		
-	for card in opponent_hand.get_children():
-		p2_score += card.card_resource.value
-		# TODO: check categories, tags and relations
-		
+	var p1_score = get_hand_score(player_1_hand)
+	var p2_score = get_hand_score(player_2_hand)
 	update_scores.rpc(p1_score, p2_score)
+
+func get_hand_score(hand: Node3D) -> int:
+	var resources = hand.get_children().map(func (child): return child.card_resource)
+	var score = 0
+	
+	for card in resources:
+		score += card.value
+		for c in resources:
+			if c.id == card.id:
+				continue
+				
+			if c.category == card.category:
+				score += SAME_CATEGORY_POINTS
+				
+			for tag in card.tags:
+				if tag in c.tags:
+					score += SAME_TAG_POINTS
+					
+			for relation in card.relations:
+				if relation.card_id == c.id:
+					score += relation.value
+					
+	return score
 
 func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	if deck.get_child_count() == 0:
