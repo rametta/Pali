@@ -4,7 +4,7 @@ extends Node
 
 var enet = ENetMultiplayerPeer.new()
 var peers: Array[int] = []
-var peer_name_map: Dictionary = {} ## Dictionary<peer_id:int, name:String> # TODO implement this
+var peer_name_map: Dictionary = {} ## Dictionary<peer_id:int, name:String>
 var my_id: int = 0
 var world: Node3D
 
@@ -16,8 +16,7 @@ func _ready() -> void:
 		main_menu_ui.create_server_pressed.connect(on_create_server_pressed)
 		main_menu_ui.update_status_label("")
 		
-func on_join_server_pressed(display_name: String):
-	print("Join server btn pressed with name %s" % display_name)
+func on_join_server_pressed():
 	print("Creating client")
 	var err = enet.create_client(Global.SERVER_ADDRESS, Global.PORT)
 	if err:
@@ -47,11 +46,27 @@ func on_create_server_pressed():
 	main_menu_ui.hide()
 
 @rpc("call_local")
+func sync_peer_name_map(map: Dictionary) -> void:
+	world.synced_peer_name_map = map
+
+@rpc("any_peer")
+func send_display_name(display_name: String) -> void:
+	if not multiplayer.is_server(): return
+	
+	var id = multiplayer.get_remote_sender_id()
+	peer_name_map[id] = display_name
+	
+	if peer_name_map.size() == 2:
+		sync_peer_name_map.rpc(peer_name_map)
+
+@rpc("call_local")
 func create_world(player1: int, player2: int) -> void:
 	print("[%s] Create world called" % multiplayer.get_unique_id())
 	main_menu_ui.hide()
 	var world_scene = load("res://Scenes/World/World.tscn")
 	world = world_scene.instantiate()
+	world.player_1_id = player1
+	world.player_2_id = player2
 	if my_id == player1:
 		world.player = world.PLAYER.ONE
 	elif my_id == player2:
@@ -82,6 +97,7 @@ func on_peer_disconnected(id: int) -> void:
 func on_connected_to_server() -> void:
 	print("[%s] on_connected_to_server called" % my_id)
 	main_menu_ui.update_status_label("Connected to server. Waiting for other player...")
+	send_display_name.rpc(main_menu_ui.name_input.text)
 	
 func on_connection_failed() -> void:
 	print("[%s] on_connection_failed called" % my_id)

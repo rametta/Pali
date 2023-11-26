@@ -27,6 +27,8 @@ var player_1_hand: Node3D ## either my_hand or opponent_hand
 var player_2_hand: Node3D ## either my_hand or opponent_hand
 
 var player: PLAYER = PLAYER.SERVER ## Set when world is created by the server
+var player_1_id: int
+var player_2_id: int
 
 var is_rendering_hand_animating = false
 var is_table_select_animating = false
@@ -35,6 +37,7 @@ var is_table_select_animating = false
 ## all clients
 var synced_game_status: GAME_STATUS = GAME_STATUS.PRE_GAME
 var synced_player_turn: PLAYER = PLAYER.ONE
+var synced_peer_name_map: Dictionary = {}
 
 ## Vars prepended with "server" are only available
 ## on the server
@@ -152,6 +155,8 @@ func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 	await start_hand_tweens(player_2_hand, Global.CARD_ZONE.PLAYER_2_HAND)
 	
 	if not multiplayer.is_server():
+		hud.update_player_1_label(synced_peer_name_map[player_1_id], 0)
+		hud.update_player_2_label(synced_peer_name_map[player_2_id], 0)
 		hud.show()
 		start_cards_tween_done.rpc()
 
