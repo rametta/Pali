@@ -218,7 +218,6 @@ func on_table_select(table_pos: Vector3, card_name: String) -> void:
 		card.global_rotation = rot
 		card.zone = Global.CARD_ZONE.TABLE
 
-	card.is_hovering = false
 	Global.selected_card_name = ""
 	get_tree().call_group("card", "render_outline")
 

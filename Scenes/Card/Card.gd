@@ -7,20 +7,11 @@ signal select()
 @export var card_mesh: MeshInstance3D
 @export var card_resource: CardResource
 
-var is_hovering = false
 var zone: Global.CARD_ZONE = Global.CARD_ZONE.DECK
 
 func _ready():
 	card_mesh.material_override.albedo_color = card_resource.color
 	plane_mesh.material_override.albedo_texture = card_resource.texture
-	render_outline()
-
-func _on_mouse_entered():
-	is_hovering = true
-	render_outline()
-
-func _on_mouse_exited():
-	is_hovering = false
 	render_outline()
 
 func _on_input_event(_camera, event: InputEvent, _position, _normal, _shape_idx):
@@ -29,7 +20,7 @@ func _on_input_event(_camera, event: InputEvent, _position, _normal, _shape_idx)
 			select.emit()
 			
 func render_outline() -> void:
-	if is_hovering or Global.selected_card_name == name:
+	if Global.selected_card_name == name:
 		outline_mesh.show()
 	else:
 		outline_mesh.hide()

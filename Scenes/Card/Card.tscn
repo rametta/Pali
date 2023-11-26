@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://devwxftahvhgy"]
 
-[ext_resource type="Script" path="res://Scenes/Card/Card3.gd" id="2_ilvsa"]
+[ext_resource type="Script" path="res://Scenes/Card/Card.gd" id="1_l8dkh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_085qu"]
 resource_local_to_scene = true
@@ -110,8 +110,8 @@ shadow_mesh = SubResource("ArrayMesh_vjjdg")
 [sub_resource type="BoxShape3D" id="BoxShape3D_1yfug"]
 size = Vector3(0.41414, 0.023, 0.533575)
 
-[node name="Area3D" type="Area3D" node_paths=PackedStringArray("plane_mesh", "outline_mesh", "card_mesh")]
-script = ExtResource("2_ilvsa")
+[node name="Card" type="Area3D" node_paths=PackedStringArray("plane_mesh", "outline_mesh", "card_mesh") groups=["card"]]
+script = ExtResource("1_l8dkh")
 plane_mesh = NodePath("Plane")
 outline_mesh = NodePath("Outline")
 card_mesh = NodePath("Card")
@@ -138,5 +138,3 @@ skeleton = NodePath("")
 shape = SubResource("BoxShape3D_1yfug")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
