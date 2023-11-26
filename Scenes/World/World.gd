@@ -77,6 +77,7 @@ func start_cards_tween_done():
 		print("[1] Setting game status is now IN_PROGRESS")
 		update_game_status.rpc(GAME_STATUS.IN_PROGRESS)
 		update_player_turn.rpc(PLAYER.ONE)
+		recalculate_scores()
 		
 @rpc("any_peer")
 func card_played() -> void:
@@ -195,10 +196,6 @@ func on_card_select(card: Node3D) -> void:
 @rpc("call_local", "any_peer")
 func on_table_select(table_pos: Vector3, card_name: String) -> void:
 	## TODO: add server validation here
-	if is_rendering_hand_animating || is_table_select_animating:
-		print("is_rendering_hand_animating or is_table_select_animating is true. can not select table")
-		return
-		
 	var new_table_pos = table_pos
 	new_table_pos.y += .06
 	
@@ -230,12 +227,35 @@ func on_table_select(table_pos: Vector3, card_name: String) -> void:
 	is_table_select_animating = false
 
 	if not is_already_on_table:
+		recalculate_scores.rpc()
 		if old_zone == Global.CARD_ZONE.PLAYER_1_HAND:
 			add_card_to_hand(player_1_hand, old_zone)
 			render_hand(player_1_hand)
 		elif old_zone == Global.CARD_ZONE.PLAYER_2_HAND:
 			add_card_to_hand(player_2_hand, old_zone)
 			render_hand(player_2_hand)
+
+@rpc
+func update_scores(p1_score: int, p2_score: int) -> void:
+	hud.update_player_1_label(synced_peer_name_map[player_1_id], p1_score)
+	hud.update_player_2_label(synced_peer_name_map[player_2_id], p2_score)
+
+@rpc("any_peer")
+func recalculate_scores() -> void:
+	if not multiplayer.is_server(): return
+	
+	var p1_score = 0
+	var p2_score = 0
+	
+	for card in my_hand.get_children():
+		p1_score += card.card_resource.value
+		# TODO: check categories, tags and relations
+		
+	for card in opponent_hand.get_children():
+		p2_score += card.card_resource.value
+		# TODO: check categories, tags and relations
+		
+	update_scores.rpc(p1_score, p2_score)
 
 func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	if deck.get_child_count() == 0:
@@ -282,6 +302,8 @@ func _on_table_zone_input_event(_camera: Node, event: InputEvent, pos: Vector3, 
 		and event.button_index == MOUSE_BUTTON_LEFT\
 		and event.pressed\
 		and synced_player_turn == player\
-		and Global.selected_card_name:
+		and Global.selected_card_name\
+		and not is_rendering_hand_animating\
+		and not is_table_select_animating:
 			card_played.rpc()
 			on_table_select.rpc(pos, Global.selected_card_name)
