@@ -27,6 +27,8 @@ const dropzone_scene = preload("res://Scenes/Dropzone/Dropzone.tscn")
 @export var table_cards: Node3D
 @export var dropzones: Node3D
 @export var deck: Node3D
+@export var card_player: AudioStreamPlayer
+@export var card_player_2: AudioStreamPlayer
 
 var player_1_hand: Node3D ## either my_hand or opponent_hand
 var player_2_hand: Node3D ## either my_hand or opponent_hand
@@ -208,6 +210,7 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "position", poss, .2)
 		tween.parallel().tween_property(card, "rotation", rott, .2)
+		card_player_2.play()
 		await tween.finished
 
 func on_card_select(card: Node3D) -> void:
@@ -252,6 +255,7 @@ func on_table_select(dz_name: StringName, card_name: StringName) -> void:
 	Global.selected_card_name = ""
 	get_tree().call_group("card", "render_outline")
 
+	card_player.play()
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "global_rotation_degrees", Vector3(0, 90, 0), .5)
 	tween.parallel().tween_property(card, "global_position", dz.global_position, .5).set_trans(Tween.TRANS_QUAD)

@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://i1agm2a8aa6q"]
+[gd_scene load_steps=14 format=3 uid="uid://i1agm2a8aa6q"]
 
 [ext_resource type="Script" path="res://Scenes/World/World.gd" id="1_3ilso"]
 [ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/World/House.tscn" id="1_hn20s"]
 [ext_resource type="PackedScene" uid="uid://c1vg7u6rg0yd6" path="res://Scenes/HUD/HUD.tscn" id="2_gsrr0"]
 [ext_resource type="Script" path="res://Scenes/World/Deck.gd" id="4_vhw5x"]
+[ext_resource type="AudioStream" uid="uid://dyyon0ih5dv4a" path="res://Sounds/card-flip.wav" id="5_hrq6v"]
+[ext_resource type="AudioStream" uid="uid://bgag8ucvs0as0" path="res://Sounds/card-flip-2.wav" id="6_5vpep"]
 
 [sub_resource type="Curve" id="Curve_bllxl"]
 min_value = -1.0
@@ -101,7 +103,7 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "dropzones", "deck")]
+[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "dropzones", "deck", "card_player", "card_player_2")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
 top_camera = NodePath("TopCamera")
@@ -112,6 +114,8 @@ hud = NodePath("HUD")
 table_cards = NodePath("TableZone/Cards")
 dropzones = NodePath("TableZone/Dropzones")
 deck = NodePath("Deck")
+card_player = NodePath("CardFlipPlayer")
+card_player_2 = NodePath("CardFlipPlayer2")
 
 [node name="HUD" parent="." instance=ExtResource("2_gsrr0")]
 
@@ -161,3 +165,9 @@ libraries = {
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, -1.5246e-23, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 2.08165e-12, 3, 2.08165e-12)
 projection = 1
 size = 2.1
+
+[node name="CardFlipPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_hrq6v")
+
+[node name="CardFlipPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_5vpep")
