@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1vg7u6rg0yd6"]
+[gd_scene load_steps=3 format=3 uid="uid://c1vg7u6rg0yd6"]
 
 [ext_resource type="Script" path="res://Scenes/HUD/HUD.gd" id="1_iuu84"]
+[ext_resource type="Theme" uid="uid://di0p2ll65b4pb" path="res://PaliTheme.tres" id="1_o1klu"]
 
 [node name="HUD" type="Control" node_paths=PackedStringArray("title_label", "player_1_label", "player_2_label")]
 layout_mode = 3
@@ -12,6 +13,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
+theme = ExtResource("1_o1klu")
 script = ExtResource("1_iuu84")
 title_label = NodePath("Container/Title")
 player_1_label = NodePath("Container/HBoxContainer/MarginContainer/Player1NameScore")
@@ -29,9 +31,6 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 60
 text = "It is your turn"
 horizontal_alignment = 1
@@ -51,9 +50,7 @@ theme_override_constants/margin_bottom = 10
 [node name="Player1NameScore" type="Label" parent="Container/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 43
 text = "Bobby: 0
 "
 
@@ -68,8 +65,6 @@ theme_override_constants/margin_bottom = 10
 [node name="Player2NameScore" type="Label" parent="Container/HBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 43
 text = "Bobby: 0"
 horizontal_alignment = 2

@@ -91,7 +91,7 @@ text = "Create Server (debug only)"
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_font_sizes/font_size = 20
-text = "Pali - A Game by Jason Rametta"
+text = "Pali - A card game by Jason Rametta"
 horizontal_alignment = 1
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]

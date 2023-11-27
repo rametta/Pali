@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://d0n1lcou7fevi"]
+[gd_scene load_steps=3 format=3 uid="uid://d0n1lcou7fevi"]
+
+[ext_resource type="Texture2D" uid="uid://bur5h385q2kum" path="res://Scenes/SwitchCardsUI/Background.svg" id="1_awhhv"]
+[ext_resource type="Theme" uid="uid://di0p2ll65b4pb" path="res://PaliTheme.tres" id="1_e5jfy"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -7,18 +10,70 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -125.0
-offset_right = 200.0
-offset_bottom = 125.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.956863, 0.764706, 0.898039, 0.780392)
+theme = ExtResource("1_e5jfy")
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 150
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer"]
+layout_mode = 2
+ratio = 1.5
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer/AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_awhhv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+autowrap_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Button2" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Button" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Switch"
