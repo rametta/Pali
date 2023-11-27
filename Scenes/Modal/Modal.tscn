@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://d0n1lcou7fevi"]
+[gd_scene load_steps=4 format=3 uid="uid://d0n1lcou7fevi"]
 
-[ext_resource type="Texture2D" uid="uid://bur5h385q2kum" path="res://Scenes/SwitchCardsUI/Background.svg" id="1_awhhv"]
-[ext_resource type="Theme" uid="uid://di0p2ll65b4pb" path="res://PaliTheme.tres" id="1_e5jfy"]
+[ext_resource type="Script" path="res://Scenes/Modal/Modal.gd" id="1_t8kpc"]
+[ext_resource type="Theme" uid="uid://di0p2ll65b4pb" path="res://PaliTheme.tres" id="2_pfbhn"]
+[ext_resource type="Texture2D" uid="uid://bur5h385q2kum" path="res://Scenes/Modal/Background.svg" id="3_magi3"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" node_paths=PackedStringArray("text", "primary_btn", "secondary_btn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +13,10 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_t8kpc")
+text = NodePath("MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer2/ScrollContainer/Label")
+primary_btn = NodePath("MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/PrimaryBtn")
+secondary_btn = NodePath("MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/SecondaryBtn")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -20,7 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_e5jfy")
+theme = ExtResource("2_pfbhn")
 theme_override_constants/margin_left = 300
 theme_override_constants/margin_top = 150
 theme_override_constants/margin_right = 300
@@ -32,7 +37,7 @@ ratio = 1.5
 
 [node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer/AspectRatioContainer"]
 layout_mode = 2
-texture = ExtResource("1_awhhv")
+texture = ExtResource("3_magi3")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect"]
 layout_mode = 1
@@ -64,16 +69,19 @@ autowrap_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_bottom = 50
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 40
 
-[node name="Button2" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="SecondaryBtn" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Cancel"
 
-[node name="Button" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="PrimaryBtn" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
-text = "Switch"
+text = "Primary"
+
+[connection signal="pressed" from="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/SecondaryBtn" to="." method="_on_secondary_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/PrimaryBtn" to="." method="_on_primary_btn_pressed"]

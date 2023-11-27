@@ -17,6 +17,7 @@ const SAME_CATEGORY_POINTS: int = 2
 const SAME_TAG_POINTS: int = 1
 
 const dropzone_scene = preload("res://Scenes/Dropzone/Dropzone.tscn")
+const modal_scene  = preload("res://Scenes/Modal/Modal.tscn")
 
 @export var camera: Camera3D
 @export var top_camera: Camera3D
