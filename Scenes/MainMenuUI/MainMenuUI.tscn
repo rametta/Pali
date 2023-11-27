@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://qqr31gwogfkg"]
+[gd_scene load_steps=3 format=3 uid="uid://qqr31gwogfkg"]
 
 [ext_resource type="Script" path="res://Scenes/MainMenuUI/MainMenuUI.gd" id="1_4kj3h"]
+[ext_resource type="Theme" uid="uid://di0p2ll65b4pb" path="res://PaliTheme.tres" id="1_8t26l"]
 
 [node name="MainMenuUI" type="Control" node_paths=PackedStringArray("name_input", "join_btn", "status_label")]
 layout_mode = 3
@@ -9,10 +10,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_8t26l")
 script = ExtResource("1_4kj3h")
-name_input = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/NameInput")
-join_btn = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/JoinServerBtn")
-status_label = NodePath("MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/StatusLabel")
+name_input = NodePath("MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/NameInput")
+join_btn = NodePath("MarginContainer/VBoxContainer/VBoxContainer/JoinServerBtn")
+status_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/StatusLabel")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -21,7 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.960784, 0.619608, 0.780392, 1)
+color = Color(0.85098, 0.85098, 0.85098, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -30,64 +34,66 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_right = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 140
+theme = ExtResource("1_8t26l")
+theme_override_colors/font_shadow_color = Color(0.85098, 0.533333, 0.870588, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 120
 text = "Pali"
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_right = 100
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 6
 theme_override_constants/separation = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
 text = "Name"
 
-[node name="NameInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="NameInput" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "ABCD"
+text = "Jason"
 placeholder_text = "John Wick..."
 
-[node name="JoinServerBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="JoinServerBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
 text = "Join Server"
 
-[node name="StatusLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="StatusLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Loading..."
 
-[node name="CreateServerBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="CreateServerBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 20
 text = "Create Server (debug only)"
 
 [node name="FooterLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 20
 text = "Pali - A Game by Jason Rametta"
 horizontal_alignment = 1
 
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/JoinServerBtn" to="." method="_on_join_server_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/CreateServerBtn" to="." method="_on_create_server_btn_pressed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/JoinServerBtn" to="." method="_on_join_server_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/CreateServerBtn" to="." method="_on_create_server_btn_pressed"]
