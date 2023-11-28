@@ -19,7 +19,6 @@ func _ready() -> void:
 
 func on_cancel_join_pressed() -> void:
 	enet.close()
-	print("cancelled")
 	main_menu_ui.update_status_label("")
 	main_menu_ui.enable_join_btn()
 	main_menu_ui.cancel_btn.hide()
@@ -37,11 +36,16 @@ func on_join_server_pressed() -> void:
 		
 	main_menu_ui.update_status_label("Connecting...")
 	
-	multiplayer.connected_to_server.connect(on_connected_to_server)
-	multiplayer.connection_failed.connect(on_connection_failed)
-	multiplayer.server_disconnected.connect(on_server_disconnected)
-	multiplayer.peer_connected.connect(on_peer_connected)
-	multiplayer.peer_disconnected.connect(on_peer_disconnected)
+	if not multiplayer.connected_to_server.is_connected(on_connected_to_server):
+		multiplayer.connected_to_server.connect(on_connected_to_server)
+	if not multiplayer.connection_failed.is_connected(on_connection_failed):
+		multiplayer.connection_failed.connect(on_connection_failed)
+	if not multiplayer.server_disconnected.is_connected(on_server_disconnected):
+		multiplayer.server_disconnected.connect(on_server_disconnected)
+	if not multiplayer.peer_connected.is_connected(on_peer_connected):
+		multiplayer.peer_connected.connect(on_peer_connected)
+	if not multiplayer.peer_disconnected.is_connected(on_peer_disconnected):
+		multiplayer.peer_disconnected.connect(on_peer_disconnected)
 	multiplayer.multiplayer_peer = enet
 	my_id = enet.get_unique_id()
 
@@ -118,8 +122,9 @@ func on_connected_to_server() -> void:
 	
 func on_connection_failed() -> void:
 	print("[%s] on_connection_failed called" % my_id)
-	main_menu_ui.update_status_label("Failed to connect to server")
 	main_menu_ui.enable_join_btn()
+	main_menu_ui.cancel_btn.hide()
+	main_menu_ui.update_status_label("Failed to connect to server. Please tell Jason")
 	
 func on_server_disconnected() -> void:
 	print("[%s] on_server_disconnected called" % my_id)
