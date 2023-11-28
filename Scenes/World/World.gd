@@ -141,10 +141,10 @@ func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _n
 				modal.secondary_pressed.connect(on_modal_secondary_pressed.bind(modal))
 				add_child(modal)
 			elif Global.selected_hand_card_name and not Global.selected_table_card_name:
-				play_card_server.rpc(dropzone.name, Global.selected_hand_card_name)
+				play_card_server.rpc_id(1, dropzone.name, Global.selected_hand_card_name)
 
 func on_modal_primary_pressed(modal: Control) -> void:
-	switch_card_server.rpc(Global.selected_table_card_name, Global.selected_hand_card_name)
+	switch_card_server.rpc_id(1, Global.selected_table_card_name, Global.selected_hand_card_name)
 	modal.queue_free()
 	
 func on_modal_secondary_pressed(modal: Control) -> void:
@@ -187,8 +187,10 @@ func _input(event):
 		t.tween_property(camera, "rotation_degrees", Vector3(rot_x, rot_y, camera.rotation_degrees.z), .5)
 
 func intro_anim_done() -> void:
+	if multiplayer.is_server(): return
+	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	intro_done.rpc()
+	intro_done.rpc_id(1)
 
 @rpc("call_local")
 func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
@@ -203,7 +205,7 @@ func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 		hud.update_player_1_label(synced_peer_name_map[player_1_id], 0)
 		hud.update_player_2_label(synced_peer_name_map[player_2_id], 0)
 		hud.show()
-		start_cards_tween_done.rpc()
+		start_cards_tween_done.rpc_id(1)
 
 func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	hand.show()
@@ -298,26 +300,31 @@ func switch_card_client(table_card_name: String, hand_card_name: String) -> void
 	if not hand_card:
 		return
 		
+	var hand = player_1_hand
+	var zone = Global.CARD_ZONE.PLAYER_1_HAND
+	if synced_player_turn == PLAYER.TWO:
+		hand = player_2_hand
+		zone = Global.CARD_ZONE.PLAYER_2_HAND
+		
 	switch_parents(hand_card, table_cards)
 	hand_card.zone = Global.CARD_ZONE.TABLE
 	
-	switch_parents(table_card, player_1_hand)
-	table_card.zone = Global.CARD_ZONE.PLAYER_1_HAND ## TODO: fix.zone = Global.CARD_ZONE.TABLE
-
-	Global.selected_hand_card_name = ""
-	Global.selected_table_card_name = ""
-	get_tree().call_group("card", "render_outline")
+	switch_parents(table_card, hand)
+	table_card.zone = zone
 
 	card_player.play()
-#	var tween = get_tree().create_tween()
-#	tween.tween_property(hand_card, "global_rotation_degrees", Vector3(0, 90, 0), .5)
-#	tween.parallel().tween_property(card, "global_position", dz.global_position, .5).set_trans(Tween.TRANS_QUAD)
-#	await tween.finished
-	
+	var tween = get_tree().create_tween()
+	tween.tween_property(hand_card, "global_rotation_degrees", Vector3(0, 90, 0), .5)
+	tween.parallel().tween_property(hand_card, "global_position", table_card.global_position, .5).set_trans(Tween.TRANS_QUAD)
+
 	if synced_player_turn == PLAYER.ONE:
 		render_hand(player_1_hand)
 	elif synced_player_turn == PLAYER.TWO:
 		render_hand(player_2_hand)
+		
+	Global.selected_hand_card_name = ""
+	Global.selected_table_card_name = ""
+	get_tree().call_group("card", "render_outline")
 		
 	if multiplayer.is_server():
 		recalculate_scores()
