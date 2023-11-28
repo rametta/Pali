@@ -10,6 +10,5 @@ enum CARD_ZONE {
 	PLAYER_2_HAND
 }
 
-var selected_card_name: String = ""
-
-
+var selected_hand_card_name: String = ""
+var selected_table_card_name: String = ""

@@ -130,12 +130,26 @@ func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _n
 		and event.button_index == MOUSE_BUTTON_LEFT\
 		and event.pressed\
 		and synced_player_turn == player\
-		and Global.selected_card_name\
 		and not is_rendering_hand_animating\
 		and not is_table_select_animating:
-			card_played.rpc()
-			on_table_select.rpc(dropzone.name, Global.selected_card_name)
+			if Global.selected_hand_card_name and Global.selected_table_card_name:
+				var modal = modal_scene.instantiate()
+				modal.label.text = "Are you sure you would like to switch '%s' with '%s'?" % ["HAND CARD NAME", "TABLE CARD NAME"]
+				modal.primary_btn.text = "Switch Cards!"
+				modal.secondary_btn.text = "Cancel"
+				modal.primary_pressed.connect(on_modal_primary_pressed.bind(modal))
+				modal.secondary_pressed.connect(on_modal_secondary_pressed.bind(modal))
+				add_child(modal)
+			elif Global.selected_hand_card_name and not Global.selected_table_card_name:
+				play_card_server.rpc(dropzone.name, Global.selected_hand_card_name)
 
+func on_modal_primary_pressed(modal: Control) -> void:
+	switch_card_server.rpc(Global.selected_table_card_name, Global.selected_hand_card_name)
+	modal.queue_free()
+	
+func on_modal_secondary_pressed(modal: Control) -> void:
+	modal.queue_free()
+	
 func _input(event):
 	if synced_game_status != GAME_STATUS.IN_PROGRESS:
 		return
@@ -224,36 +238,39 @@ func on_card_select(card: Node3D) -> void:
 	if player == PLAYER.TWO and card.zone == Global.CARD_ZONE.PLAYER_1_HAND:
 		return
 		
-	Global.selected_card_name = card.name
-	get_tree().call_group("card", "render_outline")
-
-@rpc("call_local", "any_peer")
-func on_table_select(dz_name: StringName, card_name: StringName) -> void:
-	## TODO: add server validation here
-	var card = find_child(card_name, true, false)
-	if not card:
-		return
+	if card.zone == Global.CARD_ZONE.TABLE:
+		Global.selected_table_card_name = card.name
+	else:
+		Global.selected_hand_card_name = card.name
 		
+	get_tree().call_group("card", "render_outline")
+	
+@rpc("call_local")
+func play_card_client(dz_name: StringName, card_name: String) -> void:
 	var dz = dropzones.find_child(dz_name, true, false)
 	if not dz:
+		return
+	
+	var card = find_child(card_name, true, false)
+	if not card:
 		return
 		
 	dz.input_ray_pickable = false
 		
 	var old_zone = card.zone
 	is_table_select_animating = true
-	var is_already_on_table = card.zone == Global.CARD_ZONE.TABLE
-	if not is_already_on_table:
-		var pos = card.global_position
-		var rot = card.global_rotation
-		var parent = card.get_parent()
-		parent.remove_child(card)
-		table_cards.add_child(card)
-		card.global_position = pos
-		card.global_rotation = rot
-		card.zone = Global.CARD_ZONE.TABLE
 
-	Global.selected_card_name = ""
+	var pos = card.global_position
+	var rot = card.global_rotation
+	var parent = card.get_parent()
+	parent.remove_child(card)
+	table_cards.add_child(card)
+	card.global_position = pos
+	card.global_rotation = rot
+	card.zone = Global.CARD_ZONE.TABLE
+
+	Global.selected_hand_card_name = ""
+	Global.selected_table_card_name = ""
 	get_tree().call_group("card", "render_outline")
 
 	card_player.play()
@@ -263,14 +280,83 @@ func on_table_select(dz_name: StringName, card_name: StringName) -> void:
 	await tween.finished
 	is_table_select_animating = false
 
-	if not is_already_on_table:
-		recalculate_scores.rpc()
-		if old_zone == Global.CARD_ZONE.PLAYER_1_HAND:
-			add_card_to_hand(player_1_hand, old_zone)
-			render_hand(player_1_hand)
-		elif old_zone == Global.CARD_ZONE.PLAYER_2_HAND:
-			add_card_to_hand(player_2_hand, old_zone)
-			render_hand(player_2_hand)
+	if old_zone == Global.CARD_ZONE.PLAYER_1_HAND:
+		add_card_to_hand(player_1_hand, old_zone)
+		render_hand(player_1_hand)
+	elif old_zone == Global.CARD_ZONE.PLAYER_2_HAND:
+		add_card_to_hand(player_2_hand, old_zone)
+		render_hand(player_2_hand)
+			
+	if multiplayer.is_server():
+		recalculate_scores()
+		card_played()
+	
+@rpc("call_local")
+func switch_card_client(table_card_name: String, hand_card_name: String) -> void:
+	var table_card = find_child(table_card_name, true, false)
+	if not table_card:
+		return
+		
+	var hand_card = find_child(hand_card_name, true, false)
+	if not hand_card:
+		return
+	
+	print("TODO: SWITCH CARD")
+	
+
+@rpc("any_peer")
+func play_card_server(dz_name: StringName, card_name: String) -> void:
+	if not multiplayer.is_server(): return
+	
+	var id = multiplayer.get_remote_sender_id()
+	if synced_player_turn == PLAYER.ONE and id != player_1_id:
+		print("[1] Card can not be played on table. Not correct player turn. Player turn is 1. 2 is trying to play but shouldn't")
+		return
+		
+	if synced_player_turn == PLAYER.TWO and id != player_2_id:
+		print("[1] Card can not be played on table. Not correct player turn. Player turn is 2. 1 is trying to play but shouldn't")
+		return
+	
+	var dz = dropzones.find_child(dz_name, true, false)
+	if not dz:
+		print("[1] Card can not be played on table. Dropzone can not be found")
+		return
+	
+	var card = find_child(card_name, true, false)
+	if not card:
+		print("[1] Card can not be played on table. Card can not be found")
+		return
+		
+	if card.zone == Global.CARD_ZONE.TABLE or card.zone == Global.CARD_ZONE.DECK:
+		print("[1] Card can not be played on table. Card zone is already TABLE or DECK. Card must be played from a hand")
+		return
+		
+	play_card_client.rpc(dz_name, card_name)
+	
+@rpc("any_peer")
+func switch_card_server(table_card_name: String, hand_card_name: String) -> void:
+	if not multiplayer.is_server(): return
+	
+	var id = multiplayer.get_remote_sender_id()
+	if synced_player_turn == PLAYER.ONE and id != player_1_id:
+		print("[1] Card can not be switched on table. Not correct player turn. Player turn is 1. 2 is trying to play but shouldn't")
+		return
+		
+	if synced_player_turn == PLAYER.TWO and id != player_2_id:
+		print("[1] Card can not be switched on table. Not correct player turn. Player turn is 2. 1 is trying to play but shouldn't")
+		return
+	
+	var table_card = find_child(table_card_name, true, false)
+	if not table_card:
+		print("[1] Card can not be switched on table. Table card can not be found")
+		return
+		
+	var hand_card = find_child(hand_card_name, true, false)
+	if not hand_card:
+		print("[1] Card can not be switched on table. Hand card can not be found")
+		return
+	
+	switch_card_client.rpc(table_card_name, hand_card_name)
 
 @rpc
 func update_scores(p1_score: int, p2_score: int) -> void:

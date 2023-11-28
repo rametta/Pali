@@ -20,7 +20,7 @@ func _on_input_event(_camera, event: InputEvent, _position, _normal, _shape_idx)
 			select.emit()
 			
 func render_outline() -> void:
-	if Global.selected_card_name == name:
+	if Global.selected_hand_card_name == name or Global.selected_table_card_name == name:
 		outline_mesh.show()
 	else:
 		outline_mesh.hide()

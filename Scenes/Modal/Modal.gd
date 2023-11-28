@@ -3,7 +3,7 @@ extends Control
 signal primary_pressed()
 signal secondary_pressed()
 
-@export var text: Label
+@export var label: Label
 @export var primary_btn: Button
 @export var secondary_btn: Button
 
