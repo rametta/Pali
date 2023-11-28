@@ -62,7 +62,7 @@ func update_player_turn(p: PLAYER) -> void:
 	hud.update_title(player == p)
 	
 @rpc("any_peer")
-func intro_done() -> void:
+func intro_done_server() -> void:
 	if not multiplayer.is_server(): return
 	
 	var id = multiplayer.get_remote_sender_id()
@@ -76,7 +76,7 @@ func intro_done() -> void:
 		start_cards_tween.rpc(packed)
 		
 @rpc("any_peer")
-func start_cards_tween_done():
+func start_cards_tween_done_server():
 	if not multiplayer.is_server(): return
 	
 	var id = multiplayer.get_remote_sender_id()
@@ -85,10 +85,10 @@ func start_cards_tween_done():
 		print("[1] Setting game status is now IN_PROGRESS")
 		update_game_status.rpc(GAME_STATUS.IN_PROGRESS)
 		update_player_turn.rpc(PLAYER.ONE)
-		recalculate_scores()
+		recalculate_scores_server()
 		
 @rpc("any_peer")
-func card_played() -> void:
+func card_played_server() -> void:
 	if not multiplayer.is_server(): return
 	
 	if synced_player_turn == PLAYER.ONE:
@@ -133,8 +133,10 @@ func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _n
 		and not is_rendering_hand_animating\
 		and not is_table_select_animating:
 			if Global.selected_hand_card_name and Global.selected_table_card_name:
+				var hand_card = my_hand.find_child(Global.selected_hand_card_name, true, false)
+				var table_card = table_cards.find_child(Global.selected_table_card_name, true, false)
 				var modal = modal_scene.instantiate()
-				modal.label.text = "Are you sure you would like to switch '%s' with '%s'?" % ["HAND CARD NAME", "TABLE CARD NAME"]
+				modal.label.text = "Are you sure you would like to switch '%s' with '%s'?" % [hand_card.card_resource.title, table_card.card_resource.title]
 				modal.primary_btn.text = "Switch Cards!"
 				modal.secondary_btn.text = "Cancel"
 				modal.primary_pressed.connect(on_modal_primary_pressed.bind(modal))
@@ -148,6 +150,8 @@ func on_modal_primary_pressed(modal: Control) -> void:
 	modal.queue_free()
 	
 func on_modal_secondary_pressed(modal: Control) -> void:
+	Global.selected_table_card_name = ""
+	refresh_outlines()
 	modal.queue_free()
 	
 func _input(event):
@@ -190,7 +194,7 @@ func intro_anim_done() -> void:
 	if multiplayer.is_server(): return
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	intro_done.rpc_id(1)
+	intro_done_server.rpc_id(1)
 
 @rpc("call_local")
 func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
@@ -205,7 +209,7 @@ func start_cards_tween(random_arr_indices: PackedByteArray) -> void:
 		hud.update_player_1_label(synced_peer_name_map[player_1_id], 0)
 		hud.update_player_2_label(synced_peer_name_map[player_2_id], 0)
 		hud.show()
-		start_cards_tween_done.rpc_id(1)
+		start_cards_tween_done_server.rpc_id(1)
 
 func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	hand.show()
@@ -240,6 +244,9 @@ func on_card_select(card: Node3D) -> void:
 	else:
 		Global.selected_hand_card_name = card.name
 		
+	refresh_outlines()
+	
+func refresh_outlines() -> void:
 	get_tree().call_group("card", "render_outline")
 	
 @rpc("call_local")
@@ -262,7 +269,7 @@ func play_card_client(dz_name: StringName, card_name: String) -> void:
 
 	Global.selected_hand_card_name = ""
 	Global.selected_table_card_name = ""
-	get_tree().call_group("card", "render_outline")
+	refresh_outlines()
 
 	card_player.play()
 	var tween = get_tree().create_tween()
@@ -279,8 +286,8 @@ func play_card_client(dz_name: StringName, card_name: String) -> void:
 		render_hand(player_2_hand)
 			
 	if multiplayer.is_server():
-		recalculate_scores()
-		card_played()
+		recalculate_scores_server()
+		card_played_server()
 	
 func switch_parents(node, new_parent) -> void:
 	var pos = node.global_position
@@ -324,11 +331,11 @@ func switch_card_client(table_card_name: String, hand_card_name: String) -> void
 		
 	Global.selected_hand_card_name = ""
 	Global.selected_table_card_name = ""
-	get_tree().call_group("card", "render_outline")
+	refresh_outlines()
 		
 	if multiplayer.is_server():
-		recalculate_scores()
-		card_played()
+		recalculate_scores_server()
+		card_played_server()
 	
 
 @rpc("any_peer")
@@ -391,7 +398,7 @@ func update_scores(p1_score: int, p2_score: int) -> void:
 	hud.update_player_2_label(synced_peer_name_map[player_2_id], p2_score)
 
 @rpc("any_peer")
-func recalculate_scores() -> void:
+func recalculate_scores_server() -> void:
 	if not multiplayer.is_server(): return
 	var p1_score = get_hand_score(player_1_hand)
 	var p2_score = get_hand_score(player_2_hand)
@@ -425,12 +432,7 @@ func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		return
 		
 	var card = deck.get_child(deck.get_child_count() - 1)
-	var old_pos = card.global_position
-	var old_rot = card.global_rotation
-	deck.remove_child(card)
-	hand.add_child(card)
-	card.global_position = old_pos
-	card.global_rotation = old_rot
+	switch_parents(card, hand)
 	card.zone = zone
 
 func render_hand(hand: Node3D) -> void:

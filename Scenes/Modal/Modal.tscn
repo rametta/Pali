@@ -14,9 +14,9 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_t8kpc")
-label = NodePath("MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer2/ScrollContainer/Label")
-primary_btn = NodePath("MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/PrimaryBtn")
-secondary_btn = NodePath("MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/SecondaryBtn")
+label = NodePath("MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer2/ScrollContainer/Label")
+primary_btn = NodePath("MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer/HBoxContainer/PrimaryBtn")
+secondary_btn = NodePath("MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer/HBoxContainer/SecondaryBtn")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -27,19 +27,23 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_pfbhn")
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 100
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 100
+theme_override_constants/margin_bottom = 10
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer"]
 layout_mode = 2
-ratio = 0.896
+ratio = 2.183
 
-[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer/AspectRatioContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/AspectRatioContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer"]
 layout_mode = 2
 texture = ExtResource("3_magi3")
+expand_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,41 +51,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 10
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer2"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer2/ScrollContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer2/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 autowrap_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_constants/margin_bottom = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 40
+alignment = 1
 
-[node name="SecondaryBtn" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="SecondaryBtn" type="Button" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Cancel"
 
-[node name="PrimaryBtn" type="Button" parent="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="PrimaryBtn" type="Button" parent="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Primary"
 
-[connection signal="pressed" from="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/SecondaryBtn" to="." method="_on_secondary_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/AspectRatioContainer/NinePatchRect/VBoxContainer/MarginContainer/HBoxContainer/PrimaryBtn" to="." method="_on_primary_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer/HBoxContainer/SecondaryBtn" to="." method="_on_secondary_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/AspectRatioContainer/AspectRatioContainer/TextureRect/VBoxContainer/MarginContainer/HBoxContainer/PrimaryBtn" to="." method="_on_primary_btn_pressed"]
