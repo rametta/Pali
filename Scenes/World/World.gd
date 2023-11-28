@@ -132,27 +132,8 @@ func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _n
 		and synced_player_turn == player\
 		and not is_rendering_hand_animating\
 		and not is_table_select_animating:
-			if Global.selected_hand_card_name and Global.selected_table_card_name:
-				var hand_card = my_hand.find_child(Global.selected_hand_card_name, true, false)
-				var table_card = table_cards.find_child(Global.selected_table_card_name, true, false)
-				var modal = modal_scene.instantiate()
-				modal.label.text = "Are you sure you would like to switch '%s' with '%s'?" % [hand_card.card_resource.title, table_card.card_resource.title]
-				modal.primary_btn.text = "Switch Cards!"
-				modal.secondary_btn.text = "Cancel"
-				modal.primary_pressed.connect(on_modal_primary_pressed.bind(modal))
-				modal.secondary_pressed.connect(on_modal_secondary_pressed.bind(modal))
-				add_child(modal)
-			elif Global.selected_hand_card_name and not Global.selected_table_card_name:
+			if Global.selected_hand_card_name and not Global.selected_table_card_name:
 				play_card_server.rpc_id(1, dropzone.name, Global.selected_hand_card_name)
-
-func on_modal_primary_pressed(modal: Control) -> void:
-	switch_card_server.rpc_id(1, Global.selected_table_card_name, Global.selected_hand_card_name)
-	modal.queue_free()
-	
-func on_modal_secondary_pressed(modal: Control) -> void:
-	Global.selected_table_card_name = ""
-	refresh_outlines()
-	modal.queue_free()
 	
 func _input(event):
 	if synced_game_status != GAME_STATUS.IN_PROGRESS:
@@ -229,6 +210,26 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		card_player_2.play()
 		await tween.finished
 
+func on_modal_primary_pressed(modal: Control) -> void:
+	switch_card_server.rpc_id(1, Global.selected_table_card_name, Global.selected_hand_card_name)
+	modal.queue_free()
+	
+func on_modal_secondary_pressed(modal: Control) -> void:
+	Global.selected_table_card_name = ""
+	refresh_outlines()
+	modal.queue_free()
+	
+func show_modal() -> void:
+	var hand_card = my_hand.find_child(Global.selected_hand_card_name, true, false)
+	var table_card = table_cards.find_child(Global.selected_table_card_name, true, false)
+	var modal = modal_scene.instantiate()
+	modal.label.text = "Are you sure you would like to switch '%s' with '%s'?" % [hand_card.card_resource.title, table_card.card_resource.title]
+	modal.primary_btn.text = "Switch Cards!"
+	modal.secondary_btn.text = "Cancel"
+	modal.primary_pressed.connect(on_modal_primary_pressed.bind(modal))
+	modal.secondary_pressed.connect(on_modal_secondary_pressed.bind(modal))
+	add_child(modal)
+
 func on_card_select(card: Node3D) -> void:
 	if card.zone == Global.CARD_ZONE.DECK:
 		return
@@ -243,6 +244,9 @@ func on_card_select(card: Node3D) -> void:
 		Global.selected_table_card_name = card.name
 	else:
 		Global.selected_hand_card_name = card.name
+		
+	if Global.selected_table_card_name and Global.selected_hand_card_name:
+		show_modal()
 		
 	refresh_outlines()
 	

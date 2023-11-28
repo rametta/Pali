@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/MainMenuUI/MainMenuUI.gd" id="1_4kj3h"]
 [ext_resource type="Theme" uid="uid://di0p2ll65b4pb" path="res://PaliTheme.tres" id="1_8t26l"]
 
-[node name="MainMenuUI" type="Control" node_paths=PackedStringArray("name_input", "join_btn", "status_label")]
+[node name="MainMenuUI" type="Control" node_paths=PackedStringArray("name_input", "join_btn", "cancel_btn", "status_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,8 @@ size_flags_vertical = 3
 theme = ExtResource("1_8t26l")
 script = ExtResource("1_4kj3h")
 name_input = NodePath("MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/NameInput")
-join_btn = NodePath("MarginContainer/VBoxContainer/VBoxContainer/JoinServerBtn")
+join_btn = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/JoinServerBtn")
+cancel_btn = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/CancelJoinServerBtn")
 status_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/StatusLabel")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -71,9 +72,17 @@ layout_mode = 2
 text = "Jason"
 placeholder_text = "John Wick..."
 
-[node name="JoinServerBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="JoinServerBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Join Server"
+
+[node name="CancelJoinServerBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
 
 [node name="StatusLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -95,5 +104,6 @@ text = "Pali - A card game by Jason Rametta"
 horizontal_alignment = 1
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/JoinServerBtn" to="." method="_on_join_server_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/JoinServerBtn" to="." method="_on_join_server_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/CancelJoinServerBtn" to="." method="_on_cancel_join_server_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/CreateServerBtn" to="." method="_on_create_server_btn_pressed"]

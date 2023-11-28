@@ -14,9 +14,22 @@ func _ready() -> void:
 	else:
 		main_menu_ui.join_server_pressed.connect(on_join_server_pressed)
 		main_menu_ui.create_server_pressed.connect(on_create_server_pressed)
+		main_menu_ui.cancel_join_pressed.connect(on_cancel_join_pressed)
 		main_menu_ui.update_status_label("")
-		
-func on_join_server_pressed():
+
+func on_cancel_join_pressed() -> void:
+	enet.close()
+	print("cancelled")
+	main_menu_ui.update_status_label("")
+	main_menu_ui.enable_join_btn()
+	main_menu_ui.cancel_btn.hide()
+	multiplayer.connected_to_server.disconnect(on_connected_to_server)
+	multiplayer.connection_failed.disconnect(on_connection_failed)
+	multiplayer.server_disconnected.disconnect(on_server_disconnected)
+	multiplayer.peer_connected.disconnect(on_peer_connected)
+	multiplayer.peer_disconnected.disconnect(on_peer_disconnected)
+
+func on_join_server_pressed() -> void:
 	print("Creating client")
 	var err = enet.create_client(Global.SERVER_ADDRESS, Global.PORT)
 	if err:
@@ -32,7 +45,7 @@ func on_join_server_pressed():
 	multiplayer.multiplayer_peer = enet
 	my_id = enet.get_unique_id()
 
-func on_create_server_pressed():
+func on_create_server_pressed() -> void:
 	print("Creating server")
 	var err = enet.create_server(Global.PORT, 2)
 	if err:
@@ -82,11 +95,15 @@ func on_peer_connected_to_server(id: int) -> void:
 	
 	if len(peers) == 2:
 		create_world.rpc(peers[0], peers[1])
+		enet.refuse_new_connections = true
 
 func on_peer_disconnected_to_server(id: int) -> void:
 	print("[1] peer '%s' disconnected" % id)
 	peers.erase(id)
+	peer_name_map.erase(id)
 	print("[1] peers ", peers)
+	if peers.size() < 2:
+		enet.refuse_new_connections = false
 	
 func on_peer_connected(id: int) -> void:
 	print("[%s] peer '%s' connected" % [my_id , id])
