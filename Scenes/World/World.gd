@@ -210,12 +210,7 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	for i in range(5):
 		var card = deck.get_child(deck.get_child_count() - 1)
 		
-		var pos = card.global_position
-		var rot = card.global_rotation
-		deck.remove_child(card)
-		hand.add_child(card)
-		card.global_position = pos
-		card.global_rotation = rot
+		switch_parents(card, hand)
 		card.zone = zone
 		
 		var offset = float(i) / 4.0
@@ -260,13 +255,7 @@ func play_card_client(dz_name: StringName, card_name: String) -> void:
 	var old_zone = card.zone
 	is_table_select_animating = true
 
-	var pos = card.global_position
-	var rot = card.global_rotation
-	var parent = card.get_parent()
-	parent.remove_child(card)
-	table_cards.add_child(card)
-	card.global_position = pos
-	card.global_rotation = rot
+	switch_parents(card, table_cards)
 	card.zone = Global.CARD_ZONE.TABLE
 
 	Global.selected_hand_card_name = ""
@@ -291,6 +280,14 @@ func play_card_client(dz_name: StringName, card_name: String) -> void:
 		recalculate_scores()
 		card_played()
 	
+func switch_parents(node, new_parent) -> void:
+	var pos = node.global_position
+	var rot = node.global_rotation
+	node.get_parent().remove_child(node)
+	new_parent.add_child(node)
+	node.global_position = pos
+	node.global_rotation = rot
+	
 @rpc("call_local")
 func switch_card_client(table_card_name: String, hand_card_name: String) -> void:
 	var table_card = find_child(table_card_name, true, false)
@@ -300,8 +297,31 @@ func switch_card_client(table_card_name: String, hand_card_name: String) -> void
 	var hand_card = find_child(hand_card_name, true, false)
 	if not hand_card:
 		return
+		
+	switch_parents(hand_card, table_cards)
+	hand_card.zone = Global.CARD_ZONE.TABLE
 	
-	print("TODO: SWITCH CARD")
+	switch_parents(table_card, player_1_hand)
+	table_card.zone = Global.CARD_ZONE.PLAYER_1_HAND ## TODO: fix.zone = Global.CARD_ZONE.TABLE
+
+	Global.selected_hand_card_name = ""
+	Global.selected_table_card_name = ""
+	get_tree().call_group("card", "render_outline")
+
+	card_player.play()
+#	var tween = get_tree().create_tween()
+#	tween.tween_property(hand_card, "global_rotation_degrees", Vector3(0, 90, 0), .5)
+#	tween.parallel().tween_property(card, "global_position", dz.global_position, .5).set_trans(Tween.TRANS_QUAD)
+#	await tween.finished
+	
+	if synced_player_turn == PLAYER.ONE:
+		render_hand(player_1_hand)
+	elif synced_player_turn == PLAYER.TWO:
+		render_hand(player_2_hand)
+		
+	if multiplayer.is_server():
+		recalculate_scores()
+		card_played()
 	
 
 @rpc("any_peer")
