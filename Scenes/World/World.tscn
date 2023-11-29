@@ -103,7 +103,7 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "dropzones", "deck", "card_player", "card_player_2")]
+[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "dropzones", "deck", "card_player", "card_player_2", "switch_cards_dialog")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
 top_camera = NodePath("TopCamera")
@@ -116,6 +116,7 @@ dropzones = NodePath("TableZone/Dropzones")
 deck = NodePath("Deck")
 card_player = NodePath("CardFlipPlayer")
 card_player_2 = NodePath("CardFlipPlayer2")
+switch_cards_dialog = NodePath("SwitchCardsDialog")
 
 [node name="HUD" parent="." instance=ExtResource("2_gsrr0")]
 
@@ -171,3 +172,15 @@ stream = ExtResource("5_hrq6v")
 
 [node name="CardFlipPlayer2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_5vpep")
+
+[node name="SwitchCardsDialog" type="ConfirmationDialog" parent="."]
+initial_position = 1
+size = Vector2i(200, 150)
+min_size = Vector2i(200, 150)
+max_size = Vector2i(960, 540)
+ok_button_text = "Switch Cards!"
+dialog_text = "Switch \"Hand Card\" with \"Table Card\"?"
+dialog_autowrap = true
+
+[connection signal="canceled" from="SwitchCardsDialog" to="." method="_on_switch_cards_dialog_canceled"]
+[connection signal="confirmed" from="SwitchCardsDialog" to="." method="_on_switch_cards_dialog_confirmed"]

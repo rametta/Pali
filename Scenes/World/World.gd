@@ -17,7 +17,6 @@ const SAME_CATEGORY_POINTS: int = 2
 const SAME_TAG_POINTS: int = 1
 
 const dropzone_scene = preload("res://Scenes/Dropzone/Dropzone.tscn")
-const modal_scene  = preload("res://Scenes/Modal/Modal.tscn")
 
 @export var camera: Camera3D
 @export var top_camera: Camera3D
@@ -30,6 +29,7 @@ const modal_scene  = preload("res://Scenes/Modal/Modal.tscn")
 @export var deck: Node3D
 @export var card_player: AudioStreamPlayer
 @export var card_player_2: AudioStreamPlayer
+@export var switch_cards_dialog: ConfirmationDialog
 
 var player_1_hand: Node3D ## either my_hand or opponent_hand
 var player_2_hand: Node3D ## either my_hand or opponent_hand
@@ -101,6 +101,7 @@ func _ready():
 	hud.hide()
 	my_hand.hide()
 	opponent_hand.hide()
+	switch_cards_dialog.hide()
 	
 	if player == PLAYER.ONE:
 		player_1_hand = my_hand
@@ -210,25 +211,18 @@ func start_hand_tweens(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 		card_player_2.play()
 		await tween.finished
 
-func on_modal_primary_pressed(modal: Control) -> void:
-	switch_card_server.rpc_id(1, Global.selected_table_card_name, Global.selected_hand_card_name)
-	modal.queue_free()
-	
-func on_modal_secondary_pressed(modal: Control) -> void:
+func _on_switch_cards_dialog_canceled():
 	Global.selected_table_card_name = ""
 	refresh_outlines()
-	modal.queue_free()
+
+func _on_switch_cards_dialog_confirmed():
+	switch_card_server.rpc_id(1, Global.selected_table_card_name, Global.selected_hand_card_name)
 	
-func show_modal() -> void:
+func show_dialog() -> void:
 	var hand_card = my_hand.find_child(Global.selected_hand_card_name, true, false)
 	var table_card = table_cards.find_child(Global.selected_table_card_name, true, false)
-	var modal = modal_scene.instantiate()
-	modal.label.text = "Are you sure you would like to switch '%s' with '%s'?" % [hand_card.card_resource.title, table_card.card_resource.title]
-	modal.primary_btn.text = "Switch Cards!"
-	modal.secondary_btn.text = "Cancel"
-	modal.primary_pressed.connect(on_modal_primary_pressed.bind(modal))
-	modal.secondary_pressed.connect(on_modal_secondary_pressed.bind(modal))
-	add_child(modal)
+	switch_cards_dialog.dialog_text = "Are you sure you would like to switch '%s' with '%s'?" % [hand_card.card_resource.title, table_card.card_resource.title]
+	switch_cards_dialog.show()
 
 func on_card_select(card: Node3D) -> void:
 	if card.zone == Global.CARD_ZONE.DECK:
@@ -246,7 +240,7 @@ func on_card_select(card: Node3D) -> void:
 		Global.selected_hand_card_name = card.name
 		
 	if Global.selected_table_card_name and Global.selected_hand_card_name:
-		show_modal()
+		show_dialog()
 		
 	refresh_outlines()
 	
@@ -433,6 +427,9 @@ func get_hand_score(hand: Node3D) -> int:
 
 func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
 	if deck.get_child_count() == 0:
+		if multiplayer.is_server():
+			print("the game is over! calculate the winner, show winner, then disconnect everyone")
+			# TODO: game over logic
 		return
 		
 	var card = deck.get_child(deck.get_child_count() - 1)
