@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://i1agm2a8aa6q"]
+[gd_scene load_steps=15 format=3 uid="uid://i1agm2a8aa6q"]
 
 [ext_resource type="Script" path="res://Scenes/World/World.gd" id="1_3ilso"]
 [ext_resource type="PackedScene" uid="uid://dw2561adfly52" path="res://Scenes/World/House.tscn" id="1_hn20s"]
@@ -103,7 +103,10 @@ _data = {
 "RESET": SubResource("Animation_fpl2e")
 }
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "dropzones", "deck", "card_player", "card_player_2", "switch_cards_dialog")]
+[sub_resource type="Theme" id="Theme_nuasb"]
+Label/font_sizes/font_size = 32
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("camera", "top_camera", "my_hand", "opponent_hand", "hud", "table_cards", "dropzones", "deck", "card_player", "card_player_2", "switch_cards_dialog", "game_over_dialog")]
 script = ExtResource("1_3ilso")
 camera = NodePath("CameraContainer/Camera3D")
 top_camera = NodePath("TopCamera")
@@ -117,6 +120,7 @@ deck = NodePath("Deck")
 card_player = NodePath("CardFlipPlayer")
 card_player_2 = NodePath("CardFlipPlayer2")
 switch_cards_dialog = NodePath("SwitchCardsDialog")
+game_over_dialog = NodePath("GameOverDialog")
 
 [node name="HUD" parent="." instance=ExtResource("2_gsrr0")]
 
@@ -175,12 +179,30 @@ stream = ExtResource("6_5vpep")
 
 [node name="SwitchCardsDialog" type="ConfirmationDialog" parent="."]
 initial_position = 1
-size = Vector2i(200, 150)
+size = Vector2i(300, 150)
+borderless = true
+always_on_top = true
+popup_window = true
 min_size = Vector2i(200, 150)
 max_size = Vector2i(960, 540)
 ok_button_text = "Switch Cards!"
 dialog_text = "Switch \"Hand Card\" with \"Table Card\"?"
 dialog_autowrap = true
 
+[node name="GameOverDialog" type="AcceptDialog" parent="."]
+title = "Game Over"
+initial_position = 1
+size = Vector2i(384, 150)
+borderless = true
+min_size = Vector2i(100, 100)
+max_size = Vector2i(1920, 1080)
+theme = SubResource("Theme_nuasb")
+ok_button_text = "Back to main menu"
+dialog_text = "\"Bobby\" wins!"
+dialog_hide_on_ok = false
+dialog_close_on_escape = false
+dialog_autowrap = true
+
 [connection signal="canceled" from="SwitchCardsDialog" to="." method="_on_switch_cards_dialog_canceled"]
 [connection signal="confirmed" from="SwitchCardsDialog" to="." method="_on_switch_cards_dialog_confirmed"]
+[connection signal="confirmed" from="GameOverDialog" to="." method="_on_game_over_dialog_confirmed"]

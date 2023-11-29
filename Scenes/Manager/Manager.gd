@@ -3,7 +3,6 @@ extends Node
 @onready var main_menu_ui = $MainMenuUI
 
 var enet = ENetMultiplayerPeer.new()
-var peers: Array[int] = []
 var peer_name_map: Dictionary = {} ## Dictionary<peer_id:int, name:String>
 var my_id: int = 0
 var world: Node3D
@@ -84,6 +83,7 @@ func create_world(player1: int, player2: int) -> void:
 	world = world_scene.instantiate()
 	world.player_1_id = player1
 	world.player_2_id = player2
+	world.game_over.connect(on_game_over)
 	if my_id == player1:
 		world.player = world.PLAYER.ONE
 	elif my_id == player2:
@@ -92,9 +92,21 @@ func create_world(player1: int, player2: int) -> void:
 		world.player = world.PLAYER.SERVER
 	add_child(world)
 
+func on_game_over() -> void:
+	if multiplayer.is_server():
+		for peer in multiplayer.get_peers():
+			print("[1] Disconnecting peer %d" % peer)
+			enet.disconnect_peer(peer)
+	else:
+		main_menu_ui.update_status_label("")
+		main_menu_ui.enable_join_btn()
+		main_menu_ui.cancel_btn.hide()
+		main_menu_ui.show()
+	world.queue_free()
+
 func on_peer_connected_to_server(id: int) -> void:
 	print("[1] peer '%s' connected" % id)
-	peers.append(id)
+	var peers = multiplayer.get_peers()
 	print("[1] peers ", peers)
 	
 	if len(peers) == 2:
@@ -103,7 +115,7 @@ func on_peer_connected_to_server(id: int) -> void:
 
 func on_peer_disconnected_to_server(id: int) -> void:
 	print("[1] peer '%s' disconnected" % id)
-	peers.erase(id)
+	var peers = multiplayer.get_peers()
 	peer_name_map.erase(id)
 	print("[1] peers ", peers)
 	if peers.size() < 2:

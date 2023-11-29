@@ -1,5 +1,7 @@
 extends Node3D
 
+signal game_over()
+
 enum GAME_STATUS {
 	PRE_GAME,
 	IN_PROGRESS,
@@ -30,6 +32,7 @@ const dropzone_scene = preload("res://Scenes/Dropzone/Dropzone.tscn")
 @export var card_player: AudioStreamPlayer
 @export var card_player_2: AudioStreamPlayer
 @export var switch_cards_dialog: ConfirmationDialog
+@export var game_over_dialog: AcceptDialog
 
 var player_1_hand: Node3D ## either my_hand or opponent_hand
 var player_2_hand: Node3D ## either my_hand or opponent_hand
@@ -102,6 +105,7 @@ func _ready():
 	my_hand.hide()
 	opponent_hand.hide()
 	switch_cards_dialog.hide()
+	game_over_dialog.hide()
 	
 	if player == PLAYER.ONE:
 		player_1_hand = my_hand
@@ -173,9 +177,9 @@ func _input(event):
 		t.tween_property(camera, "rotation_degrees", Vector3(rot_x, rot_y, camera.rotation_degrees.z), .5)
 
 func intro_anim_done() -> void:
-	if multiplayer.is_server(): return
-	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if multiplayer.is_server(): return
+
 	intro_done_server.rpc_id(1)
 
 @rpc("call_local")
@@ -425,11 +429,27 @@ func get_hand_score(hand: Node3D) -> int:
 					
 	return score
 
+@rpc
+func show_winner_dialog(dialog_text: String) -> void:
+	game_over_dialog.dialog_text = dialog_text
+	game_over_dialog.show()
+
 func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
-	if deck.get_child_count() == 0:
+	if deck.get_child_count() < 14:
 		if multiplayer.is_server():
-			print("the game is over! calculate the winner, show winner, then disconnect everyone")
-			# TODO: game over logic
+			var p1_score = get_hand_score(player_1_hand)
+			var p2_score = get_hand_score(player_2_hand)
+			
+			var text: String = "It's a tie!"
+			
+			if p1_score > p2_score:
+				text = "'%s' wins!" % synced_peer_name_map.get(player_1_id)
+			elif p2_score > p1_score:
+				text = "'%s' wins!" % synced_peer_name_map.get(player_2_id)
+			
+			show_winner_dialog.rpc(text)
+			await get_tree().create_timer(2.0).timeout
+			game_over.emit()
 		return
 		
 	var card = deck.get_child(deck.get_child_count() - 1)
@@ -462,3 +482,7 @@ func render_hand(hand: Node3D) -> void:
 
 	parallel.done.connect(func(): is_rendering_hand_animating = false)
 	parallel.start()
+
+
+func _on_game_over_dialog_confirmed():
+	game_over.emit()
