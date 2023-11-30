@@ -1,7 +1,7 @@
 extends Node
 
 const PORT: int = 50001
-const SERVER_ADDRESS: String = "localhost" # "157.245.129.204"
+const SERVER_ADDRESS: String = "157.230.0.17" # "157.230.0.17" # "localhost"
 
 enum CARD_ZONE {
 	DECK,

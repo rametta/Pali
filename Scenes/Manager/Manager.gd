@@ -120,6 +120,8 @@ func on_peer_disconnected_to_server(id: int) -> void:
 	print("[1] peers ", peers)
 	if peers.size() < 2:
 		enet.refuse_new_connections = false
+		if world and is_instance_valid(world) and not world.is_queued_for_deletion():
+			world.queue_free()
 	
 func on_peer_connected(id: int) -> void:
 	print("[%s] peer '%s' connected" % [my_id , id])

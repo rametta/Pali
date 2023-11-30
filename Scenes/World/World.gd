@@ -2,12 +2,6 @@ extends Node3D
 
 signal game_over()
 
-enum GAME_STATUS {
-	PRE_GAME,
-	IN_PROGRESS,
-	POST_GAME
-}
-
 enum PLAYER {
 	ONE,
 	TWO,
@@ -43,10 +37,10 @@ var player_2_id: int
 
 var is_rendering_hand_animating = false
 var is_table_select_animating = false
+var intro_done = false
 
 ## Var prepended with "synced" are available on
 ## all clients
-var synced_game_status: GAME_STATUS = GAME_STATUS.PRE_GAME
 var synced_player_turn: PLAYER = PLAYER.ONE
 var synced_peer_name_map: Dictionary = {}
 
@@ -54,10 +48,6 @@ var synced_peer_name_map: Dictionary = {}
 ## on the server
 var server_peers_intro_done: Array[int] = []
 var server_peers_start_cards_tween_done: Array[int] = []
-
-@rpc("call_local")
-func update_game_status(gs: GAME_STATUS) -> void:
-	synced_game_status = gs
 	
 @rpc("call_local")
 func update_player_turn(p: PLAYER) -> void:
@@ -67,11 +57,11 @@ func update_player_turn(p: PLAYER) -> void:
 @rpc("any_peer")
 func intro_done_server() -> void:
 	if not multiplayer.is_server(): return
-	
 	var id = multiplayer.get_remote_sender_id()
+	print("Intro done for peer '%s'" % id)
 	server_peers_intro_done.append(id)
 	if len(server_peers_intro_done) == 2:
-		
+		print("Both intros are done for peers. Starting to randomize deck and start card dealing")
 		var arr = range(25) # 25 is length of cards in deck
 		arr.shuffle()
 		var packed = PackedByteArray(arr)
@@ -84,20 +74,20 @@ func start_cards_tween_done_server():
 	
 	var id = multiplayer.get_remote_sender_id()
 	server_peers_start_cards_tween_done.append(id)
+	print("Both peers have finished getting their cards dealt. Updating player turn and calculating scores")
 	if len(server_peers_start_cards_tween_done) == 2:
-		print("[1] Setting game status is now IN_PROGRESS")
-		update_game_status.rpc(GAME_STATUS.IN_PROGRESS)
 		update_player_turn.rpc(PLAYER.ONE)
 		recalculate_scores_server()
 		
 @rpc("any_peer")
 func card_played_server() -> void:
 	if not multiplayer.is_server(): return
-	
 	if synced_player_turn == PLAYER.ONE:
 		update_player_turn.rpc(PLAYER.TWO)
+		print("Updating player turn to player 2")
 	elif synced_player_turn == PLAYER.TWO:
 		update_player_turn.rpc(PLAYER.ONE)
+		print("Updating player turn to player 1")
 		
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -141,7 +131,7 @@ func on_dropzone_input_event(_camera: Node, event: InputEvent, _pos: Vector3, _n
 				play_card_server.rpc_id(1, dropzone.name, Global.selected_hand_card_name)
 	
 func _input(event):
-	if synced_game_status != GAME_STATUS.IN_PROGRESS:
+	if not intro_done:
 		return
 
 	if event.is_action_pressed("zoom"):
@@ -178,6 +168,7 @@ func _input(event):
 
 func intro_anim_done() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	intro_done = true
 	if multiplayer.is_server(): return
 
 	intro_done_server.rpc_id(1)
@@ -367,6 +358,7 @@ func play_card_server(dz_name: StringName, card_name: String) -> void:
 		print("[1] Card can not be played on table. Card zone is already TABLE or DECK. Card must be played from a hand")
 		return
 		
+	print("Peer %s has played card %s in dropzone %s" % [id, card_name, dz_name])
 	play_card_client.rpc(dz_name, card_name)
 	
 @rpc("any_peer")
@@ -392,6 +384,7 @@ func switch_card_server(table_card_name: String, hand_card_name: String) -> void
 		print("[1] Card can not be switched on table. Hand card can not be found")
 		return
 	
+	print("Peer %s has switched card %s with card on table %s" % [id, hand_card_name, table_card_name])
 	switch_card_client.rpc(table_card_name, hand_card_name)
 
 @rpc
@@ -402,9 +395,23 @@ func update_scores(p1_score: int, p2_score: int) -> void:
 @rpc("any_peer")
 func recalculate_scores_server() -> void:
 	if not multiplayer.is_server(): return
+	print("Calculating scores...")
 	var p1_score = get_hand_score(player_1_hand)
 	var p2_score = get_hand_score(player_2_hand)
 	update_scores.rpc(p1_score, p2_score)
+	
+	if deck.get_children().size() == 0:
+		print("Game over")
+		var text: String = "It's a tie!"
+		
+		if p1_score > p2_score:
+			text = "'%s' wins!" % synced_peer_name_map.get(player_1_id)
+		elif p2_score > p1_score:
+			text = "'%s' wins!" % synced_peer_name_map.get(player_2_id)
+		
+		show_winner_dialog.rpc(text)
+		await get_tree().create_timer(2.0).timeout
+		game_over.emit()
 
 func get_hand_score(hand: Node3D) -> int:
 	var resources = hand.get_children().map(func (child): return child.card_resource)
@@ -435,21 +442,7 @@ func show_winner_dialog(dialog_text: String) -> void:
 	game_over_dialog.show()
 
 func add_card_to_hand(hand: Node3D, zone: Global.CARD_ZONE) -> void:
-	if deck.get_child_count() < 14:
-		if multiplayer.is_server():
-			var p1_score = get_hand_score(player_1_hand)
-			var p2_score = get_hand_score(player_2_hand)
-			
-			var text: String = "It's a tie!"
-			
-			if p1_score > p2_score:
-				text = "'%s' wins!" % synced_peer_name_map.get(player_1_id)
-			elif p2_score > p1_score:
-				text = "'%s' wins!" % synced_peer_name_map.get(player_2_id)
-			
-			show_winner_dialog.rpc(text)
-			await get_tree().create_timer(2.0).timeout
-			game_over.emit()
+	if deck.get_child_count() == 0:
 		return
 		
 	var card = deck.get_child(deck.get_child_count() - 1)

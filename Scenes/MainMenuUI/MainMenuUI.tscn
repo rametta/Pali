@@ -69,7 +69,6 @@ text = "Name"
 
 [node name="NameInput" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-text = "Jason"
 placeholder_text = "John Wick..."
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
@@ -91,6 +90,7 @@ theme_override_font_sizes/font_size = 20
 text = "Loading..."
 
 [node name="CreateServerBtn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
