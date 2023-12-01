@@ -1,19 +1,20 @@
 # 🃏 Pali - 3D Multiplayer Godot Card Game
 
-Pali a 3D multiplayer Godot trade card game (TCG).
+Pali is a 3D multiplayer Godot trade card game (TCG).
 
 ![Gif Example](Screenshots/pali.gif)
 
-This repository holds everything needed to export and run a personal dedicated server for the game, and game clients.
+This repository holds everything needed to export and run a personal dedicated server for the game, and game clients. The code can be used as a base for your own card game.
 
 ## Rules for the game
 
 - Goal of the game is to build a hand of 5 cards that exceeds the points of your opponents 5 cards in their hand.
 - The game has 25 cards total and starts by dealing 5 cards randomly to each player.
 - It is turn based, every turn, you can either:
-  1.  Place a card from your hand on the table
+  1.  Place a card from your hand onto the table
   2.  or switch a card from the table with one in your hand.
 - When there are no more cards in the deck, the game is over and points are tallied to determine the winner.
+- There is no time limit
 
 ### Point counting
 
@@ -21,7 +22,7 @@ This repository holds everything needed to export and run a personal dedicated s
 
 - Every card has a point value near the top to represent their base points
 - Every card also has a "category", in this example it is "Engineer" for the Aerospace Engineer card. **For every other card in your hand that is also an engineer, you get another +2 points added to your hand.**
-- Some cards may optionally have some "tags". In this example, the Aerospace engineer card has 2 tags, "Nature" and "White Coat". **For every other card in your hand that has the same tag, you get an additonal +1 point added to your hand.**
+- Some cards may optionally have some "tags". In this example, the Aerospace engineer card has 2 tags, "Nature" and "White Coat". **For every other card in your hand that has any of the same tags, you get an additonal +1 point added to your hand per tag.**
 - Finally, cards have a special relationship with 1 or 2 other cards in the game that are in different categories. For this example, the Aerospace Engineer gets a +6 point boost if you also have the "Psychologist" card in your hand.
 
 Points are automatically calculated and shown in the bottom right/left sides of the screen.
@@ -31,9 +32,13 @@ Points are automatically calculated and shown in the bottom right/left sides of 
 There are minimal controls:
 
 - Left mouse clicking - click to select card in hand, then click empty space on table to place card, or, click another card on table to show a popup to confirm a switch
-- Z - to zoom into the table and get a better view to read the cards on the table
+- Z - to zoom into the table and get a better top-down view to read the cards on the table
 
 ## How to export dedicated server
+
+The game is not peer-to-peer, but relies on a dedicated server, every server can handle only 2 peer connections, once 2 peers are connected - the game begins.
+
+If you have a server IP address, place it in [Global.gd](./Global.gd) as the `SERVER_ADDRESS`, then export the dedicated server and client using the presets already available.
 
 ## Credits
 
