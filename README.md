@@ -11,8 +11,8 @@ This repository holds everything needed to export and run a personal dedicated s
 - Goal of the game is to build a hand of 5 cards that exceeds the points of your opponents 5 cards in their hand.
 - The game has 25 cards total and starts by dealing 5 cards randomly to each player.
 - It is turn based, every turn, you can either:
-  1.  Place a card from your hand onto the table
-  2.  or switch a card from the table with one in your hand.
+  1. Place a card from your hand onto the table
+  2. or switch a card from the table with one in your hand.
 - When there are no more cards in the deck, the game is over and points are tallied to determine the winner.
 - There is no time limit
 
